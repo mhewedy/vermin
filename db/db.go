@@ -8,5 +8,13 @@ const (
 )
 
 func GetVMPath(vm string) string {
-	return os.Getenv("HOME") + "/.viper/" + vm + "/"
+	return GetHomeDir() + "/" + vm + "/"
+}
+
+func GetHomeDir() string {
+	return os.Getenv("HOME") + "/.viper"
+}
+
+func GetImagesDir() string {
+	return GetHomeDir() + "/boxes/"
 }
