@@ -24,7 +24,7 @@ type vmInfo struct {
 func List(vms []string) string {
 
 	if len(vms) == 0 {
-		return "VM NAME\t\tIMAGE\t\t\tCPU\t\tMEM\t\tTAGS"
+		return "VM NAME\t\tIMAGE\t\t\t\tCPU\tMEM\tTAGS"
 	}
 
 	ch := make(chan *vmInfo, len(vms))
@@ -36,9 +36,9 @@ func List(vms []string) string {
 	}
 
 	// collect from channel
+	var i int
 	out := make([]*vmInfo, 0)
 
-	var i int
 	for {
 		select {
 		case vmInfo := <-ch:
@@ -61,9 +61,9 @@ func printInfo(vmInfos []*vmInfo) string {
 	sort.Slice(vmInfos, func(i, j int) bool {
 		return vmInfos[i].name < vmInfos[j].name
 	})
-	out += fmt.Sprintln("VM NAME\t\tIMAGE\t\t\tCPU\t\tMEM\t\tTAGS")
+	out += fmt.Sprintln("VM NAME\t\tIMAGE\t\t\t\tCPU\tMEM\tTAGS")
 	for _, e := range vmInfos {
-		out += fmt.Sprintf("%s\t\t%s\t\t%d\t\t%d\t\t%s\n", e.name, e.image, e.cpu, e.mem, e.tags)
+		out += fmt.Sprintf("%s\t\t%s\t\t\t%d\t%d\t%s\n", e.name, e.image, e.cpu, e.mem, e.tags)
 	}
 
 	return out
