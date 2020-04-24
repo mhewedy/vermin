@@ -3,16 +3,16 @@ package main
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"vermin/images"
+	"vermin/ip"
 )
 
 func main() {
 
-	//fmt.Println(ip.Find("vm_01", false))
+	fmt.Println(ip.Find("vm_01", true))
 
 	//fmt.Println(info.List([]string{"vm_01", "vm_02"}))
 
-	fmt.Println(images.List())
+	//fmt.Println(images.List())
 
 	/*rootCmd := &cobra.Command{}
 

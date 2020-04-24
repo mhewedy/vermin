@@ -1,5 +1,5 @@
 arp
-nmap
+ping
 vboxmanage
 mkdir
 wget
