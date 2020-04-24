@@ -2,15 +2,13 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
-	"vermin/cmd"
 	"vermin/db"
-	"vermin/images"
 	"vermin/info"
+	"vermin/ssh"
 )
 
 func create(imageName string, script string, cpus int, mem int) error {
@@ -63,17 +61,19 @@ func provision(vmName string, script string) error {
 	}
 
 	vmFile := "/tmp/" + filepath.Base(script)
+
 	if err := copyToVM(vmName, script, vmFile); err != nil {
 		return err
 	}
-	if _, err := ssh(vmName, "chmod", "+x", vmFile); err != nil {
+
+	if _, err := ssh.Execute(vmName, "chmod +x "+vmFile); err != nil {
 		return err
 	}
-	if o, err := ssh(vmName, vmFile); err != nil {
+
+	if err := ssh.ExecuteO(vmName, vmFile); err != nil {
 		return err
-	} else {
-		fmt.Println(o)
 	}
+
 	return nil
 }
 

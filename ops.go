@@ -6,8 +6,7 @@ import (
 	"math"
 	"time"
 	"vermin/cmd"
-	"vermin/db"
-	"vermin/ip"
+	"vermin/ssh"
 )
 
 type backoff struct {
@@ -53,7 +52,7 @@ func establishConn(vmName string) error {
 		max:  5 * time.Minute,
 	}
 	for {
-		if _, err := ssh(vmName, "ls"); err == nil {
+		if _, err := ssh.Execute(vmName, "ls"); err == nil {
 			break
 		}
 		if err := bo.sleep(); err != nil {
@@ -61,25 +60,4 @@ func establishConn(vmName string) error {
 		}
 	}
 	return nil
-}
-
-func ssh(vmName string, command ...string) (string, error) {
-	ipAddr, err := ip.Find(vmName, false)
-	if err != nil {
-		return "", err
-	}
-
-	args := []string{
-		"-i",
-		db.GetPrivateKeyPath(),
-		db.GetUsername() + "@" + ipAddr,
-	}
-
-	if len(command) > 0 {
-		args = append(args, "--")
-		args = append(args, command...)
-		return cmd.Execute("ssh", args...)
-	} else {
-		return "", cmd.ExecuteI("ssh", args...)
-	}
 }
