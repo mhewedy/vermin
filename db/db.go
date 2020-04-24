@@ -3,9 +3,9 @@ package db
 import "os"
 
 const (
-	Image        = "image"
-	Tags         = "tags"
-	VMNamePrefix = "vm_"
+	Image      = "image"
+	Tags       = "tags"
+	NamePrefix = "vm_"
 )
 
 func GetVMPath(vm string) string {

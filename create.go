@@ -64,12 +64,12 @@ func nextName() (string, error) {
 		curr = 0
 	} else {
 		sort.Slice(l, func(i, j int) bool {
-			ii, _ := strconv.Atoi(strings.ReplaceAll(l[i], db.VMNamePrefix, ""))
-			jj, _ := strconv.Atoi(strings.ReplaceAll(l[j], db.VMNamePrefix, ""))
+			ii, _ := strconv.Atoi(strings.ReplaceAll(l[i], db.NamePrefix, ""))
+			jj, _ := strconv.Atoi(strings.ReplaceAll(l[j], db.NamePrefix, ""))
 			return ii <= jj
 		})
-		curr, _ = strconv.Atoi(strings.ReplaceAll(l[len(l)-1], db.VMNamePrefix, ""))
+		curr, _ = strconv.Atoi(strings.ReplaceAll(l[len(l)-1], db.NamePrefix, ""))
 	}
 
-	return fmt.Sprintf(db.VMNamePrefix+"%02d", curr+1), nil
+	return fmt.Sprintf(db.NamePrefix+"%02d", curr+1), nil
 }
