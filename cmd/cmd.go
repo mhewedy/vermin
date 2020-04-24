@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"time"
 )
@@ -56,6 +57,23 @@ func Execute(command string, args ...string) (string, error) {
 	}
 
 	return string(stdout.Bytes()), nil
+}
+
+// Execute execute commands in interactive mode
+func ExecuteI(command string, args ...string) error {
+	cmd := exec.Command(command, args...)
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+
+	err := cmd.Run()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // Run runs command and return nothing

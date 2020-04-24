@@ -21,7 +21,14 @@ func init() {
 func main() {
 
 	//fmt.Println(images.List())
-	fmt.Println(ps(true))
+	//fmt.Println(ps(false))
+
+	//err := start("vm_01")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+
+	fmt.Println(ssh("vm_02"))
 
 	//fmt.Println(create("centos/8", "", 0, 0))
 

@@ -12,7 +12,7 @@ import (
 	"vermin/info"
 )
 
-func create(imageName string, provision string, cpus int, mem int) error {
+func create(imageName string, script string, cpus int, mem int) error {
 	if err := images.Create(imageName); err != nil {
 		return err
 	}
@@ -44,10 +44,19 @@ func create(imageName string, provision string, cpus int, mem int) error {
 	}
 	fmt.Printf("vm created: %s\n", vmName)
 
-	return nil
+	return provision(vmName, script)
 }
 
 func provision(vmName string, script string) error {
+	if len(script) == 0 {
+		return nil
+	}
+
+	fmt.Println("provisioning", vmName, "...")
+
+	if err := start(vmName); err != nil {
+		return err
+	}
 
 	return nil
 }

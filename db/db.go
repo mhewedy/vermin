@@ -27,3 +27,11 @@ func GetImageFilePath(imageName string) string {
 func GetVMsBaseDir() string {
 	return GetHomeDir() + "/vms"
 }
+
+func GetPrivateKeyPath() string {
+	return GetHomeDir() + "/vermin_rsa"
+}
+
+func GetUsername() string {
+	return "viper" // TODO change to vermin
+}
