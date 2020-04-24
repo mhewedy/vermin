@@ -67,24 +67,6 @@ func Execute(command string, args ...string) (string, error) {
 	return string(stdout.Bytes()), nil
 }
 
-// ExecuteO execute commands and set cmd stdout to os.Stdout
-func ExecuteO(command string, args ...string) error {
-	cmd := exec.Command(command, args...)
-
-	var stderr bytes.Buffer
-
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = &stderr
-
-	err := cmd.Run()
-
-	if err != nil {
-		return errors.New(string(stderr.Bytes()))
-	}
-
-	return nil
-}
-
 // Execute execute commands in interactive mode
 func ExecuteI(command string, args ...string) error {
 	cmd := exec.Command(command, args...)
