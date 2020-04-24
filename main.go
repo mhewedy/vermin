@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -29,7 +30,7 @@ func main() {
 
 	//fmt.Println(ssh("vm_02"))
 
-	//fmt.Println(create("centos/8", "", 0, 0))
+	fmt.Println(create("ubuntu/bionic", "/Users/mhewedy/Work/Code/viper/samples/provision/sample.sh", 0, 0))
 
 	/*rootCmd := &cobra.Command{}
 

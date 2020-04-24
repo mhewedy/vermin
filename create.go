@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -61,6 +62,18 @@ func provision(vmName string, script string) error {
 		return err
 	}
 
+	vmFile := "/tmp/" + filepath.Base(script)
+	if err := copyToVM(vmName, script, vmFile); err != nil {
+		return err
+	}
+	if _, err := ssh(vmName, "chmod", "+x", vmFile); err != nil {
+		return err
+	}
+	if o, err := ssh(vmName, vmFile); err != nil {
+		return err
+	} else {
+		fmt.Println(o)
+	}
 	return nil
 }
 

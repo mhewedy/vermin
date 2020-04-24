@@ -3,3 +3,4 @@ ping
 vboxmanage
 wget
 ssh
+scp

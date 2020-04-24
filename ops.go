@@ -46,13 +46,14 @@ func stop(vmName string) error {
 	return nil
 }
 
+// establishConn make sure connection to the vm is established or return an error if not
 func establishConn(vmName string) error {
 	bo := &backoff{
 		base: 500 * time.Millisecond,
 		max:  5 * time.Minute,
 	}
 	for {
-		if _, err := ssh(vmName); err == nil {
+		if _, err := ssh(vmName, "ls"); err == nil {
 			break
 		}
 		if err := bo.sleep(); err != nil {

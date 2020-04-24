@@ -24,14 +24,22 @@ func ExecuteP(command string, args ...string) (string, error) {
 		return "", errors.New(string(stderr.Bytes()))
 	}
 
+	quit := make(chan bool)
 	go func() {
 		for {
-			fmt.Print(".")
-			time.Sleep(3 * time.Second)
+			select {
+			case <-quit:
+				return
+			default:
+				fmt.Print(".")
+				time.Sleep(3 * time.Second)
+			}
 		}
 	}()
 
 	err = cmd.Wait()
+	quit <- true
+
 	if err != nil {
 		return "", errors.New(string(stderr.Bytes()))
 	}
