@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -28,7 +27,7 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	fmt.Println(ssh("vm_02"))
+	//fmt.Println(ssh("vm_02"))
 
 	//fmt.Println(create("centos/8", "", 0, 0))
 
