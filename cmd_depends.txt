@@ -2,3 +2,4 @@ arp
 ping
 vboxmanage
 wget
+ssh

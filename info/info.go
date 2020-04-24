@@ -8,6 +8,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"vermin/cmd"
 	"vermin/db"
 )
 
@@ -17,6 +18,34 @@ type vmInfo struct {
 	cpu   int
 	mem   int
 	tags  string
+}
+
+func List(all bool) ([]string, error) {
+	var args = [2]string{"list"}
+	if all {
+		args[1] = "vms"
+	} else {
+		args[1] = "runningvms"
+	}
+
+	r, err := cmd.Execute("vboxmanage", args[:]...)
+	if err != nil {
+		return nil, err
+	}
+
+	var vms []string
+	fields := strings.Fields(r)
+
+	for i := range fields {
+		if i%2 == 0 {
+			vmName := strings.ReplaceAll(fields[i], `"`, "")
+			if strings.HasPrefix(vmName, db.VMNamePrefix) {
+				vms = append(vms, vmName)
+			}
+		}
+	}
+
+	return vms, nil
 }
 
 // Get get info about vms
