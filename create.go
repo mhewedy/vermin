@@ -2,11 +2,14 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
+	"vermin/cmd"
 	"vermin/db"
+	"vermin/images"
 	"vermin/info"
 	"vermin/ssh"
 )
