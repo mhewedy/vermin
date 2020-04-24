@@ -1,5 +1,4 @@
 arp
 ping
 vboxmanage
-mkdir
 wget

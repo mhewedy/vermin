@@ -3,6 +3,7 @@ package images
 import (
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"vermin/cmd"
 	"vermin/db"
@@ -78,13 +79,11 @@ func download(vm *vm) error {
 	sp := strings.Split(vm.Name, "/")
 	vmBasePath := db.GetImagesDir() + sp[0]
 
-	_, err := cmd.Execute("mkdir", "-p", vmBasePath)
-	if err != nil {
+	if err := os.MkdirAll(vmBasePath, 0755); err != nil {
 		return err
 	}
 
-	err = cmd.ExecuteAndShowProgress("wget", "-O", vmBasePath+"/"+sp[1]+".ova", vm.URL)
-	if err != nil {
+	if err := cmd.ExecuteAndShowProgress("wget", "-O", vmBasePath+"/"+sp[1]+".ova", vm.URL); err != nil {
 		return err
 	}
 	return nil
