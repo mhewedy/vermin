@@ -3,18 +3,27 @@ package main
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"log"
+	"os"
+	"vermin/db"
 )
+
+func init() {
+	if err := os.MkdirAll(db.GetImagesDir(), 0755); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := os.MkdirAll(db.GetVMsBaseDir(), 0755); err != nil {
+		log.Fatal(err)
+	}
+}
 
 func main() {
 
-	//fmt.Println(ip.Find("vm_01", true))
-	//
-
-	//fmt.Println(info.List([]string{"vm_01", "vm_02"}))
-
+	//fmt.Println(images.List())
 	fmt.Println(ps(true))
 
-	//fmt.Println(images.List())
+	//fmt.Println(create("centos/8", "", 0, 0))
 
 	/*rootCmd := &cobra.Command{}
 

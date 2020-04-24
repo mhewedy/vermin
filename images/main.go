@@ -73,17 +73,16 @@ func List() (string, error) {
 }
 
 func download(vm *vm) error {
-	fmt.Println("Downloading image", vm.Name, "from", vm.URL)
-	fmt.Print("It might take a while depending on your internet connection")
+	fmt.Printf("downloading image %s\nit might take a while depending on your internet connection", vm.Name)
 
 	sp := strings.Split(vm.Name, "/")
-	vmBasePath := db.GetImagesDir() + sp[0]
+	vmBasePath := db.GetImagesDir() + "/" + sp[0]
 
 	if err := os.MkdirAll(vmBasePath, 0755); err != nil {
 		return err
 	}
 
-	if err := cmd.ExecuteAndShowProgress("wget", "-O", vmBasePath+"/"+sp[1]+".ova", vm.URL); err != nil {
+	if _, err := cmd.ExecuteP("wget", "-O", vmBasePath+"/"+sp[1]+".ova", vm.URL); err != nil {
 		return err
 	}
 	return nil

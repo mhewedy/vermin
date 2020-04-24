@@ -8,12 +8,19 @@ import (
 	"time"
 )
 
-func ExecuteAndShowProgress(command string, args ...string) error {
+// ExecuteP execute and show progress
+func ExecuteP(command string, args ...string) (string, error) {
 	cmd := exec.Command(command, args...)
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
 
 	err := cmd.Start()
 	if err != nil {
-		return err
+		return "", errors.New(string(stderr.Bytes()))
 	}
 
 	go func() {
@@ -25,10 +32,11 @@ func ExecuteAndShowProgress(command string, args ...string) error {
 
 	err = cmd.Wait()
 	if err != nil {
-		return err
+		return "", errors.New(string(stderr.Bytes()))
 	}
 	fmt.Println()
-	return nil
+
+	return string(stdout.Bytes()), nil
 }
 
 // Execute execute commands and return output as string or error

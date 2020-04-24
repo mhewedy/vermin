@@ -8,13 +8,21 @@ const (
 )
 
 func GetVMPath(vm string) string {
-	return GetHomeDir() + "/" + vm + "/"
+	return GetVMsBaseDir() + "/" + vm
 }
 
 func GetHomeDir() string {
-	return os.Getenv("HOME") + "/.viper"
+	return os.Getenv("HOME") + "/.vermin"
 }
 
 func GetImagesDir() string {
-	return GetHomeDir() + "/boxes/"
+	return GetHomeDir() + "/images"
+}
+
+func GetImageFilePath(imageName string) string {
+	return GetImagesDir() + "/" + imageName + ".ova"
+}
+
+func GetVMsBaseDir() string {
+	return GetHomeDir() + "/vms"
 }

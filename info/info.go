@@ -19,9 +19,8 @@ type vmInfo struct {
 	tags  string
 }
 
-// List list info about vms
-//  vm_01 vm_02 vm_03
-func List(vms []string) string {
+// Get get info about vms
+func Get(vms []string) string {
 
 	if len(vms) == 0 {
 		return "VM NAME\t\tIMAGE\t\t\t\tCPU\tMEM\tTAGS"
