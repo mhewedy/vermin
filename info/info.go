@@ -20,6 +20,7 @@ type vmInfo struct {
 	tags  string
 }
 
+// List return all vms that start with db.VMNamePrefix
 func List(all bool) ([]string, error) {
 	var args = [2]string{"list"}
 	if all {

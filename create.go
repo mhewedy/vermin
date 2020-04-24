@@ -16,7 +16,7 @@ func create(imageName string, provision string, cpus int, mem int) error {
 	if err := images.Create(imageName); err != nil {
 		return err
 	}
-	vmName, err := getNextVMName()
+	vmName, err := nextName()
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func provision(vmName string, script string) error {
 	return nil
 }
 
-func getNextVMName() (string, error) {
+func nextName() (string, error) {
 	var curr int
 
 	l, err := info.List(true)
