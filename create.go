@@ -31,7 +31,7 @@ func create(imageName string, script string, cpus int, mem int) error {
 		mem = 1024
 	}
 	// execute command
-	fmt.Printf("creating %s from image %s", vmName, imageName)
+	fmt.Printf("Creating %s from image %s ", vmName, imageName)
 	if _, err = cmd.ExecuteP("vboxmanage",
 		"import", db.GetImageFilePath(imageName),
 		"--vsys", "0",
@@ -45,7 +45,6 @@ func create(imageName string, script string, cpus int, mem int) error {
 	if err = ioutil.WriteFile(db.GetVMPath(vmName)+"/"+db.Image, []byte(imageName), 0775); err != nil {
 		return err
 	}
-	fmt.Printf("vm created: %s\n", vmName)
 
 	return provision(vmName, script)
 }
@@ -55,7 +54,7 @@ func provision(vmName string, script string) error {
 		return nil
 	}
 
-	fmt.Println("provisioning", vmName, "...")
+	fmt.Println("Provisioning", vmName, "...")
 	time.Sleep(1 * time.Second)
 
 	if err := start(vmName); err != nil {
@@ -71,7 +70,11 @@ func provision(vmName string, script string) error {
 		return err
 	}
 
-	if err := ssh.ExecuteI(vmName, "sh "+vmFile); err != nil {
+	if _, err := ssh.Execute(vmName, "chmod +x "+vmFile); err != nil {
+		return err
+	}
+
+	if err := ssh.ExecuteI(vmName, vmFile); err != nil {
 		return err
 	}
 

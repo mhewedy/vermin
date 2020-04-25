@@ -37,7 +37,7 @@ func ps(all bool) (string, error) {
 }
 
 func start(vmName string) error {
-	fmt.Println("starting", vmName, "...")
+	fmt.Println("Starting", vmName, "...")
 	if _, err := cmd.Execute("vboxmanage", "startvm", vmName, "--type", "headless"); err != nil {
 		return err
 	}
@@ -45,7 +45,7 @@ func start(vmName string) error {
 }
 
 func stop(vmName string) error {
-	fmt.Println("stopping", vmName, "...")
+	fmt.Println("Stopping", vmName, "...")
 	if _, err := cmd.Execute("vboxmanage", "controlvm", vmName, "poweroff"); err != nil {
 		return err
 	}

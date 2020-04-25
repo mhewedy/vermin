@@ -73,7 +73,7 @@ func List() (string, error) {
 }
 
 func download(vm *vm) error {
-	fmt.Printf("downloading image %s\nit might take a while depending on your internet connection", vm.Name)
+	fmt.Printf("Downloading image %s ", vm.Name)
 
 	sp := strings.Split(vm.Name, "/")
 	vmBasePath := db.GetImagesDir() + "/" + sp[0]
