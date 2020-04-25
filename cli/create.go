@@ -85,6 +85,6 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	createCmd.Flags().IntP("cpus", "c", 1, "Number of Cpus")
+	createCmd.Flags().IntP("cpus", "c", 1, "Number of cpu cores")
 	createCmd.Flags().IntP("mem", "m", 1024, "Memory size in mega bytes")
 }
