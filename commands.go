@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"vermin/cmd"
 	"vermin/cmd/ssh"
@@ -81,4 +82,20 @@ func copyFiles(vmName string, file string, toVM bool) error {
 	} else {
 		return copyToLocalCWD(vmName, file)
 	}
+}
+
+func tag(vmName string, tag string) error {
+	data := []byte(tag + "\n")
+	f, err := os.OpenFile(db.GetVMPath(vmName)+"/"+db.Tags, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0775)
+	if err != nil {
+		return err
+	}
+	n, err := f.Write(data)
+	if err == nil && n < len(data) {
+		err = io.ErrShortWrite
+	}
+	if err1 := f.Close(); err == nil {
+		err = err1
+	}
+	return err
 }

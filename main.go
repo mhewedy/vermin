@@ -46,6 +46,14 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
+	if err := tag("vm_02", "tag1"); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := tag("vm_02", "tag2"); err != nil {
+		log.Fatal(err)
+	}
+
 	//fmt.Println(remove("vm_11"))
 
 	//fmt.Println(
