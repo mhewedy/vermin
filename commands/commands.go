@@ -9,7 +9,6 @@ import (
 	"github.com/mhewedy/vermin/commands/ip"
 	"github.com/mhewedy/vermin/commands/port"
 	"github.com/mhewedy/vermin/db"
-	"io"
 	"os"
 )
 
@@ -34,19 +33,7 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 }
 
 func Tag(vmName string, tag string) error {
-	data := []byte(tag + "\n")
-	f, err := os.OpenFile(db.GetVMPath(vmName)+"/"+db.Tags, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0775)
-	if err != nil {
-		return err
-	}
-	n, err := f.Write(data)
-	if err == nil && n < len(data) {
-		err = io.ErrShortWrite
-	}
-	if err1 := f.Close(); err == nil {
-		err = err1
-	}
-	return err
+	return appendToFile(db.GetVMPath(vmName)+"/"+db.Tags, []byte(tag+"\n"), 0775)
 }
 
 func Start(vmName string) error {
