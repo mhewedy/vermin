@@ -30,15 +30,15 @@ func main() {
 	//fmt.Println(ssh("vm_02"))
 
 	//fmt.Println(create("ubuntu/bionic", "/Users/mhewedy/Work/Code/viper/samples/provision/sample.sh", 0, 0))
-	vmName, err := create("ubuntu/bionic", "", 0, 0)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if err := start(vmName); err != nil {
-		log.Fatal(err)
-	}
+	//vmName, err := create("ubuntu/bionic", "", 0, 0)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//if err := start(vmName); err != nil {
+	//	log.Fatal(err)
+	//}
 
-	if err := secureShell(vmName, ""); err != nil {
+	if err := secureShell("vm_01", ""); err != nil {
 		log.Fatal(err)
 	}
 
