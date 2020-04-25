@@ -9,14 +9,34 @@ import (
 
 const rangeSep = "-"
 
-// GetPortForwardArgs build string as param to ssh for port forward
+// mapPorts build string as param to ssh for port forward
 //
 // sample input: 3000 4040:40040 8080-8088:9080-9088
 //
 // where <vm port>[:<local port>]
 //
 // remember, vm port comes first
-func GetPortForwardArgs(ports string) ([]string, error) {
+func MapPortForward(ports string) ([]string, error) {
+	a, err := mapPorts(ports)
+	if err != nil {
+		return nil, err
+	}
+
+	var args = make([]string, len(a)*2)
+	c := 1
+	for i := range args {
+		if i%2 == 0 {
+			args[i] = "-L"
+		} else {
+			args[i] = a[i-c]
+			c++
+		}
+	}
+
+	return args, nil
+}
+
+func mapPorts(ports string) ([]string, error) {
 
 	args := strings.Fields(ports)
 	var result []string

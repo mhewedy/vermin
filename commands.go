@@ -58,7 +58,7 @@ func secureShell(vmName string, command string) error {
 }
 
 func portForward(vmName string, ports string) error {
-	a, err := port.GetPortForwardArgs(ports)
+	a, err := port.MapPortForward(ports)
 	if err != nil {
 		return err
 	}
@@ -67,20 +67,8 @@ func portForward(vmName string, ports string) error {
 		return err
 	}
 
-	var args = make([]string, len(a)*2+1)
-	c := 1
-	for i := range args {
-		if i%2 == 0 {
-			args[i] = "-L"
-		} else {
-			args[i] = a[i-c]
-			c++
-		}
-	}
-	args[len(args)-1] = "-N"
-
 	fmt.Println("Connected. Press CTRL+C anytime to stop")
-	if err := ssh.ExecuteIArgs(vmName, args...); err != nil {
+	if err := ssh.ExecuteIArgs(vmName, append(a, "-N")...); err != nil {
 		return err
 	}
 

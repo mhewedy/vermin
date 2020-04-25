@@ -64,7 +64,7 @@ func provision(vmName string, script string) error {
 	if err := start(vmName); err != nil {
 		return err
 	}
-	if err := establishConn(vmName); err != nil {
+	if err := ssh.EstablishConn(vmName); err != nil {
 		return err
 	}
 

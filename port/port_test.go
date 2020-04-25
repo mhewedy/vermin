@@ -54,16 +54,16 @@ func TestGetPortForwardArgs(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := GetPortForwardArgs(tt.args.ports)
+			got, err := mapPorts(tt.args.ports)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("GetPortForwardArgs() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("mapPorts() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
 			want := tt.want
 
 			if !assert.ElementsMatch(t, got, tt.want) {
-				t.Errorf("GetPortForwardArgs() got = %v, want %v, %v %v", got, want, len(got), len(want))
+				t.Errorf("mapPorts() got = %v, want %v, %v %v", got, want, len(got), len(want))
 			}
 		})
 	}

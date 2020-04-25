@@ -69,7 +69,7 @@ func ExecuteIArgs(vmName string, args ...string) error {
 	return cmd.ExecuteI("ssh", cargs...)
 }
 
-// establishConn make sure connection to the vm is established or return an error if not
+// EstablishConn make sure connection to the vm is established or return an error if not
 func EstablishConn(vmName string) error {
 	d := &delay{
 		max: 1 * time.Minute,
