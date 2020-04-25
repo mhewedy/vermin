@@ -1,7 +1,6 @@
 package ip
 
 import (
-	"errors"
 	"fmt"
 	"github.com/mhewedy/vermin/cmd"
 	"strconv"
@@ -47,7 +46,7 @@ func Find(vmName string, purge bool) (string, error) {
 		pong = true
 	}
 
-	return "", errors.New(fmt.Sprintf("cannot find ip for %s", vmName))
+	return "", fmt.Errorf("cannot find ip for %s, use `ps` to list all running vms", vmName)
 }
 
 func ping() {
@@ -77,7 +76,7 @@ func getMACAddr(vmName string) (string, error) {
 			return formatMACAddr(mac), nil
 		}
 	}
-	return "", errors.New(fmt.Sprintf("unable to get mac address for %s", vmName))
+	return "", fmt.Errorf("unable to get mac address for %s, use `ps -a` to list all vms", vmName)
 }
 
 func formatMACAddr(mac string) string {
