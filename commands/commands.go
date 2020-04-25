@@ -22,7 +22,7 @@ func Ps(all bool) (string, error) {
 }
 
 func Images() (string, error) {
-	return images.List()
+	return images.Display()
 }
 
 func Ip(vmName string, purge bool) (string, error) {

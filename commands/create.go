@@ -23,13 +23,6 @@ func create(imageName string, script string, cpus int, mem int) (string, error) 
 	if err != nil {
 		return "", err
 	}
-	// set defaults
-	if cpus == 0 {
-		cpus = 1
-	}
-	if mem == 0 {
-		mem = 1024
-	}
 	// execute command
 	fmt.Printf("Creating %s from image %s ", vmName, imageName)
 	if _, err = cmd.ExecuteP("vboxmanage",

@@ -39,36 +39,68 @@ func Create(image string) error {
 	}
 
 	if vm == nil {
-		return errors.New("invalid image name: " + image)
+		return errors.New("invalid image name: " + image + ", use the command 'vermin images' to list all images available")
 	}
 
 	return download(vm)
 }
 
-func List() (string, error) {
+type image struct {
+	name   string
+	cached bool
+}
 
-	var result string
+func List() ([]string, error) {
+	list, err := list()
+	if err != nil {
+		return nil, err
+	}
+	var result = make([]string, len(list))
+	for i := range list {
+		result[i] = list[i].name
+	}
+	return result, nil
+}
 
-	cached, err := listCachedImages()
+func Display() (string, error) {
+
+	list, err := list()
 	if err != nil {
 		return "", err
 	}
+	var result string
 
+	for i := range list {
+		if list[i].cached {
+			result += list[i].name + "\t\t(cached)\n"
+		} else {
+			result += list[i].name
+		}
+	}
+	return result, nil
+}
+
+func list() ([]image, error) {
+	var result []image
+
+	cached, err := listCachedImages()
+	if err != nil {
+		return nil, err
+	}
 	for i := range cached {
-		result += cached[i] + "\t(cached)\n"
+		result = append(result, image{cached[i], true})
 	}
 
 	remote, err := listRemoteImagesNames()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	for i := range remote {
 		r := remote[i]
 		if !contains(cached, r) {
-			result += r + "\n"
+			result = append(result, image{r, false})
 		}
 	}
-
 	return result, nil
 }
 
