@@ -17,7 +17,7 @@ type delay struct {
 	max   time.Duration
 }
 
-func (b *delay) sleep(seconds int) error {
+func (b *delay) sleep() error {
 	elapsed := time.Now().Sub(b.start).Milliseconds()
 	if !b.start.IsZero() && elapsed >= b.max.Milliseconds() {
 		return errors.New("time elapsed")
@@ -25,8 +25,8 @@ func (b *delay) sleep(seconds int) error {
 	if b.iter == 0 {
 		b.start = time.Now()
 	}
-	time.Sleep(time.Duration(seconds) * time.Second)
 	b.iter++
+	time.Sleep(time.Duration(2*b.iter) * time.Second)
 	return nil
 }
 
@@ -80,13 +80,14 @@ func secureShell(vmName string, command string) error {
 // establishConn make sure connection to the vm is established or return an error if not
 func establishConn(vmName string) error {
 	d := &delay{
-		max: 3 * time.Minute,
+		max: 1 * time.Minute,
 	}
 	for {
 		if _, err := ssh.Execute(vmName, "ls"); err == nil {
 			break
 		}
-		if err := d.sleep(3); err != nil {
+		fmt.Println("Trying to establish connection to", vmName, "...")
+		if err := d.sleep(); err != nil {
 			break
 		}
 	}

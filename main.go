@@ -38,7 +38,7 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	if err := secureShell("vm_01", ""); err != nil {
+	if err := secureShell("vm_02", ""); err != nil {
 		log.Fatal(err)
 	}
 
