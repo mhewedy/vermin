@@ -21,6 +21,7 @@ import (
 	"github.com/mhewedy/vermin/commands"
 	"github.com/mhewedy/vermin/commands/info"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -53,8 +54,17 @@ to quickly create a Cobra application.`,
 		return nil
 	},
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		if len(args) != 0 {
+			return nil, cobra.ShellCompDirectiveNoFileComp
+		}
 		list, _ := info.List(false)
-		return list, cobra.ShellCompDirectiveDefault
+		var completions []string
+		for _, comp := range list {
+			if strings.HasPrefix(comp, toComplete) {
+				completions = append(completions, comp)
+			}
+		}
+		return completions, cobra.ShellCompDirectiveDefault
 	},
 }
 
