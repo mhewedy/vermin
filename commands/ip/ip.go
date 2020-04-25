@@ -46,7 +46,7 @@ func Find(vmName string, purge bool) (string, error) {
 		pong = true
 	}
 
-	return "", fmt.Errorf("cannot find ip for %s, use the command 'vermin ps' to list all running vms", vmName)
+	return "", fmt.Errorf("cannot find ip for %s\nUse the command 'vermin ps' to list all running vms", vmName)
 }
 
 func ping() {
@@ -76,7 +76,7 @@ func getMACAddr(vmName string) (string, error) {
 			return formatMACAddr(mac), nil
 		}
 	}
-	return "", fmt.Errorf("unable to get mac address for %s, use the command 'vermin ps -a' to list all vms", vmName)
+	return "", fmt.Errorf("unable to get mac address for %s\nUse the command 'vermin ps -a' to list all vms", vmName)
 }
 
 func formatMACAddr(mac string) string {

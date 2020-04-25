@@ -53,7 +53,7 @@ func List(all bool) ([]string, error) {
 func Get(vms []string) string {
 
 	if len(vms) == 0 {
-		return "VM NAME\t\tIMAGE\t\t\t\tCPU\tMEM\tTAGS"
+		return "VM NAME\t\tIMAGE\t\t\t\tCPUS\tMEM\tTAGS"
 	}
 
 	ch := make(chan *vmInfo, len(vms))
@@ -90,7 +90,7 @@ func printInfo(vmInfos []*vmInfo) string {
 	sort.Slice(vmInfos, func(i, j int) bool {
 		return vmInfos[i].name < vmInfos[j].name
 	})
-	out += fmt.Sprintln("VM NAME\t\tIMAGE\t\t\t\tCPU\tMEM\tTAGS")
+	out += fmt.Sprintln("VM NAME\t\tIMAGE\t\t\t\tCPUS\tMEM\tTAGS")
 	for _, e := range vmInfos {
 		out += fmt.Sprintf("%s\t\t%s\t\t\t%d\t%d\t%s\n", e.name, e.image, e.cpu, e.mem, e.tags)
 	}

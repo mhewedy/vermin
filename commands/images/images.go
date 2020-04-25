@@ -39,7 +39,7 @@ func Create(image string) error {
 	}
 
 	if vm == nil {
-		return errors.New("invalid image name: " + image + ", use the command 'vermin images' to list all images available")
+		return errors.New("invalid image name: " + image + "\nUse the command 'vermin images' to list all images available")
 	}
 
 	return download(vm)
