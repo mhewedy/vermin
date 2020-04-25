@@ -1,10 +1,32 @@
 package ssh
 
 import (
+	"errors"
+	"fmt"
+	"time"
 	"vermin/cmd"
 	"vermin/db"
 	"vermin/ip"
 )
+
+type delay struct {
+	iter  int
+	start time.Time
+	max   time.Duration
+}
+
+func (b *delay) sleep() error {
+	elapsed := time.Now().Sub(b.start).Milliseconds()
+	if !b.start.IsZero() && elapsed >= b.max.Milliseconds() {
+		return errors.New("time elapsed")
+	}
+	if b.iter == 0 {
+		b.start = time.Now()
+	}
+	b.iter++
+	time.Sleep(time.Duration(2*b.iter) * time.Second)
+	return nil
+}
 
 func Shell(vmName string) error {
 	ipAddr, err := ip.Find(vmName, false)
@@ -45,4 +67,21 @@ func ExecuteIArgs(vmName string, args ...string) error {
 	cargs = append(cargs, args...)
 
 	return cmd.ExecuteI("ssh", cargs...)
+}
+
+// establishConn make sure connection to the vm is established or return an error if not
+func EstablishConn(vmName string) error {
+	d := &delay{
+		max: 1 * time.Minute,
+	}
+	for {
+		if _, err := Execute(vmName, "ls"); err == nil {
+			break
+		}
+		fmt.Println("Trying to establish connection to", vmName, "...")
+		if err := d.sleep(); err != nil {
+			break
+		}
+	}
+	return nil
 }
