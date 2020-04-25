@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -31,7 +30,19 @@ func main() {
 	//fmt.Println(ssh("vm_02"))
 
 	//fmt.Println(create("ubuntu/bionic", "/Users/mhewedy/Work/Code/viper/samples/provision/sample.sh", 0, 0))
-	fmt.Println(remove("vm_11"))
+	vmName, err := create("ubuntu/bionic", "", 0, 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := start(vmName); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := secureShell(vmName, ""); err != nil {
+		log.Fatal(err)
+	}
+
+	//fmt.Println(remove("vm_11"))
 
 	//fmt.Println(
 	//	provision("vm_12", "/Users/mhewedy/Work/Code/viper/samples/provision/sample.sh"),

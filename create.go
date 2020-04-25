@@ -15,13 +15,13 @@ import (
 	"vermin/info"
 )
 
-func create(imageName string, script string, cpus int, mem int) error {
+func create(imageName string, script string, cpus int, mem int) (string, error) {
 	if err := images.Create(imageName); err != nil {
-		return err
+		return "", err
 	}
 	vmName, err := nextName()
 	if err != nil {
-		return err
+		return "", err
 	}
 	// set defaults
 	if cpus == 0 {
@@ -40,13 +40,17 @@ func create(imageName string, script string, cpus int, mem int) error {
 		"--cpus", fmt.Sprintf("%d", cpus),
 		"--memory", fmt.Sprintf("%d", mem),
 	); err != nil {
-		return err
+		return "", err
 	}
 	if err = ioutil.WriteFile(db.GetVMPath(vmName)+"/"+db.Image, []byte(imageName), 0775); err != nil {
-		return err
+		return "", err
 	}
 
-	return provision(vmName, script)
+	if err := provision(vmName, script); err != nil {
+		return "", err
+	}
+
+	return vmName, nil
 }
 
 func provision(vmName string, script string) error {
@@ -73,7 +77,6 @@ func provision(vmName string, script string) error {
 	if _, err := ssh.Execute(vmName, "chmod +x "+vmFile); err != nil {
 		return err
 	}
-
 	if err := ssh.ExecuteI(vmName, vmFile); err != nil {
 		return err
 	}

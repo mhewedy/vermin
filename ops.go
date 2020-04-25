@@ -65,6 +65,18 @@ func remove(vmName string) error {
 	return os.RemoveAll(db.GetVMPath(vmName))
 }
 
+func secureShell(vmName string, command string) error {
+	if err := establishConn(vmName); err != nil {
+		return err
+	}
+
+	if len(command) == 0 {
+		return ssh.Shell(vmName)
+	} else {
+		return ssh.ExecuteI(vmName, command)
+	}
+}
+
 // establishConn make sure connection to the vm is established or return an error if not
 func establishConn(vmName string) error {
 	d := &delay{
