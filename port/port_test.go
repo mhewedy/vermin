@@ -55,9 +55,9 @@ func TestGetPortForwardArgs(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			g, err := GetPortForwardArgs(tt.args.ports)
+			g, err := BuildPortForwardArgs(tt.args.ports)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("GetPortForwardArgs() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("BuildPortForwardArgs() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
@@ -65,7 +65,7 @@ func TestGetPortForwardArgs(t *testing.T) {
 			want := tt.want
 
 			if !assert.ElementsMatch(t, got, tt.want) {
-				t.Errorf("GetPortForwardArgs() got = %v, want %v, %v %v", got, want, len(got), len(want))
+				t.Errorf("BuildPortForwardArgs() got = %v, want %v, %v %v", got, want, len(got), len(want))
 			}
 		})
 	}
