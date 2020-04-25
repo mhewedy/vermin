@@ -6,6 +6,7 @@ import (
 	"time"
 	"vermin/cmd"
 	"vermin/cmd/ssh"
+	"vermin/info"
 )
 
 type delay struct {
@@ -25,6 +26,14 @@ func (b *delay) sleep(seconds int) error {
 	time.Sleep(time.Duration(seconds) * time.Second)
 	b.iter++
 	return nil
+}
+
+func ps(all bool) (string, error) {
+	vms, err := info.List(all)
+	if err != nil {
+		return "", err
+	}
+	return info.Get(vms), nil
 }
 
 func start(vmName string) error {
