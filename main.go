@@ -30,7 +30,8 @@ func main() {
 
 	//fmt.Println(ssh("vm_02"))
 
-	fmt.Println(create("ubuntu/bionic", "/Users/mhewedy/Work/Code/viper/samples/provision/sample.sh", 0, 0))
+	//fmt.Println(create("ubuntu/bionic", "/Users/mhewedy/Work/Code/viper/samples/provision/sample.sh", 0, 0))
+	fmt.Println(remove("vm_11"))
 
 	//fmt.Println(
 	//	provision("vm_12", "/Users/mhewedy/Work/Code/viper/samples/provision/sample.sh"),

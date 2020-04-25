@@ -3,9 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
+	"os"
 	"time"
 	"vermin/cmd"
 	"vermin/cmd/ssh"
+	"vermin/db"
 	"vermin/info"
 )
 
@@ -50,6 +52,17 @@ func stop(vmName string) error {
 		return err
 	}
 	return nil
+}
+
+func remove(vmName string) error {
+	_ = stop(vmName)
+
+	fmt.Println("Removing", vmName, "...")
+	if _, err := cmd.Execute("vboxmanage", "unregistervm", vmName, "--delete"); err != nil {
+		return err
+	}
+
+	return os.RemoveAll(db.GetVMPath(vmName))
 }
 
 // establishConn make sure connection to the vm is established or return an error if not
