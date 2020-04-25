@@ -33,5 +33,5 @@ func GetPrivateKeyPath() string {
 }
 
 func GetUsername() string {
-	return "viper" // TODO change to vermin
+	return "vermin"
 }

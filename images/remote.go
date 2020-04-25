@@ -32,7 +32,7 @@ func listRemoteImagesNames() ([]string, error) {
 
 func listRemoteImages() ([]vm, error) {
 
-	const filePattern = "remote.viper.csv_"
+	const filePattern = "remote.vermin.csv_"
 	var tmp string
 	// read images csv from tmp cache
 	dir, err := ioutil.ReadDir(os.TempDir())
@@ -50,7 +50,7 @@ func listRemoteImages() ([]vm, error) {
 			return nil, err
 		}
 		tmp = tmpFile.Name()
-		_, err = cmd.Execute("wget", "-O", tmp, "https://raw.githubusercontent.com/mhewedy/viper/master/samples/images.csv")
+		_, err = cmd.Execute("wget", "-O", tmp, "https://raw.githubusercontent.com/mhewedy/vermin/master/images/images.csv")
 		if err != nil {
 			return nil, err
 		}
