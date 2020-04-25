@@ -32,6 +32,10 @@ func main() {
 
 	fmt.Println(create("ubuntu/bionic", "/Users/mhewedy/Work/Code/viper/samples/provision/sample.sh", 0, 0))
 
+	//fmt.Println(
+	//	provision("vm_12", "/Users/mhewedy/Work/Code/viper/samples/provision/sample.sh"),
+	//)
+
 	/*rootCmd := &cobra.Command{}
 
 	cmd := newCommand()

@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 	"vermin/cmd"
 	"vermin/db"
 	"vermin/images"
@@ -55,6 +56,7 @@ func provision(vmName string, script string) error {
 	}
 
 	fmt.Println("provisioning", vmName, "...")
+	time.Sleep(1 * time.Second)
 
 	if err := start(vmName); err != nil {
 		return err
