@@ -38,7 +38,7 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	if err := portForward("vm_02", "8080"); err != nil {
+	if err := portForward("vm_02", "8080 3000 1000-1010:2000-2010 80:9999"); err != nil {
 		log.Fatal(err)
 	}
 

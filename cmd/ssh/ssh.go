@@ -24,7 +24,7 @@ func Execute(vmName string, command string) (string, error) {
 		db.GetUsername()+"@"+ipAddr, "--", command)
 }
 
-//ExecuteI execute ssh commands and set cmd stdout to os.Stdout
+//ExecuteI execute ssh in interactive mode
 func ExecuteI(vmName string, command string) error {
 	ipAddr, err := ip.Find(vmName, false)
 	if err != nil {
@@ -34,12 +34,15 @@ func ExecuteI(vmName string, command string) error {
 		db.GetUsername()+"@"+ipAddr, "--", command)
 }
 
-// RunArgs run ssh command with args
-func ExecuteIArgs(vmName string, args string) error {
+// ExecuteIArgs run ssh in interactive mode with args
+func ExecuteIArgs(vmName string, args ...string) error {
 	ipAddr, err := ip.Find(vmName, false)
 	if err != nil {
 		return err
 	}
-	return cmd.ExecuteI("ssh", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
-		db.GetUsername()+"@"+ipAddr, args)
+
+	var cargs = []string{"-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no", db.GetUsername() + "@" + ipAddr}
+	cargs = append(cargs, args...)
+
+	return cmd.ExecuteI("ssh", cargs...)
 }
