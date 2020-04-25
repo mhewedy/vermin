@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 	"vermin/cmd"
+	"vermin/cmd/ssh"
 	"vermin/db"
 	"vermin/images"
 	"vermin/info"
-	"vermin/ssh"
 )
 
 func create(imageName string, script string, cpus int, mem int) error {

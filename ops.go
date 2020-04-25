@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 	"vermin/cmd"
-	"vermin/ssh"
+	"vermin/cmd/ssh"
 )
 
 type delay struct {
