@@ -17,7 +17,7 @@ package cli
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/commands"
+	"github.com/mhewedy/vermin/vms"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -37,7 +37,7 @@ to quickly create a Cobra application.`,
 
 		all, _ := cmd.Flags().GetBool("all")
 
-		ps, err := commands.Ps(all)
+		ps, err := vms.Ps(all)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

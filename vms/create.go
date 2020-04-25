@@ -1,21 +1,20 @@
-package commands
+package vms
 
 import (
 	"fmt"
 	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/cmd/scp"
 	"github.com/mhewedy/vermin/cmd/ssh"
-	"github.com/mhewedy/vermin/commands/images"
-	"github.com/mhewedy/vermin/commands/info"
 	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/images"
 	"io/ioutil"
 	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 )
 
-func create(imageName string, script string, cpus int, mem int) (string, error) {
+func Create(imageName string, script string, cpus int, mem int) (string, error) {
 	if err := images.Create(imageName); err != nil {
 		return "", err
 	}
@@ -50,10 +49,7 @@ func provision(vmName string, script string) error {
 	if len(script) == 0 {
 		return nil
 	}
-
 	fmt.Println("Provisioning", vmName, "...")
-	time.Sleep(1 * time.Second)
-
 	if err := Start(vmName); err != nil {
 		return err
 	}
@@ -62,11 +58,9 @@ func provision(vmName string, script string) error {
 	}
 
 	vmFile := "/tmp/" + filepath.Base(script)
-
-	if err := copyToVM(vmName, script, vmFile); err != nil {
+	if err := scp.CopyToVM(vmName, script, vmFile); err != nil {
 		return err
 	}
-
 	if _, err := ssh.Execute(vmName, "chmod +x "+vmFile); err != nil {
 		return err
 	}
@@ -80,7 +74,7 @@ func provision(vmName string, script string) error {
 func nextName() (string, error) {
 	var curr int
 
-	l, err := info.List(true)
+	l, err := List(true)
 	if err != nil {
 		return "", err
 	}

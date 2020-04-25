@@ -1,11 +1,13 @@
 package cli
 
-import "github.com/mhewedy/vermin/commands/info"
+import (
+	"github.com/mhewedy/vermin/vms"
+)
 
 func getStoppedVms() []string {
 	stopped := make([]string, 0)
-	all, _ := info.List(true)
-	running, _ := info.List(false)
+	all, _ := vms.List(true)
+	running, _ := vms.List(false)
 
 	for i := range all {
 		vm := all[i]

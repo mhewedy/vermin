@@ -1,16 +1,16 @@
-package commands
+package scp
 
 import (
 	"github.com/mhewedy/vermin/cmd"
-	"github.com/mhewedy/vermin/commands/ip"
 	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/ip"
 	"path"
 )
 
-func copyToVMHomeDir(vmName string, localFile string) error {
-	return copyToVM(vmName, localFile, "~/"+path.Base(localFile))
+func CopyToVMHomeDir(vmName string, localFile string) error {
+	return CopyToVM(vmName, localFile, "~/"+path.Base(localFile))
 }
-func copyToVM(vmName string, localFile string, vmFile string) error {
+func CopyToVM(vmName string, localFile string, vmFile string) error {
 	ipAddr, err := ip.Find(vmName, false)
 	if err != nil {
 		return err
@@ -23,7 +23,7 @@ func copyToVM(vmName string, localFile string, vmFile string) error {
 	return err
 }
 
-func copyToLocalCWD(vmName string, vmFile string) error {
+func CopyToLocalCWD(vmName string, vmFile string) error {
 	ipAddr, err := ip.Find(vmName, false)
 	if err != nil {
 		return err

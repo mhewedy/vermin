@@ -1,36 +1,13 @@
-package commands
+package vms
 
 import (
 	"fmt"
 	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/cmd/scp"
 	"github.com/mhewedy/vermin/cmd/ssh"
-	"github.com/mhewedy/vermin/commands/images"
-	"github.com/mhewedy/vermin/commands/info"
-	"github.com/mhewedy/vermin/commands/ip"
-	"github.com/mhewedy/vermin/commands/port"
 	"github.com/mhewedy/vermin/db"
 	"os"
 )
-
-func Ps(all bool) (string, error) {
-	vms, err := info.List(all)
-	if err != nil {
-		return "", err
-	}
-	return info.Get(vms), nil
-}
-
-func Images() (string, error) {
-	return images.Display()
-}
-
-func Ip(vmName string, purge bool) (string, error) {
-	return ip.Find(vmName, purge)
-}
-
-func Create(imageName string, script string, cpus int, mem int) (string, error) {
-	return create(imageName, script, cpus, mem)
-}
 
 func Tag(vmName string, tag string) error {
 	return appendToFile(db.GetVMPath(vmName)+"/"+db.Tags, []byte(tag+"\n"), 0775)
@@ -56,9 +33,8 @@ func SecureShell(vmName string, command string) error {
 	if err := ssh.EstablishConn(vmName); err != nil {
 		return err
 	}
-
 	if len(command) == 0 {
-		return ssh.Shell(vmName)
+		return ssh.OpenTerminal(vmName)
 	} else {
 		return ssh.ExecuteI(vmName, command)
 	}
@@ -66,25 +42,21 @@ func SecureShell(vmName string, command string) error {
 
 func Remove(vmName string) error {
 	_ = Stop(vmName)
-
 	fmt.Println("Removing", vmName, "...")
 	if _, err := cmd.Execute("vboxmanage", "unregistervm", vmName, "--delete"); err != nil {
 		return err
 	}
-
 	return os.RemoveAll(db.GetVMPath(vmName))
 }
 
 func PortForward(vmName string, ports string) error {
-	a, err := port.MapPortForward(ports)
+	a, err := getPortForwardArgs(ports)
 	if err != nil {
 		return err
 	}
-
 	if err := ssh.EstablishConn(vmName); err != nil {
 		return err
 	}
-
 	fmt.Println("Connected. Press CTRL+C anytime to stop")
 	if err := ssh.ExecuteIArgs(vmName, append(a, "-N")...); err != nil {
 		return err
@@ -95,8 +67,8 @@ func PortForward(vmName string, ports string) error {
 
 func CopyFiles(vmName string, file string, toVM bool) error {
 	if toVM {
-		return copyToVMHomeDir(vmName, file)
+		return scp.CopyToVMHomeDir(vmName, file)
 	} else {
-		return copyToLocalCWD(vmName, file)
+		return scp.CopyToLocalCWD(vmName, file)
 	}
 }

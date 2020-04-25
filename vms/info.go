@@ -1,4 +1,4 @@
-package info
+package vms
 
 import (
 	"encoding/xml"
@@ -18,6 +18,14 @@ type vmInfo struct {
 	cpu   int
 	mem   int
 	tags  string
+}
+
+func Ps(all bool) (string, error) {
+	vms, err := List(all)
+	if err != nil {
+		return "", err
+	}
+	return getVMsInfo(vms), nil
 }
 
 // List return all vms that start with db.NamePrefix
@@ -49,8 +57,8 @@ func List(all bool) ([]string, error) {
 	return vms, nil
 }
 
-// Get get info about vms
-func Get(vms []string) string {
+// get get info about vms
+func getVMsInfo(vms []string) string {
 
 	if len(vms) == 0 {
 		return "VM NAME\t\tIMAGE\t\t\t\tCPUS\tMEM\tTAGS"
@@ -81,10 +89,10 @@ func Get(vms []string) string {
 		}
 	}
 
-	return printInfo(out)
+	return asString(out)
 }
 
-func printInfo(vmInfos []*vmInfo) string {
+func asString(vmInfos []*vmInfo) string {
 	var out string
 
 	sort.Slice(vmInfos, func(i, j int) bool {
@@ -130,7 +138,6 @@ func readFromVMDB(vm string, dbFile string, defaultValue string) string {
 }
 
 func getVMCpuAndMem(vm string) (string, string) {
-
 	type vbox struct {
 		XMLName xml.Name `xml:"VirtualBox"`
 		Machine struct {

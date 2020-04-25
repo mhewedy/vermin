@@ -1,4 +1,4 @@
-package commands
+package vms
 
 import (
 	"io"
@@ -6,7 +6,6 @@ import (
 )
 
 func appendToFile(filename string, data []byte, perm os.FileMode) error {
-
 	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, perm)
 	if err != nil {
 		return err

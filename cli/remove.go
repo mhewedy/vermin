@@ -18,8 +18,7 @@ package cli
 import (
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/commands"
-	"github.com/mhewedy/vermin/commands/info"
+	"github.com/mhewedy/vermin/vms"
 	"os"
 	"strings"
 
@@ -38,7 +37,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
-		err := commands.Remove(vmName)
+		err := vms.Remove(vmName)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -54,7 +53,7 @@ to quickly create a Cobra application.`,
 		if len(args) != 0 {
 			return nil, cobra.ShellCompDirectiveNoFileComp
 		}
-		list, _ := info.List(true)
+		list, _ := vms.List(true)
 		var completions []string
 		for _, comp := range list {
 			if strings.HasPrefix(comp, toComplete) {

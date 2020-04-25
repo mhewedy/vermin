@@ -17,7 +17,7 @@ package cli
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/commands"
+	"github.com/mhewedy/vermin/images"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -35,12 +35,12 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		images, err := commands.Images()
+		i, err := images.Display()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Println(images)
+		fmt.Println(i)
 	},
 }
 

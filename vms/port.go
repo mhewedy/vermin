@@ -1,4 +1,4 @@
-package port
+package vms
 
 import (
 	"errors"
@@ -15,8 +15,10 @@ const rangeSep = "-"
 //
 // where <vm port>[:<local port>]
 //
+// output format: ["-L", "0.0.0.0:3000:localhost:3000"]
+//
 // remember, vm port comes first
-func MapPortForward(ports string) ([]string, error) {
+func getPortForwardArgs(ports string) ([]string, error) {
 	a, err := mapPorts(ports)
 	if err != nil {
 		return nil, err

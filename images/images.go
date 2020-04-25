@@ -10,7 +10,6 @@ import (
 )
 
 func Create(image string) error {
-
 	// check image against cached
 	cached, err := listCachedImages()
 	if err != nil {

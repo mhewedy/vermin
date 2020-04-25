@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/mhewedy/vermin/cmd"
-	"github.com/mhewedy/vermin/commands/ip"
 	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/ip"
 	"time"
 )
 
@@ -28,7 +28,7 @@ func (b *delay) sleep() error {
 	return nil
 }
 
-func Shell(vmName string) error {
+func OpenTerminal(vmName string) error {
 	ipAddr, err := ip.Find(vmName, false)
 	if err != nil {
 		return err

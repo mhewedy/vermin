@@ -18,8 +18,8 @@ package cli
 import (
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/commands"
-	"github.com/mhewedy/vermin/commands/info"
+	"github.com/mhewedy/vermin/ip"
+	"github.com/mhewedy/vermin/vms"
 	"os"
 	"strings"
 
@@ -40,7 +40,7 @@ to quickly create a Cobra application.`,
 		vmName := args[0]
 		purge, _ := cmd.Flags().GetBool("purge")
 
-		ps, err := commands.Ip(vmName, purge)
+		ps, err := ip.Find(vmName, purge)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -57,7 +57,7 @@ to quickly create a Cobra application.`,
 		if len(args) != 0 {
 			return nil, cobra.ShellCompDirectiveNoFileComp
 		}
-		list, _ := info.List(false)
+		list, _ := vms.List(false)
 		var completions []string
 		for _, comp := range list {
 			if strings.HasPrefix(comp, toComplete) {

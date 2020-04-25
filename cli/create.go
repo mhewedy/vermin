@@ -18,8 +18,8 @@ package cli
 import (
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/commands"
-	"github.com/mhewedy/vermin/commands/images"
+	"github.com/mhewedy/vermin/images"
+	"github.com/mhewedy/vermin/vms"
 	"os"
 	"strings"
 
@@ -45,7 +45,7 @@ to quickly create a Cobra application.`,
 		cpus, _ := cmd.Flags().GetInt("cpus")
 		mem, _ := cmd.Flags().GetInt("mem")
 
-		vmName, err := commands.Create(imageName, script, cpus, mem)
+		vmName, err := vms.Create(imageName, script, cpus, mem)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
