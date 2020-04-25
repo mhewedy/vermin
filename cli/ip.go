@@ -18,7 +18,6 @@ package cli
 import (
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/ip"
 	"github.com/mhewedy/vermin/vms"
 	"os"
 	"strings"
@@ -29,18 +28,21 @@ import (
 // ipCmd represents the ip command
 var ipCmd = &cobra.Command{
 	Use:   "ip",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Show IP address for a running VM",
+	Long: `Show IP address for a running VM
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Sometimes, the IP information being stale, so you might need use the --purge|-p flag
+
+Examples:
+$ vermin ip vm_11
+To purge the IP cache:
+$ vermin ip vm_05 -p
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
 		purge, _ := cmd.Flags().GetBool("purge")
 
-		ps, err := ip.Find(vmName, purge)
+		ps, err := vms.IP(vmName, purge)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

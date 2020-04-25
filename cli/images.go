@@ -26,13 +26,15 @@ import (
 // imagesCmd represents the images command
 var imagesCmd = &cobra.Command{
 	Use:   "images",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "List all available images",
+	Long: `List all available images
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Images are cached after the first time it is downloaded. Cached images are marked as (cached).
+The image comes in the format <os>/<version>, for example: ubuntu/bionic and centos/8
+
+Use the image in creating a VM:
+$ vermin create <image>
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		i, err := images.Display()

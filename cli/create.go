@@ -29,13 +29,18 @@ import (
 // createCmd represents the create command
 var createCmd = &cobra.Command{
 	Use:   "create",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Create VM from an image",
+	Long: `Create VM from an image
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+To list all available images:
+$ vermin images
+
+To create VM with default settings:
+$ vermin create <image>
+
+To create VM with default settings and provide a script to provision the VM:
+$ vermin create <image> </path/to/shell/script.sh>
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		imageName := args[0]
 		var script string

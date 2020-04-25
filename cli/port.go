@@ -28,13 +28,28 @@ import (
 // portCmd represents the port command
 var portCmd = &cobra.Command{
 	Use:   "port",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Forward port(s) from a VM to host",
+	Long: `Forward port(s) from a VM to host
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Usage: vermin port <vm> <vm port>[:local port] [<vm port>[:local port]]
+
+Examples:
+
+Forward vm port 4040 to local port 4040:
+$ vermin port vm_01 4040
+
+Forward vm port 4040 to local port 40040:
+$ vermin port vm_01 4040:40040
+
+Forward vm port 4040 to local port 40040 and port 8080 to 8080
+$ vermin port vm_01 4040:40040 8080
+
+Forward vm port 4040 to local port 40040 and ports in range (8080 to 8088) to range(8080 to 8088):
+$ vermin port vm_01 4040:40040 8080-8088
+
+Forward vm port 4040 to local port 40040 and ports in range (8080 to 8088) to range(9080 to 9088):
+$ vermin port vm_01 4040:40040 8080-8088:9080-9088
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
 		command := strings.Join(args[1:], " ")

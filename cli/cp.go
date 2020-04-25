@@ -28,13 +28,15 @@ import (
 // cpCmd represents the cp command
 var cpCmd = &cobra.Command{
 	Use:   "cp",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Copy files between host and VM",
+	Long: `Copy files between host and VM
+Examples:
+Copy file.txt from host to user's home directory inside the vm
+$ vermin cp vm_01 -l file.txt
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Copy file.txt from user's home directory inside the vm to the current directory on the host
+$ vermin cp vm_01 -r ~/project/file.txt
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
 

@@ -28,13 +28,10 @@ import (
 // tagCmd represents the tag command
 var tagCmd = &cobra.Command{
 	Use:   "tag",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Tag a VM",
+	Long: `Tag a VM
+You can tag a VM as many times as you want
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
 		tag := args[1]

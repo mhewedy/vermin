@@ -28,13 +28,16 @@ import (
 // sshCmd represents the ssh command
 var sshCmd = &cobra.Command{
 	Use:   "ssh",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "ssh into a running VM",
+	Long: `ssh into a running VM
+Examples:
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Open a terminal:
+$ vermin ssh vm_02 
+
+Execute remote command:
+$ vermin ssh vm_09 cat /etc/passwd
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
 		var command string

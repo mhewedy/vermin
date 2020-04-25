@@ -8,19 +8,13 @@ import (
 
 var completionCmd = &cobra.Command{
 	Use:   "completion",
-	Short: "Generates bash completion scripts",
+	Short: "Generates completion scripts (bash and zsh)",
 	Long: `To load completion run
-
 . <(vermin completion bash)
 or 
 . <(vermin completion zsh)
 
-To configure your bash shell to load completions for each session add to your bashrc
-
-# ~/.bashrc or ~/.profile
-. <(vermin completion bash)
-or 
-. <(vermin completion zsh)
+You might consider adding it to your shell config file (.bashrc or .zshrc)
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		switch args[0] {
@@ -31,7 +25,7 @@ or
 		}
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) != 1 {
+		if len(args) != 1 || !(args[0] == "bash" || args[0] == "zsh") {
 			return errors.New("should choose between bash or zsh")
 		}
 		return nil
