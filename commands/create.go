@@ -1,4 +1,4 @@
-package main
+package commands
 
 import (
 	"fmt"
@@ -10,9 +10,9 @@ import (
 	"time"
 	"vermin/cmd"
 	"vermin/cmd/ssh"
+	"vermin/commands/images"
+	"vermin/commands/info"
 	"vermin/db"
-	"vermin/images"
-	"vermin/info"
 )
 
 func create(imageName string, script string, cpus int, mem int) (string, error) {
@@ -61,7 +61,7 @@ func provision(vmName string, script string) error {
 	fmt.Println("Provisioning", vmName, "...")
 	time.Sleep(1 * time.Second)
 
-	if err := start(vmName); err != nil {
+	if err := Start(vmName); err != nil {
 		return err
 	}
 	if err := ssh.EstablishConn(vmName); err != nil {

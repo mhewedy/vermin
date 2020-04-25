@@ -19,47 +19,6 @@ func init() {
 
 func main() {
 
-	//fmt.Println(images.List())
-	//fmt.Println(ps(false))
-
-	//err := start("vm_01")
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-
-	//fmt.Println(ssh("vm_02"))
-
-	//fmt.Println(create("ubuntu/bionic", "/Users/mhewedy/Work/Code/viper/samples/provision/sample.sh", 0, 0))
-	//vmName, err := create("ubuntu/bionic", "", 0, 0)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//if err := start("vm_02"); err != nil {
-	//	log.Fatal(err)
-	//}
-
-	//if err := portForward("vm_02", "8080 3000 1000-1010:2000-2010 80:9999"); err != nil {
-	//	log.Fatal(err)
-	//}
-
-	//if err := copyFiles("vm_02", os.Args[1], true); err != nil {
-	//	log.Fatal(err)
-	//}
-
-	if err := tag("vm_02", "tag1"); err != nil {
-		log.Fatal(err)
-	}
-
-	if err := tag("vm_02", "tag2"); err != nil {
-		log.Fatal(err)
-	}
-
-	//fmt.Println(remove("vm_11"))
-
-	//fmt.Println(
-	//	provision("vm_12", "/Users/mhewedy/Work/Code/viper/samples/provision/sample.sh"),
-	//)
-
 	/*rootCmd := &cobra.Command{}
 
 	cmd := newCommand()
