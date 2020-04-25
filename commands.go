@@ -74,3 +74,11 @@ func portForward(vmName string, ports string) error {
 
 	return nil
 }
+
+func copyFiles(vmName string, file string, toVM bool) error {
+	if toVM {
+		return copyToVMHomeDir(vmName, file)
+	} else {
+		return copyToLocalCWD(vmName, file)
+	}
+}

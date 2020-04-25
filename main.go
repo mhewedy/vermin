@@ -38,9 +38,13 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	if err := portForward("vm_02", "8080 3000 1000-1010:2000-2010 80:9999"); err != nil {
-		log.Fatal(err)
-	}
+	//if err := portForward("vm_02", "8080 3000 1000-1010:2000-2010 80:9999"); err != nil {
+	//	log.Fatal(err)
+	//}
+
+	//if err := copyFiles("vm_02", os.Args[1], true); err != nil {
+	//	log.Fatal(err)
+	//}
 
 	//fmt.Println(remove("vm_11"))
 
