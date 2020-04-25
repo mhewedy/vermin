@@ -3,10 +3,10 @@ package ssh
 import (
 	"errors"
 	"fmt"
+	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/commands/ip"
+	"github.com/mhewedy/vermin/db"
 	"time"
-	"vermin/cmd"
-	"vermin/commands/ip"
-	"vermin/db"
 )
 
 type delay struct {

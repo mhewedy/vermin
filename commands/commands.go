@@ -2,15 +2,15 @@ package commands
 
 import (
 	"fmt"
+	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/cmd/ssh"
+	"github.com/mhewedy/vermin/commands/images"
+	"github.com/mhewedy/vermin/commands/info"
+	"github.com/mhewedy/vermin/commands/ip"
+	"github.com/mhewedy/vermin/commands/port"
+	"github.com/mhewedy/vermin/db"
 	"io"
 	"os"
-	"vermin/cmd"
-	"vermin/cmd/ssh"
-	"vermin/commands/images"
-	"vermin/commands/info"
-	"vermin/commands/ip"
-	"vermin/commands/port"
-	"vermin/db"
 )
 
 func Ps(all bool) (string, error) {

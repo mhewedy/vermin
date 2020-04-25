@@ -3,10 +3,10 @@ package images
 import (
 	"errors"
 	"fmt"
+	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/db"
 	"os"
 	"strings"
-	"vermin/cmd"
-	"vermin/db"
 )
 
 func Create(image string) error {

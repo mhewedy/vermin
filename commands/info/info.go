@@ -3,13 +3,13 @@ package info
 import (
 	"encoding/xml"
 	"fmt"
+	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/db"
 	"io/ioutil"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
-	"vermin/cmd"
-	"vermin/db"
 )
 
 type vmInfo struct {

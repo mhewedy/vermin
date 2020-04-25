@@ -3,10 +3,10 @@ package ip
 import (
 	"errors"
 	"fmt"
+	"github.com/mhewedy/vermin/cmd"
 	"strconv"
 	"strings"
 	"sync"
-	"vermin/cmd"
 )
 
 type addr struct {

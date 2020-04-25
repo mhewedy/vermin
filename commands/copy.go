@@ -1,10 +1,10 @@
 package commands
 
 import (
+	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/commands/ip"
+	"github.com/mhewedy/vermin/db"
 	"path"
-	"vermin/cmd"
-	"vermin/commands/ip"
-	"vermin/db"
 )
 
 func copyToVMHomeDir(vmName string, localFile string) error {

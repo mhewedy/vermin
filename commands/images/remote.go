@@ -3,10 +3,10 @@ package images
 import (
 	"errors"
 	"github.com/artonge/go-csv-tag"
+	"github.com/mhewedy/vermin/cmd"
 	"io/ioutil"
 	"os"
 	"strings"
-	"vermin/cmd"
 )
 
 type vm struct {

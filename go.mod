@@ -1,4 +1,4 @@
-module vermin
+module github.com/mhewedy/vermin
 
 go 1.13
 

@@ -1,10 +1,10 @@
 package images
 
 import (
+	"github.com/mhewedy/vermin/db"
 	"os"
 	"path/filepath"
 	"strings"
-	"vermin/db"
 )
 
 const ova = ".ova"
