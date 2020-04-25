@@ -11,7 +11,8 @@ func Shell(vmName string) error {
 	if err != nil {
 		return err
 	}
-	return cmd.ExecuteI("ssh", "-i", db.GetPrivateKeyPath(), db.GetUsername()+"@"+ipAddr)
+	return cmd.ExecuteI("ssh", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
+		db.GetUsername()+"@"+ipAddr)
 }
 
 func Execute(vmName string, command string) (string, error) {
@@ -19,14 +20,16 @@ func Execute(vmName string, command string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return cmd.Execute("ssh", "-i", db.GetPrivateKeyPath(), db.GetUsername()+"@"+ipAddr, "--", command)
+	return cmd.Execute("ssh", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
+		db.GetUsername()+"@"+ipAddr, "--", command)
 }
 
-//ExecuteO execute ssh commands and set cmd stdout to os.Stdout
+//ExecuteI execute ssh commands and set cmd stdout to os.Stdout
 func ExecuteI(vmName string, command string) error {
 	ipAddr, err := ip.Find(vmName, false)
 	if err != nil {
 		return err
 	}
-	return cmd.ExecuteI("ssh", "-i", db.GetPrivateKeyPath(), db.GetUsername()+"@"+ipAddr, "--", command)
+	return cmd.ExecuteI("ssh", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
+		db.GetUsername()+"@"+ipAddr, "--", command)
 }
