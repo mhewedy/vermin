@@ -34,9 +34,9 @@ func main() {
 	//if err != nil {
 	//	log.Fatal(err)
 	//}
-	//if err := start(vmName); err != nil {
-	//	log.Fatal(err)
-	//}
+	if err := start("vm_02"); err != nil {
+		log.Fatal(err)
+	}
 
 	if err := secureShell("vm_02", ""); err != nil {
 		log.Fatal(err)
