@@ -85,6 +85,6 @@ func ExecuteI(command string, args ...string) error {
 }
 
 // Run runs command and return nothing
-func Run(command string, args ...string) {
-	_ = exec.Command(command, args...).Run()
+func Run(command string, args ...string) error {
+	return exec.Command(command, args...).Run()
 }

@@ -33,3 +33,13 @@ func ExecuteI(vmName string, command string) error {
 	return cmd.ExecuteI("ssh", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
 		db.GetUsername()+"@"+ipAddr, "--", command)
 }
+
+// RunArgs run ssh command with args
+func ExecuteIArgs(vmName string, args string) error {
+	ipAddr, err := ip.Find(vmName, false)
+	if err != nil {
+		return err
+	}
+	return cmd.ExecuteI("ssh", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
+		db.GetUsername()+"@"+ipAddr, args)
+}

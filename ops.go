@@ -9,6 +9,7 @@ import (
 	"vermin/cmd/ssh"
 	"vermin/db"
 	"vermin/info"
+	"vermin/port"
 )
 
 type delay struct {
@@ -75,6 +76,25 @@ func secureShell(vmName string, command string) error {
 	} else {
 		return ssh.ExecuteI(vmName, command)
 	}
+}
+
+func portForward(vmName string, ports string) error {
+	args, err := port.BuildPortForwardArgs(ports)
+	if err != nil {
+		return err
+	}
+
+	if err := establishConn(vmName); err != nil {
+		return err
+	}
+
+	if err := ssh.ExecuteIArgs(vmName, args+" -N"); err != nil {
+		return err
+	}
+
+	fmt.Println("Connected. Press CTRL+C anytime to stop")
+
+	return nil
 }
 
 // establishConn make sure connection to the vm is established or return an error if not

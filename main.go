@@ -34,11 +34,11 @@ func main() {
 	//if err != nil {
 	//	log.Fatal(err)
 	//}
-	if err := start("vm_02"); err != nil {
-		log.Fatal(err)
-	}
+	//if err := start("vm_02"); err != nil {
+	//	log.Fatal(err)
+	//}
 
-	if err := secureShell("vm_02", ""); err != nil {
+	if err := portForward("vm_02", "8080"); err != nil {
 		log.Fatal(err)
 	}
 
