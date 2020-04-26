@@ -61,7 +61,7 @@ func List(all bool) ([]string, error) {
 func getVMsInfo(vms []string) string {
 
 	if len(vms) == 0 {
-		return "VM NAME\t\tIMAGE\t\t\t\tCPUS\tMEM\tTAGS"
+		return "VM NAME\t\tIMAGE\t\t\t\tCPUS\tMEM\tTAGS\n"
 	}
 
 	ch := make(chan *vmInfo, len(vms))
