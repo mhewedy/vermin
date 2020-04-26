@@ -41,8 +41,9 @@ $ vermin ip vm_05 -p
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
 		purge, _ := cmd.Flags().GetBool("purge")
+		global, _ := cmd.Flags().GetBool("global")
 
-		ps, err := vms.IP(vmName, purge)
+		ps, err := vms.IP(vmName, purge, global)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -82,4 +83,5 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	ipCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
+	ipCmd.Flags().BoolP("global", "g", false, "Do not limit to vms managed by vermin")
 }

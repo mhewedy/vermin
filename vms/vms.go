@@ -101,11 +101,12 @@ func CopyFiles(vmName string, file string, toVM bool) error {
 	}
 }
 
-func IP(vmName string, purge bool) (string, error) {
-	if err := checkRunningVM(vmName); err != nil {
-		return "", err
+func IP(vmName string, purge bool, global bool) (string, error) {
+	if !global {
+		if err := checkRunningVM(vmName); err != nil {
+			return "", err
+		}
 	}
-
 	return ip.Find(vmName, purge)
 }
 
