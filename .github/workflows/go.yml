@@ -1,0 +1,40 @@
+name: Go
+
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+        
+    - name: Build
+      run: |
+        GOOS=linux GOARCH=amd64 go build -ldflags -o vermin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz vermin && rm -rf vermin
+        GOOS=darwin GOARCH=amd64 go build -ldflags -o vermin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}.macos.tar.gz vermin && rm -rf vermin
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: linux
+        path: vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: macos
+        path: vermin-${{ steps.get_version.outputs.VERSION }}.macos.tar.gz
