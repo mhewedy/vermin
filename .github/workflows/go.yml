@@ -30,8 +30,8 @@ jobs:
 
     - name: Build
       run: |
-        GOOS=linux GOARCH=amd64 go build -ldflags -o vermin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz vermin && rm -rf vermin
-        GOOS=darwin GOARCH=amd64 go build -ldflags -o vermin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}.macos.tar.gz vermin && rm -rf vermin
+        GOOS=linux GOARCH=amd64 go build -ldflags "-s" -o vermin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz vermin && rm -rf vermin
+        GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o vermin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}.macos.tar.gz vermin && rm -rf vermin
 
     - uses: actions/upload-artifact@v1
       with:
