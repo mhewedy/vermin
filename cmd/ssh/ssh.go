@@ -33,7 +33,7 @@ func OpenTerminal(vmName string) error {
 	if err != nil {
 		return err
 	}
-	return cmd.ExecuteI("ssh", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
+	return cmd.ExecuteI("ssh", "-tt", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
 		db.GetUsername()+"@"+ipAddr)
 }
 
@@ -79,7 +79,7 @@ func EstablishConn(vmName string) error {
 			break
 		}
 		fmt.Println("Trying to establish connection to", vmName, "...")
-		if err := d.sleep(5); err != nil {
+		if err := d.sleep(10); err != nil {
 			break
 		}
 	}
