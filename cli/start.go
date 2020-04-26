@@ -19,10 +19,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/mhewedy/vermin/vms"
-	"os"
-	"strings"
-
 	"github.com/spf13/cobra"
+	"os"
 )
 
 // startCmd represents the start command
@@ -44,19 +42,7 @@ var startCmd = &cobra.Command{
 		}
 		return nil
 	},
-	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		if len(args) != 0 {
-			return nil, cobra.ShellCompDirectiveNoFileComp
-		}
-
-		var completions []string
-		for _, comp := range getStoppedVms() {
-			if strings.HasPrefix(comp, toComplete) {
-				completions = append(completions, comp)
-			}
-		}
-		return completions, cobra.ShellCompDirectiveDefault
-	},
+	ValidArgsFunction: listStoppedVms,
 }
 
 func init() {
