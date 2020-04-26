@@ -15,7 +15,7 @@ type delay struct {
 	max   time.Duration
 }
 
-func (b *delay) sleep() error {
+func (b *delay) sleep(factor int) error {
 	elapsed := time.Now().Sub(b.start).Milliseconds()
 	if !b.start.IsZero() && elapsed >= b.max.Milliseconds() {
 		return errors.New("time elapsed")
@@ -24,7 +24,7 @@ func (b *delay) sleep() error {
 		b.start = time.Now()
 	}
 	b.iter++
-	time.Sleep(time.Duration(2*b.iter) * time.Second)
+	time.Sleep(time.Duration(factor*b.iter) * time.Second)
 	return nil
 }
 
@@ -79,7 +79,7 @@ func EstablishConn(vmName string) error {
 			break
 		}
 		fmt.Println("Trying to establish connection to", vmName, "...")
-		if err := d.sleep(); err != nil {
+		if err := d.sleep(5); err != nil {
 			break
 		}
 	}
