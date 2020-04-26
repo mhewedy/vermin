@@ -35,10 +35,10 @@ jobs:
 
     - uses: actions/upload-artifact@v1
       with:
-        name: linux
+        name: vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz
         path: vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz
 
     - uses: actions/upload-artifact@v1
       with:
-        name: macos
+        name: vermin-${{ steps.get_version.outputs.VERSION }}.macos.tar.gz
         path: vermin-${{ steps.get_version.outputs.VERSION }}.macos.tar.gz
