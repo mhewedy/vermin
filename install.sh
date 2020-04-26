@@ -40,7 +40,7 @@ main() {
   verify_archive
   extract_archive
   install_vermin
-  print_vermin_version
+  configure_vermin
   info "Installation of vermin complete."
 }
 
@@ -157,6 +157,7 @@ validate_target() {
 
 download_archive() {
   need_cmd mv
+  need_cmd curl
 
   local _version="${1:-latest}"
   local -r _target="${2:?}"
@@ -168,14 +169,11 @@ download_archive() {
 
   url="${pcio_root}/${_version}/vermin-${_version}.${_target}.${ext}"
 
-  dl_file "${url}" "${workdir}/vermin-${_version}.${ext}"
-  dl_file "${url}.sha256sum" "${workdir}/vermin-${_version}.${ext}.sha256sum"
+  dl_file "${url}" "${workdir}/vermin-${_version}.${_target}.${ext}"
+  dl_file "${url}.sha256sum" "${workdir}/vermin-${_version}.${_target}.${ext}.sha256sum"
 
-  archive="vermin-${_target}.${ext}"
-  sha_file="vermin-${_target}.${ext}.sha256sum"
-
-  mv -v "${workdir}/vermin-${_version}.${ext}" "${archive}"
-  mv -v "${workdir}/vermin-${_version}.${ext}.sha256sum" "${sha_file}"
+  archive="vermin-${_version}.${_target}.${ext}"
+  sha_file="vermin-${_version}.${_target}.${ext}.sha256sum"
 }
 
 verify_archive() {
@@ -189,20 +187,11 @@ extract_archive() {
   info "Extracting ${archive}"
   case "${ext}" in
     tar.gz)
-      need_cmd zcat
       need_cmd tar
 
       archive_dir="${archive%.tar.gz}"
       mkdir "${archive_dir}"
-      zcat "${archive}" | tar --extract --directory "${archive_dir}" --strip-components=1
-
-      ;;
-    zip)
-      need_cmd unzip
-
-      archive_dir="${archive%.zip}"
-      # -j "junk paths" Strips leading paths from files,
-      unzip -j "${archive}" -d "${archive_dir}"
+      tar xzf "${archive}" -C "${archive_dir}"
       ;;
     *)
       exit_with "Unrecognized file extension when extracting: ${ext}" 4
@@ -226,11 +215,21 @@ install_vermin() {
   esac
 }
 
-print_vermin_version() {
-  need_cmd vermin
+configure_vermin() {
+  case "${sys}" in
+    darwin|linux)
+      need_cmd mkdir
+      need_cmd curl
 
-  info "Checking installed vermin version"
-  vermin --version
+      info "Configuring vermin"
+      mkdir -pv "$HOME/.vermin/vms"
+      mkdir -pv "$HOME/.vermin/images"
+      curl -s https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa > "$HOME/.vermin/vermin_rsa"
+      ;;
+    *)
+      exit_with "Unrecognized sys when installing: ${sys}" 5
+      ;;
+  esac
 }
 
 need_cmd() {
