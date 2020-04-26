@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"github.com/mhewedy/vermin/images"
 	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
 	"strings"
@@ -43,6 +44,21 @@ func listStoppedVms(cmd *cobra.Command, args []string, toComplete string) ([]str
 
 	var completions []string
 	for _, comp := range getStoppedVms() {
+		if strings.HasPrefix(comp, toComplete) {
+			completions = append(completions, comp)
+		}
+	}
+	return completions, cobra.ShellCompDirectiveDefault
+}
+
+func listImages(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	if len(args) != 0 {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	list, _ := images.List()
+
+	var completions []string
+	for _, comp := range list {
 		if strings.HasPrefix(comp, toComplete) {
 			completions = append(completions, comp)
 		}

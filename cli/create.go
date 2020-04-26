@@ -18,12 +18,9 @@ package cli
 import (
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/images"
 	"github.com/mhewedy/vermin/vms"
-	"os"
-	"strings"
-
 	"github.com/spf13/cobra"
+	"os"
 )
 
 // createCmd represents the create command
@@ -64,19 +61,7 @@ $ vermin create <image> </path/to/shell/script.sh>
 		}
 		return nil
 	},
-	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		if len(args) != 0 {
-			return nil, cobra.ShellCompDirectiveNoFileComp
-		}
-		list, _ := images.List()
-		var completions []string
-		for _, comp := range list {
-			if strings.HasPrefix(comp, toComplete) {
-				completions = append(completions, comp)
-			}
-		}
-		return completions, cobra.ShellCompDirectiveDefault
-	},
+	ValidArgsFunction: listImages,
 }
 
 func init() {
