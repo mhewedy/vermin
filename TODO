@@ -1,0 +1,10 @@
+1. create install script that is accessible from github:
+
+	 curl raw.githubusercontent.com/..../install.sh | sudo bash
+	  - check os (mac, linux)
+	  - get latest release (should do CI/CD first)
+	  - download latest version & copy it to /user/local/bin/vermin
+	  - cp https://raw.githubusercontent.com/..../etc/keys/vermin_rsa .vermin/
+
+	** example: https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.sh
+				https://get.docker.com/

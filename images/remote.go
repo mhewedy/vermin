@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/artonge/go-csv-tag"
 	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/db"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -31,13 +32,11 @@ func listRemoteImagesNames() ([]string, error) {
 }
 
 func listRemoteImages() ([]vm, error) {
-
-	const filePattern = "remote.vermin.csv_"
 	var tmp string
 	// read images csv from tmp cache
 	dir, err := ioutil.ReadDir(os.TempDir())
 	for i := range dir {
-		if strings.HasPrefix(dir[i].Name(), filePattern) {
+		if strings.HasPrefix(dir[i].Name(), db.ImageFile) {
 			tmp = os.TempDir() + "/" + dir[i].Name()
 			break
 		}
@@ -45,12 +44,13 @@ func listRemoteImages() ([]vm, error) {
 
 	// if not found, then download the file
 	if len(tmp) == 0 {
-		tmpFile, err := ioutil.TempFile("", filePattern)
+		tmpFile, err := ioutil.TempFile("", db.ImageFile)
 		if err != nil {
 			return nil, err
 		}
 		tmp = tmpFile.Name()
-		_, err = cmd.Execute("wget", "-O", tmp, "https://raw.githubusercontent.com/mhewedy/vermin/master/images/images.csv")
+		_, err = cmd.Execute("wget", "-O", tmp,
+			"https://raw.githubusercontent.com/mhewedy/vermin/master/images/images.csv")
 		if err != nil {
 			return nil, err
 		}

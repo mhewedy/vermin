@@ -6,6 +6,7 @@ const (
 	Image      = "image"
 	Tags       = "tags"
 	NamePrefix = "vm_"
+	ImageFile  = "vermin_images.csv."
 )
 
 func GetVMPath(vm string) string {

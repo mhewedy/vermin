@@ -73,7 +73,7 @@ func Display() (string, error) {
 		if list[i].cached {
 			result += list[i].name + "\t\t(cached)\n"
 		} else {
-			result += list[i].name
+			result += list[i].name + "\n"
 		}
 	}
 	return result, nil
