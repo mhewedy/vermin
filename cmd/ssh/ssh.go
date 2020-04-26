@@ -33,8 +33,17 @@ func OpenTerminal(vmName string) error {
 	if err != nil {
 		return err
 	}
-	return cmd.ExecuteI("ssh", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
-		db.GetUsername()+"@"+ipAddr)
+	// Fix issue that some times happens (Pseudo-terminal will not be allocated because stdin is not a terminal.)
+	var i, c = 1, 3
+	for {
+		err = cmd.ExecuteI("ssh", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
+			db.GetUsername()+"@"+ipAddr)
+		if err == nil || i == c {
+			break
+		}
+		i++
+	}
+	return err
 }
 
 func Execute(vmName string, command string) (string, error) {
