@@ -39,7 +39,7 @@ Use the -a|--all flag to list all VMs
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Println(ps)
+		fmt.Print(ps)
 	},
 }
 
