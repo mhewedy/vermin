@@ -50,8 +50,11 @@ jobs:
       with:
         name: my-artifacts
         
-    - run: ls -R
     - run: mv my-artifacts/* .
+    
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
     - name: Create Release
       id: create_release
