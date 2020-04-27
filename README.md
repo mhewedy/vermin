@@ -52,20 +52,20 @@ Use "vermin [command] --help" for more information about a command.
 ### Create a new VM
 Use the following command to create a VM
 
-```
+```shell script
 $ vermin create <image name>
 # example
 $ vermin create ubuntu/focal
 ```
 Or in case you want to create and provision the VM: (see [sample.sh](https://github.com/mhewedy/vermin/blob/master/etc/samples-provision/sample.sh) for sample provision script)
-```
+```shell script
 $ vermin create <image name> /path/to/provison.sh 
 # example
 $ vermin create ubuntu/focal ~/sample.sh -cpus 1 -mem 512
 ```
 
 To get list of all available images use:
-```
+```shell script
 $ vermin images
 ubuntu/focal	(cached)
 centos/8
@@ -73,47 +73,47 @@ centos/8
 > The *cached* flag means, the image has been already downloaded and cached before.
 
 ### List all running VMs
-```
+```shell script
 $ vermin ps
 VM NAME		IMAGE				CPUS	MEM	TAGS
 vm_01		ubuntu/focal			1	1024
 ```
 
 ### Start one or more VM
-```
+```shell script
 $ vermin start vm_01
 ```
 
 ### ssh into a VM
-```
+```shell script
 $ vermin ssh vm_03
 ```
 
 ### Stop one or more VMs
-```
+```shell script
 $ vermin stop vm_03
 ```
 
 ### Remove one or more VMs
 Will stop and remove listed VMs
-```
+```shell script
 $ vermin rm vm_03
 ```
 
 ### Copy files:
 Copy remote file on VM to you local host in the current path:
-```
+```shell script
 $ vermin cp vm_01 --remote-file /path/to/file/on/vm
 ```
 
 Copy local file from your host to the VM's home directory:
-```
+```shell script
 $ vermin cp vm_01 --local-file /path/to/file/on/host
 ```
 
 ### Port forward:
 forward ports from VM to local host (all ports from 8080 to 8090):
-```
+```shell script
 $ vermin port vm_01 8080-8090
 ```
 
