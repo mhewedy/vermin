@@ -220,11 +220,13 @@ configure_vermin() {
     darwin|linux)
       need_cmd mkdir
       need_cmd curl
+      need_cmd chmod
 
       info "Configuring vermin"
       mkdir -pv "$HOME/.vermin/vms"
       mkdir -pv "$HOME/.vermin/images"
       curl -s https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa > "$HOME/.vermin/vermin_rsa"
+      chmod 0600 "$HOME/.vermin/vermin_rsa"
       ;;
     *)
       exit_with "Unrecognized sys when installing: ${sys}" 5
