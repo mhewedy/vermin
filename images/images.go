@@ -38,7 +38,9 @@ func Create(image string) error {
 	}
 
 	if vm == nil {
-		return errors.New("invalid image name: " + image + "\nUse the command 'vermin images' to list all images available")
+		display, _ := List()
+		return errors.New(fmt.Sprintf("invalid image name: '%s'.", image) +
+			" Valid images are:\n" + strings.Join(display, "\n"))
 	}
 
 	return download(vm)
