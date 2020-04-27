@@ -8,9 +8,11 @@ Create, control and connect to VirtualBox VM instances.
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
 ## Installation
+For macos and linux:
 ```shell script
 curl -s https://raw.githubusercontent.com/mhewedy/vermin/master/install.sh | bash
 ```
+For windows: comming soon
 
 ## Usage:
 
