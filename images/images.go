@@ -28,22 +28,22 @@ func Create(image string) error {
 	}
 
 	// check image against remote
-	var vm *vm
+	var rimage *rimage
 	for i := range remote {
 		r := remote[i]
 		if r.Name == image {
-			vm = &r
+			rimage = &r
 			break
 		}
 	}
 
-	if vm == nil {
+	if rimage == nil {
 		display, _ := List()
 		return errors.New(fmt.Sprintf("invalid image name: '%s'.", image) +
 			" Valid images are:\n" + strings.Join(display, "\n"))
 	}
 
-	return download(vm)
+	return download(rimage)
 }
 
 type image struct {
@@ -105,17 +105,18 @@ func list() ([]image, error) {
 	return result, nil
 }
 
-func download(vm *vm) error {
-	fmt.Printf("Downloading image %s ", vm.Name)
+func download(r *rimage) error {
+	fmt.Printf("Image '%s' could not be found. Attempting to find and install...\n", r.Name)
+	fmt.Printf("Downloading: %s", r.URL)
 
-	sp := strings.Split(vm.Name, "/")
+	sp := strings.Split(r.Name, "/")
 	vmBasePath := db.GetImagesDir() + "/" + sp[0]
 
 	if err := os.MkdirAll(vmBasePath, 0755); err != nil {
 		return err
 	}
 
-	if _, err := cmd.ExecuteP("wget", "-O", vmBasePath+"/"+sp[1]+".ova", vm.URL); err != nil {
+	if _, err := cmd.ExecuteP("wget", "-O", vmBasePath+"/"+sp[1]+".ova", r.URL); err != nil {
 		return err
 	}
 	return nil

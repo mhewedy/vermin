@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-type vm struct {
+type rimage struct {
 	Name string `csv:"name"`
 	URL  string `csv:"url"`
 }
@@ -31,7 +31,7 @@ func listRemoteImagesNames() ([]string, error) {
 	return images, nil
 }
 
-func listRemoteImages() ([]vm, error) {
+func listRemoteImages() ([]rimage, error) {
 	var tmp string
 	// read images csv from tmp cache
 	dir, err := ioutil.ReadDir(os.TempDir())
@@ -57,7 +57,7 @@ func listRemoteImages() ([]vm, error) {
 	}
 
 	// parse the file as csv
-	var vms []vm
+	var vms []rimage
 	err = csvtag.Load(csvtag.Config{
 		Path: tmp,
 		Dest: &vms,
@@ -77,7 +77,7 @@ func listRemoteImages() ([]vm, error) {
 
 // Check name follows <distro>/<version> name
 // Check Unique name
-func validate(vms []vm) error {
+func validate(vms []rimage) error {
 	names := make(map[string]bool)
 
 	for i := range vms {
