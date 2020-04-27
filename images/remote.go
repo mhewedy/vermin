@@ -48,10 +48,10 @@ func listRemoteImages() ([]rimage, error) {
 		if err != nil {
 			return nil, err
 		}
+		defer tmpFile.Close()
 		tmp = tmpFile.Name()
-		_, err = cmd.Execute("wget", "-O", tmp,
-			"https://raw.githubusercontent.com/mhewedy/vermin/master/images/images.csv")
-		if err != nil {
+		if _, err = cmd.Execute("wget", "-O", tmp,
+			"https://raw.githubusercontent.com/mhewedy/vermin/master/images/images.csv"); err != nil {
 			return nil, err
 		}
 	}

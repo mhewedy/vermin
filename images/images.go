@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/mhewedy/vermin/cmd"
 	"github.com/mhewedy/vermin/db"
+	"io"
+	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -109,14 +111,21 @@ func download(r *rimage) error {
 	fmt.Printf("Image '%s' could not be found. Attempting to find and install...\n", r.Name)
 	fmt.Printf("Downloading: %s", r.URL)
 
-	sp := strings.Split(r.Name, "/")
-	vmBasePath := db.GetImagesDir() + "/" + sp[0]
-
-	if err := os.MkdirAll(vmBasePath, 0755); err != nil {
+	// download to a temp file
+	tmpFile, err := ioutil.TempFile("", strings.ReplaceAll(r.Name, "/", "_"))
+	if err != nil {
+		return err
+	}
+	defer os.Remove(tmpFile.Name())
+	if _, err := cmd.ExecuteP("wget", "-O", tmpFile.Name(), r.URL); err != nil {
 		return err
 	}
 
-	if _, err := cmd.ExecuteP("wget", "-O", vmBasePath+"/"+sp[1]+".ova", r.URL); err != nil {
+	// copy the downloaded file to images directory
+	if err := os.MkdirAll(db.GetImagesDir()+"/"+strings.Split(r.Name, "/")[0], 0755); err != nil {
+		return err
+	}
+	if err := copyFile(tmpFile.Name(), db.GetImagesDir()+"/"+r.Name+".ova"); err != nil {
 		return err
 	}
 	return nil
@@ -129,4 +138,26 @@ func contains(a []string, s string) bool {
 		}
 	}
 	return false
+}
+
+// Copy the src file to dst. Any existing file will be overwritten and will not
+// copy file attributes.
+func copyFile(src, dst string) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, in)
+	if err != nil {
+		return err
+	}
+	return out.Close()
 }
