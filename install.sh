@@ -224,6 +224,7 @@ configure_vermin() {
       need_cmd mkdir
       need_cmd curl
       need_cmd chmod
+      need_cmd vboxmanage
 
       info "Configuring vermin"
       mkdir -pv "$HOME/.vermin/vms"
