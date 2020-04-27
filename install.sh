@@ -42,6 +42,9 @@ main() {
   install_vermin
   configure_vermin
   info "Installation of vermin complete."
+  info "********************************"
+  info "You can start creating VMs right away using 'vermin images' then 'vermin create <image>'"
+  info "********************************"
 }
 
 print_help() {
