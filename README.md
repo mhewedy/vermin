@@ -1,3 +1,5 @@
+[![Build Status](https://github.com/mhewedy/vermin/workflows/Go/badge.svg)](https://github.com/mhewedy/vermin/actions?query=workflow%3AGo)
+
 # vermin
 ### The smart Virtual Machines manager    
 
