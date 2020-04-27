@@ -3,4 +3,4 @@
 // to set the version value according git tag
 package cli
 
-const version = "local-build"
+const version = "(dev-build)"
