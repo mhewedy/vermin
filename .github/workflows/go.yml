@@ -30,10 +30,27 @@ jobs:
 
     - name: Build
       run: |
-        GOOS=linux GOARCH=amd64 go build -ldflags "-s" -o vermin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz vermin && rm -rf vermin
-        GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o vermin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}.darwin.tar.gz vermin && rm -rf vermin
-        sha256sum vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz > vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz.sha256sum
-        sha256sum vermin-${{ steps.get_version.outputs.VERSION }}.darwin.tar.gz > vermin-${{ steps.get_version.outputs.VERSION }}.darwin.tar.gz.sha256sum
+        mkdir bin
+        GOOS=linux GOARCH=amd64 go build -ldflags "-s" -o bin/vermin && tar czf bin/vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz bin/vermin && rm -rf bin/vermin
+        GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o bin/vermin && tar czf bin/vermin-${{ steps.get_version.outputs.VERSION }}.darwin.tar.gz bin/vermin && rm -rf bin/vermin
+        sha256sum bin/vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz > bin/vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz.sha256sum
+        sha256sum bin/vermin-${{ steps.get_version.outputs.VERSION }}.darwin.tar.gz > bin/vermin-${{ steps.get_version.outputs.VERSION }}.darwin.tar.gz.sha256sum
+
+    - uses: actions/upload-artifact@master
+      with:
+        name: my-artifacts
+        path: bin
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+    - uses: actions/download-artifact@v1
+      with:
+        name: my-artifacts
+    
+    - run: mv bin/* .
 
     - name: Create Release
       id: create_release
