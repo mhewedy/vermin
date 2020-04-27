@@ -50,6 +50,7 @@ jobs:
       with:
         name: my-artifacts
         
+    - run: ls -R
     - run: mv my-artifacts/* .
 
     - name: Create Release
