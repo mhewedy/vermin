@@ -1,6 +1,0 @@
-arp
-ping
-vboxmanage
-wget
-ssh		(see https://github.com/helloyi/go-sshclient)
-scp
