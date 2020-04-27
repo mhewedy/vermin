@@ -10,7 +10,7 @@ Create, control and connect to VirtualBox VM instances.
 ## Installation
 For macos and linux:
 ```shell script
-curl -s https://raw.githubusercontent.com/mhewedy/vermin/master/install.sh | sudo bash
+sudo curl -s https://raw.githubusercontent.com/mhewedy/vermin/master/install.sh | bash
 ```
 For windows: comming soon
 
