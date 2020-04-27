@@ -33,6 +33,7 @@ main() {
   done
 
   info "Installing vermin"
+  check_prerequisite
   create_workdir
   get_platform
   validate_target
@@ -45,6 +46,10 @@ main() {
   info "********************************"
   info "You can start creating VMs right away using 'vermin images' then 'vermin create <image>'"
   info "********************************"
+}
+
+check_prerequisite() {
+  need_cmd vboxmanage
 }
 
 print_help() {
@@ -224,7 +229,6 @@ configure_vermin() {
       need_cmd mkdir
       need_cmd curl
       need_cmd chmod
-      need_cmd vboxmanage
 
       info "Configuring vermin"
       mkdir -pv "$HOME/.vermin/vms"
