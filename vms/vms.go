@@ -36,7 +36,7 @@ func Stop(vmName string) error {
 	}
 
 	fmt.Println("Stopping", vmName, "...")
-	if _, err := cmd.Execute("vboxmanage", "controlvm", vmName, "acpipowerbutton"); err != nil {
+	if _, err := cmd.Execute("vboxmanage", "controlvm", vmName, "poweroff"); err != nil {
 		return err
 	}
 	return nil

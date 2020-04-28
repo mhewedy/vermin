@@ -1,6 +1,7 @@
 package vms
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/mhewedy/vermin/cmd"
 	"github.com/mhewedy/vermin/cmd/scp"
@@ -38,11 +39,39 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 		return "", err
 	}
 
+	if err := SetNetworkAdapter(vmName); err != nil {
+		return "", err
+	}
+
 	if err := provision(vmName, script); err != nil {
 		return "", err
 	}
 
 	return vmName, nil
+}
+
+func SetNetworkAdapter(vmName string) error {
+	r, err := cmd.Execute("vboxmanage", "list", "bridgedifs")
+	if err != nil {
+		return err
+	}
+
+	reader := bufio.NewReader(strings.NewReader(r))
+	l, _, err := reader.ReadLine()
+	if err != nil {
+		return err
+	}
+	adapter := strings.ReplaceAll(string(l), "Name:", "")
+	adapter = strings.TrimSpace(adapter)
+
+	if _, err = cmd.Execute("vboxmanage", "modifyvm", vmName, "--nic1", "bridged"); err != nil {
+		return nil
+	}
+	if _, err = cmd.Execute("vboxmanage", "modifyvm", vmName, "--bridgeadapter1", "'"+adapter+"'"); err != nil {
+		return nil
+	}
+
+	return nil
 }
 
 func provision(vmName string, script string) error {
