@@ -1,6 +1,9 @@
 package db
 
-import "os"
+import (
+	"log"
+	"os"
+)
 
 const (
 	Image      = "image"
@@ -14,7 +17,11 @@ func GetVMPath(vm string) string {
 }
 
 func GetHomeDir() string {
-	return os.Getenv("HOME") + "/.vermin"
+	dir, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal("cannot obtain user home dir")
+	}
+	return dir + "/.vermin"
 }
 
 func GetImagesDir() string {
