@@ -31,7 +31,7 @@ func CopyToLocalCWD(vmName string, vmFile string) error {
 	_, err = cmd.Execute("scp",
 		"-i", db.GetPrivateKeyPath(),
 		db.GetUsername()+"@"+ipAddr+":"+vmFile,
-		".",
+		"./",
 	)
 	return err
 }
