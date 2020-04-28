@@ -49,9 +49,9 @@ func listRemoteImages() ([]rimage, error) {
 		if err != nil {
 			return nil, err
 		}
-		defer tmpFile.Close()
-		tmp = tmpFile.Name()
+		_ = tmpFile.Close()
 
+		tmp = tmpFile.Name()
 		if _, err = wget(imagesDBURL, tmp); err != nil {
 			return nil, err
 		}

@@ -6,11 +6,17 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 	"time"
 )
 
 // ExecuteP execute and show progress
 func ExecuteP(command string, args ...string) (string, error) {
+	if runtime.GOOS == "windows" {
+		args = prepend(args, command)
+		command = "powershell"
+	}
+
 	cmd := exec.Command(command, args...)
 
 	var stdout bytes.Buffer
@@ -50,6 +56,11 @@ func ExecuteP(command string, args ...string) (string, error) {
 
 // Execute execute commands and return output as string or error
 func Execute(command string, args ...string) (string, error) {
+	if runtime.GOOS == "windows" {
+		args = prepend(args, command)
+		command = "powershell"
+	}
+
 	cmd := exec.Command(command, args...)
 
 	var stdout bytes.Buffer
@@ -69,6 +80,11 @@ func Execute(command string, args ...string) (string, error) {
 
 // Execute execute commands in interactive mode
 func ExecuteI(command string, args ...string) error {
+	if runtime.GOOS == "windows" {
+		args = prepend(args, command)
+		command = "powershell"
+	}
+
 	cmd := exec.Command(command, args...)
 
 	cmd.Stdout = os.Stdout
@@ -86,5 +102,16 @@ func ExecuteI(command string, args ...string) error {
 
 // Run runs command and return nothing
 func Run(command string, args ...string) error {
+	if runtime.GOOS == "windows" {
+		args = prepend(args, command)
+		command = "powershell"
+	}
 	return exec.Command(command, args...).Run()
+}
+
+func prepend(x []string, y string) []string {
+	x = append(x, "")
+	copy(x[1:], x)
+	x[0] = y
+	return x
 }
