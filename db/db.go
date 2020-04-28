@@ -13,7 +13,7 @@ const (
 )
 
 func GetVMPath(vm string) string {
-	return GetVMsBaseDir() + "/" + vm
+	return GetVMsBaseDir() + string(os.PathSeparator) + vm
 }
 
 func GetHomeDir() string {
@@ -21,23 +21,23 @@ func GetHomeDir() string {
 	if err != nil {
 		log.Fatal("cannot obtain user home dir")
 	}
-	return dir + "/.vermin"
+	return dir + string(os.PathSeparator) + ".vermin"
 }
 
 func GetImagesDir() string {
-	return GetHomeDir() + "/images"
+	return GetHomeDir() + string(os.PathSeparator) + "images"
 }
 
 func GetImageFilePath(imageName string) string {
-	return GetImagesDir() + "/" + imageName + ".ova"
+	return GetImagesDir() + string(os.PathSeparator) + imageName + ".ova"
 }
 
 func GetVMsBaseDir() string {
-	return GetHomeDir() + "/vms"
+	return GetHomeDir() + string(os.PathSeparator) + "vms"
 }
 
 func GetPrivateKeyPath() string {
-	return GetHomeDir() + "/vermin_rsa"
+	return GetHomeDir() + string(os.PathSeparator) + "vermin_rsa"
 }
 
 func GetUsername() string {

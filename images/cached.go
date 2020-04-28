@@ -10,7 +10,7 @@ import (
 const ova = ".ova"
 
 func listCachedImages() ([]string, error) {
-	baseDir := db.GetImagesDir() + "/"
+	baseDir := db.GetImagesDir() + string(os.PathSeparator)
 
 	images := make([]string, 0)
 
@@ -21,7 +21,9 @@ func listCachedImages() ([]string, error) {
 
 		if !info.IsDir() && strings.HasSuffix(path, ova) {
 			name := strings.ReplaceAll(path, baseDir, "")
-			images = append(images, strings.ReplaceAll(name, ova, ""))
+			name = strings.ReplaceAll(name, ova, "")
+			name = strings.ReplaceAll(name, "\\", "/") // for windows
+			images = append(images, name)
 		}
 		return nil
 	})
