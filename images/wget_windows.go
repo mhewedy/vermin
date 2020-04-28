@@ -6,5 +6,5 @@ import (
 )
 
 func wget(url string, file string) (string, error) {
-	return cmd.Execute(fmt.Sprintf("(New-Object System.Net.WebClient).DownloadFile('%s', '%s')"), url, file)
+	return cmd.Execute(fmt.Sprintf("(New-Object System.Net.WebClient).DownloadFile('%s', '%s')", url, file))
 }
