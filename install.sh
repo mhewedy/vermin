@@ -210,12 +210,13 @@ extract_archive() {
 install_vermin() {
   case "${sys}" in
     darwin|linux)
+      need_cmd sudo
       need_cmd mkdir
       need_cmd install
 
       info "Installing vermin into /usr/local/bin"
-      mkdir -pv /usr/local/bin
-      install -v "${archive_dir}"/vermin /usr/local/bin/vermin
+      sudo mkdir -pv /usr/local/bin
+      sudo install -v "${archive_dir}"/vermin /usr/local/bin/vermin
       ;;
     *)
       exit_with "Unrecognized sys when installing: ${sys}" 5
