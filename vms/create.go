@@ -51,6 +51,7 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 }
 
 func SetNetworkAdapter(vmName string) error {
+	fmt.Println("Setting Network adapter ...")
 	r, err := cmd.Execute("vboxmanage", "list", "bridgedifs")
 	if err != nil {
 		return err
@@ -67,7 +68,7 @@ func SetNetworkAdapter(vmName string) error {
 	if _, err = cmd.Execute("vboxmanage", "modifyvm", vmName, "--nic1", "bridged"); err != nil {
 		return nil
 	}
-	if _, err = cmd.Execute("vboxmanage", "modifyvm", vmName, "--bridgeadapter1", "'"+adapter+"'"); err != nil {
+	if _, err = cmd.Execute("vboxmanage", "modifyvm", vmName, "--bridgeadapter1", adapter); err != nil {
 		return nil
 	}
 
