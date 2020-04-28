@@ -10,6 +10,7 @@ import (
 	"github.com/mhewedy/vermin/images"
 	"io/ioutil"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -69,7 +70,10 @@ func SetNetworkAdapter(vmName string) error {
 		return nil
 	}
 
-	if _, err := cmd.Execute("vboxmanage", "modifyvm", vmName, "--bridgeadapter1", fmt.Sprintf(`"%s"`, adapter)); err != nil {
+	if runtime.GOOS == "windows" {
+		adapter = fmt.Sprintf(`"%s"`, adapter)
+	}
+	if _, err := cmd.Execute("vboxmanage", "modifyvm", vmName, "--bridgeadapter1", adapter); err != nil {
 		return nil
 	}
 
