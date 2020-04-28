@@ -41,9 +41,9 @@ jobs:
         GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o bin/vermin && \
                   cd bin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}.darwin.tar.gz vermin \
                   && rm -rf vermin && cd -
-        GOOS=windows GOARCH=amd64 go build -ldflags "-s" -o bin/vermin && \
-                          cd bin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}.windows.tar.gz vermin \
-                          && rm -rf vermin && cd -
+        GOOS=windows GOARCH=amd64 go build -ldflags "-s" -o bin/vermin.exe && \
+                          cd bin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}.windows.tar.gz vermin.exe \
+                          && rm -rf vermin.exe && cd -
         cd bin
         sha256sum vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz > vermin-${{ steps.get_version.outputs.VERSION }}.linux.tar.gz.sha256sum
         sha256sum vermin-${{ steps.get_version.outputs.VERSION }}.darwin.tar.gz > vermin-${{ steps.get_version.outputs.VERSION }}.darwin.tar.gz.sha256sum
