@@ -43,9 +43,7 @@ main() {
   install_vermin
   configure_vermin
   info "Installation of vermin complete."
-  info "********************************"
-  info "You can start creating VMs right away using 'vermin images' then 'vermin create <image>'"
-  info "********************************"
+  print_howto
 }
 
 check_prerequisite() {
@@ -241,6 +239,16 @@ configure_vermin() {
       exit_with "Unrecognized sys when installing: ${sys}" 5
       ;;
   esac
+}
+
+print_howto() {
+  info ""
+  info "To list all available images:"
+  info "$ vermin images"
+  info ""
+  info "To create a VM from an image:"
+  info "$ vermin create <image>"
+  info ""
 }
 
 need_cmd() {
