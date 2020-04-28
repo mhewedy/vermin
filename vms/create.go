@@ -68,8 +68,11 @@ func SetNetworkAdapter(vmName string) error {
 	if _, err = cmd.Execute("vboxmanage", "modifyvm", vmName, "--nic1", "bridged"); err != nil {
 		return nil
 	}
-	if _, err = cmd.Execute("vboxmanage", "modifyvm", vmName, "--bridgeadapter1", adapter); err != nil {
+	fmt.Println("adapter:", adapter)
+	if o, err := cmd.Execute("vboxmanage", "modifyvm", vmName, "--bridgeadapter1", adapter); err != nil {
 		return nil
+	} else {
+		fmt.Println(o)
 	}
 
 	return nil
