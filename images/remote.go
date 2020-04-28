@@ -3,12 +3,13 @@ package images
 import (
 	"errors"
 	"github.com/artonge/go-csv-tag"
-	"github.com/mhewedy/vermin/cmd"
 	"github.com/mhewedy/vermin/db"
 	"io/ioutil"
 	"os"
 	"strings"
 )
+
+const imagesDBURL = "https://raw.githubusercontent.com/mhewedy/vermin/master/images/images.csv"
 
 type rimage struct {
 	Name string `csv:"name"`
@@ -50,8 +51,8 @@ func listRemoteImages() ([]rimage, error) {
 		}
 		defer tmpFile.Close()
 		tmp = tmpFile.Name()
-		if _, err = cmd.Execute("wget", "-O", tmp,
-			"https://raw.githubusercontent.com/mhewedy/vermin/master/images/images.csv"); err != nil {
+
+		if _, err = wget(imagesDBURL, tmp); err != nil {
 			return nil, err
 		}
 	}
