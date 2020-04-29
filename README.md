@@ -22,7 +22,7 @@ For windows: comming soon
 
 ## Usage:
 
-```shell script
+```text
 $ vermin
 Create, control and connect to VirtualBox VM instances
 
