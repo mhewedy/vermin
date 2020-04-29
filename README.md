@@ -5,7 +5,7 @@
 [![Build Status](https://github.com/mhewedy/vermin/workflows/Go/badge.svg)](https://github.com/mhewedy/vermin/actions?query=workflow%3AGo)
 
 # vermin
-### The smart Virtual Machines manager    
+### The Smart Virtual Machines manager    
 
 Create, control and connect to VirtualBox VM instances.
 
