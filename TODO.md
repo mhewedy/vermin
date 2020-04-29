@@ -13,5 +13,7 @@ DONE:
     
 TODO 
 * Test on windows 10 (build 1809)  - WIP
-* Build Powershell install script (https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.ps1)
+* Build PowerShell install script (https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.ps1)
+
+POSTPONED:
 * Use progress (https://github.com/schollz/progressbar/issues/57)
