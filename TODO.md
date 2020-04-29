@@ -9,8 +9,9 @@ DONE:
     * ssh		(exists on win/nix)
     * scp       (exists on win/nix)
 *  Logo drawing
+* Fix issue of invalid ssh session when login after start
     
 TODO 
-* Test on windows 10 (build 1809)
-*  Build Powershell install script (https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.ps1)
+* Test on windows 10 (build 1809)  - WIP
+* Build Powershell install script (https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.ps1)
 * Use progress (https://github.com/schollz/progressbar/issues/57)

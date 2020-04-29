@@ -23,8 +23,7 @@ func Start(vmName string) error {
 		return err
 	}
 
-	fmt.Println("Starting", vmName, "...")
-	if _, err := cmd.Execute("vboxmanage", "startvm", vmName, "--type", "headless"); err != nil {
+	if err := start(vmName); err != nil {
 		return err
 	}
 	return nil

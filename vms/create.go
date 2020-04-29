@@ -40,18 +40,24 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 		return "", err
 	}
 
-	if err := SetNetworkAdapter(vmName); err != nil {
+	if err := setNetworkAdapter(vmName); err != nil {
 		return "", err
 	}
 
-	if err := provision(vmName, script); err != nil {
+	if err := start(vmName); err != nil {
 		return "", err
+	}
+
+	if len(script) > 0 {
+		if err := provision(vmName, script); err != nil {
+			return "", err
+		}
 	}
 
 	return vmName, nil
 }
 
-func SetNetworkAdapter(vmName string) error {
+func setNetworkAdapter(vmName string) error {
 	fmt.Println("Setting Network adapter ...")
 	r, err := cmd.Execute("vboxmanage", "list", "bridgedifs")
 	if err != nil {
@@ -81,16 +87,7 @@ func SetNetworkAdapter(vmName string) error {
 }
 
 func provision(vmName string, script string) error {
-	if len(script) == 0 {
-		return nil
-	}
 	fmt.Println("Provisioning", vmName, "...")
-	if err := Start(vmName); err != nil {
-		return err
-	}
-	if err := ssh.EstablishConn(vmName); err != nil {
-		return err
-	}
 
 	vmFile := "/tmp/" + filepath.Base(script)
 	if err := scp.CopyToVM(vmName, script, vmFile); err != nil {
@@ -103,6 +100,17 @@ func provision(vmName string, script string) error {
 		return err
 	}
 
+	return nil
+}
+
+func start(vmName string) error {
+	fmt.Println("Starting", vmName, "...")
+	if _, err := cmd.Execute("vboxmanage", "startvm", vmName, "--type", "headless"); err != nil {
+		return err
+	}
+	if err := ssh.EstablishConn(vmName); err != nil {
+		return err
+	}
 	return nil
 }
 
