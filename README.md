@@ -1,4 +1,6 @@
-<center><img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo"/> </center>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="70%"/> </center>
+</p>
 
 [![Build Status](https://github.com/mhewedy/vermin/workflows/Go/badge.svg)](https://github.com/mhewedy/vermin/actions?query=workflow%3AGo)
 
