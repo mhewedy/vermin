@@ -118,7 +118,7 @@ func download(r *rimage) error {
 	_ = tmpFile.Close()
 	defer os.Remove(tmpFile.Name())
 
-	if _, err := wget(r.URL, tmpFile.Name()); err != nil {
+	if _, err := wgetP(r.URL, tmpFile.Name()); err != nil {
 		return err
 	}
 
