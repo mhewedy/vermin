@@ -52,8 +52,8 @@ $ vermin create <image> </path/to/shell/script.sh>
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Printf("Image created successfuly.\nTo start the VM use: vermin start %s\n"+
-			"Wait few seconds for VM to start then use: vermin ssh %s\n", vmName, vmName)
+		fmt.Printf("Image created successfuly.\nNext step is to start the VM:\n$ vermin start %s\n"+
+			"Then ssh into the vm:\n$ vermin ssh %s\n", vmName, vmName)
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
