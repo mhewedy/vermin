@@ -22,6 +22,11 @@ For windows: comming soon
 
 ## Usage:
 
+[![asciicast](https://asciinema.org/a/325557.png)](https://asciinema.org/a/325557)
+
+
+
+
 ```text
 $ vermin
 Create, control and connect to VirtualBox VM instances
