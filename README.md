@@ -20,7 +20,7 @@ For macos and linux:
 ```
 For windows (PowerShell):
 ```
-C:\> Set-ExecutionPolicy Bypass -Scope Process -Force
+# Should run as Adminstarator
 C:\> iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/mhewedy/vermin/master/install.ps1'))
 ```
 
