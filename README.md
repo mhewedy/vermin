@@ -32,8 +32,8 @@ C:\> iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubus
 2. create the following directory structure in your home dir:
 ```
 $HOME/.vermin
-            ├── images
-            └── vms
+         ├── images
+         └── vms
 ```
 3. Download [vermin private key](https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa) into `$HOME/.vermin/vermin_rsa`
 4. On windows, you need to add `C:\Program Files\Oracle\VirtualBox` into you PATH environment variable.
@@ -60,7 +60,7 @@ Usage:
   vermin [command]
 
 Available Commands:
-  completion  Generates completion scripts (bash and zsh)
+  completion  Generates completion scripts (Bash, Zsh and PowerShell)
   cp          Copy files between host and VM
   create      Create VM from an image
   help        Help about any command
@@ -75,7 +75,8 @@ Available Commands:
   tag         Tag a VM
 
 Flags:
-  -h, --help   help for vermin
+  -h, --help      help for vermin
+  -v, --version   version for vermin
 
 Use "vermin [command] --help" for more information about a command.
 ```
