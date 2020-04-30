@@ -23,7 +23,7 @@ For windows: comming soon
 ## Usage:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin-demo.gif"  alt="logo" width="90%"/> </center>
+  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin-v0.35-demo.gif"  alt="logo" width="90%"/> </center>
 </p>
 
 
