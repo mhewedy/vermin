@@ -30,7 +30,9 @@ var removeCmd = &cobra.Command{
 	Long:  `Remove a VM`,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
-		err := vms.Remove(vmName)
+		force, _ := cmd.Flags().GetBool("force")
+
+		err := vms.Remove(vmName, force)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -56,5 +58,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	//removeCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
+	removeCmd.Flags().BoolP("force", "f", false, "force remove running VM")
 }

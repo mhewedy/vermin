@@ -1,6 +1,7 @@
 package vms
 
 import (
+	"errors"
 	"fmt"
 	"github.com/mhewedy/vermin/cmd"
 	"github.com/mhewedy/vermin/cmd/scp"
@@ -56,7 +57,11 @@ func SecureShell(vmName string, command string) error {
 	}
 }
 
-func Remove(vmName string) error {
+func Remove(vmName string, force bool) error {
+	if !force && isRunningVM(vmName) {
+		return errors.New("cannot stop running VM, use -f flag to force remove")
+	}
+
 	if err := checkVM(vmName); err != nil {
 		return err
 	}
@@ -107,35 +112,4 @@ func IP(vmName string, purge bool, global bool) (string, error) {
 		}
 	}
 	return ip.Find(vmName, purge)
-}
-
-func checkRunningVM(vmName string) error {
-	list, err := List(false)
-	if err != nil {
-		return err
-	}
-	if !contains(list, vmName) {
-		return fmt.Errorf("%s not running.\nUse the command 'vermin ps' to list running VMs", vmName)
-	}
-	return nil
-}
-
-func checkVM(vmName string) error {
-	list, err := List(true)
-	if err != nil {
-		return err
-	}
-	if !contains(list, vmName) {
-		return fmt.Errorf("%s not found.\nUse the command 'vermin ps -a' to list VMs", vmName)
-	}
-	return nil
-}
-
-func contains(a []string, s string) bool {
-	for i := range a {
-		if a[i] == s {
-			return true
-		}
-	}
-	return false
 }
