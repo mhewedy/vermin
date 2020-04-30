@@ -36,7 +36,7 @@ $HOME/.vermin
             └── vms
 ```
 3. Download [vermin private key](https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa) into `$HOME/.vermin/vermin_rsa`
-4. On windows, you need to add both `vermin.exe` and `vboxmanage.exe` into you PATH.
+4. On windows, you need to add `C:\Program Files\Oracle\VirtualBox` into you PATH environment variable.
 
 ## Usage:
 
