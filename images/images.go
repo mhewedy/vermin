@@ -107,8 +107,8 @@ func list() ([]image, error) {
 }
 
 func download(r *rimage) error {
-	fmt.Printf("Image '%s' could not be found. Attempting to find and install...\n", r.Name)
-	fmt.Printf("Downloading: %s", r.URL)
+	fmt.Printf("Image '%s' could not be found. Attempting to find and install ...\n", r.Name)
+	fmt.Printf("Downloading: %s ", r.URL)
 
 	// download to a temp file
 	tmpFile, err := ioutil.TempFile("", strings.ReplaceAll(r.Name, "/", "_"))

@@ -3,11 +3,9 @@ package cmd
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"os"
 	"os/exec"
 	"runtime"
-	"time"
 )
 
 // ExecuteP execute and show progress
@@ -25,31 +23,16 @@ func ExecuteP(command string, args ...string) (string, error) {
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 
-	err := cmd.Start()
-	if err != nil {
+	if err := cmd.Start(); err != nil {
 		return "", errors.New(string(stderr.Bytes()))
 	}
 
-	quit := make(chan bool)
-	go func() {
-		for {
-			select {
-			case <-quit:
-				return
-			default:
-				fmt.Print(".")
-				time.Sleep(3 * time.Second)
-			}
-		}
-	}()
+	q := PrintProgress()
+	defer func() { *q <- true }()
 
-	err = cmd.Wait()
-	quit <- true
-
-	if err != nil {
+	if err := cmd.Wait(); err != nil {
 		return "", errors.New(string(stderr.Bytes()))
 	}
-	fmt.Println()
 
 	return string(stdout.Bytes()), nil
 }
