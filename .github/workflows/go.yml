@@ -42,12 +42,12 @@ jobs:
                   cd bin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}-darwin.tar.gz vermin \
                   && rm -rf vermin && cd -
         GOOS=windows GOARCH=amd64 go build -ldflags "-s" -o bin/vermin.exe && \
-                          cd bin && tar czf vermin-${{ steps.get_version.outputs.VERSION }}-windows.tar.gz vermin.exe \
+                          cd bin && zip vermin-${{ steps.get_version.outputs.VERSION }}-windows.zip vermin.exe \
                           && rm -rf vermin.exe && cd -
         cd bin
         sha256sum vermin-${{ steps.get_version.outputs.VERSION }}-linux.tar.gz > vermin-${{ steps.get_version.outputs.VERSION }}-linux.tar.gz.sha256sum
         sha256sum vermin-${{ steps.get_version.outputs.VERSION }}-darwin.tar.gz > vermin-${{ steps.get_version.outputs.VERSION }}-darwin.tar.gz.sha256sum
-        sha256sum vermin-${{ steps.get_version.outputs.VERSION }}-windows.tar.gz > vermin-${{ steps.get_version.outputs.VERSION }}-windows.tar.gz.sha256sum
+        sha256sum vermin-${{ steps.get_version.outputs.VERSION }}-windows.zip > vermin-${{ steps.get_version.outputs.VERSION }}-windows.zip.sha256sum
         cd -
 
     - uses: actions/upload-artifact@master
@@ -127,8 +127,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: ./vermin-${{ steps.get_version.outputs.VERSION }}-windows.tar.gz
-        asset_name: vermin-${{ steps.get_version.outputs.VERSION }}-windows.tar.gz
+        asset_path: ./vermin-${{ steps.get_version.outputs.VERSION }}-windows.zip
+        asset_name: vermin-${{ steps.get_version.outputs.VERSION }}-windows.zip
         asset_content_type: application/tar+gzip
 
     - uses: actions/upload-release-asset@v1
@@ -136,6 +136,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: ./vermin-${{ steps.get_version.outputs.VERSION }}-windows.tar.gz.sha256sum
-        asset_name: vermin-${{ steps.get_version.outputs.VERSION }}-windows.tar.gz.sha256sum
+        asset_path: ./vermin-${{ steps.get_version.outputs.VERSION }}-windows.zip.sha256sum
+        asset_name: vermin-${{ steps.get_version.outputs.VERSION }}-windows.zip.sha256sum
         asset_content_type: text/plain
