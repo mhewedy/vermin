@@ -22,9 +22,7 @@ For windows: comming soon
 
 ## Usage:
 
-[![asciicast](https://asciinema.org/a/325557.png)](https://asciinema.org/a/325557)
-
-
+<a href="https://asciinema.org/a/325557" target="_blank"><img src="https://asciinema.org/a/325557.png" width="70%"/></a>
 
 
 ```text
