@@ -168,6 +168,18 @@ Function Configure-Vermin() {
     wget https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa -o "$HOME/.vermin/vermin_rsa"
 }
 
+Function Configure-Virtualbox() {
+    $vboxPath = "C:\Program Files\Oracle\VirtualBox"
+    if (!(Test-Path $vboxPath)) {
+        Write-Error "Unable to find VirtualBox. Install VirtualBox then re-Run the installation script..."
+    }
+
+    $env:PATH = New-PathString -StartingPath $env:PATH -Path $vboxPath
+    $machinePath = [System.Environment]::GetEnvironmentVariable("PATH", "Machine")
+    $machinePath = New-PathString -StartingPath $machinePath -Path $vboxPath
+    [System.Environment]::SetEnvironmentVariable("PATH", $machinePath, "Machine")
+}
+
 Function Print-Howto() {
 
   Write-Host ""
@@ -235,6 +247,7 @@ try {
     $fullIdent = Install-Vermin
     Assert-Vermin $fullIdent
     Configure-Vermin
+    Configure-Virtualbox
     Print-Howto
 
     Write-Host "Installation of vermin program complete."
