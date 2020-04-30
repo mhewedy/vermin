@@ -22,7 +22,9 @@ For windows: comming soon
 
 ## Usage:
 
-<a href="https://asciinema.org/a/325557" target="_blank"><img src="https://asciinema.org/a/325557.png" width="70%"/></a>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin-demo.gif"  alt="logo" width="70%"/> </center>
+</p>
 
 
 ```text
