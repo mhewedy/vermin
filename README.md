@@ -18,7 +18,11 @@ For macos and linux:
 ```shell script
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mhewedy/vermin/master/install.sh)"
 ```
-For windows: comming soon
+For windows (PowerShell):
+```
+C:\> Set-ExecutionPolicy Bypass -Scope Process -Force
+C:\> iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/mhewedy/vermin/master/install.ps1'))
+```
 
 ## Usage:
 
