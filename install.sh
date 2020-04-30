@@ -173,13 +173,13 @@ download_archive() {
     _version="$(curl -s https://github.com/mhewedy/vermin/releases/latest -I | grep 'location: ' | cut -d '/' -f8 | tr -d '\r' | tr -d '\n')"
   fi
 
-  url="${pcio_root}/${_version}/vermin-${_version}.${_target}.${ext}"
+  url="${pcio_root}/${_version}/vermin-${_version}-${_target}.${ext}"
 
-  dl_file "${url}" "${workdir}/vermin-${_version}.${_target}.${ext}"
-  dl_file "${url}.sha256sum" "${workdir}/vermin-${_version}.${_target}.${ext}.sha256sum"
+  dl_file "${url}" "${workdir}/vermin-${_version}-${_target}.${ext}"
+  dl_file "${url}.sha256sum" "${workdir}/vermin-${_version}-${_target}.${ext}.sha256sum"
 
-  archive="vermin-${_version}.${_target}.${ext}"
-  sha_file="vermin-${_version}.${_target}.${ext}.sha256sum"
+  archive="vermin-${_version}-${_target}.${ext}"
+  sha_file="vermin-${_version}-${_target}.${ext}.sha256sum"
 }
 
 verify_archive() {
