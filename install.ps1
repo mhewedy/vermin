@@ -20,7 +20,7 @@ param (
 
 $ErrorActionPreference="stop"
 
-Set-Variable packagesRootUrl -Option ReadOnly -value "https://github.com/mhewedy/vermin/releases/download"
+Set-Variable packagesRootUrl -value "https://github.com/mhewedy/vermin/releases/download"
 
 Function Get-File($url, $dst) {
     Write-Host "Downloading $url"
@@ -100,16 +100,16 @@ Function Assert-Shasum($archive) {
 }
 
 Function Install-Vermin {
-    $habPath = Join-Path $env:ProgramData Vermin
+    $habPath = Join-Path $env:ProgramData Vermin 
     if(Test-Path $habPath) { Remove-Item $habPath -Recurse -Force }
     New-Item $habPath -ItemType Directory | Out-Null
-    $folder = (Get-ChildItem (Join-Path ($workdir) "vermin-*"))
-    Copy-Item "$($folder.FullName)\*" $habPath
+    $folder = (Get-ChildItem (Join-Path ($workdir) "vermin.exe"))
+    Copy-Item "$($folder.FullName)" $habPath
     $env:PATH = New-PathString -StartingPath $env:PATH -Path $habPath
     $machinePath = [System.Environment]::GetEnvironmentVariable("PATH", "Machine")
     $machinePath = New-PathString -StartingPath $machinePath -Path $habPath
     [System.Environment]::SetEnvironmentVariable("PATH", $machinePath, "Machine")
-    $folder.Name.Replace("vermin-","")
+    $folder.Name.Replace("vermin.exe","")
 }
 
 Function New-PathString([string]$StartingPath, [string]$Path) {
@@ -153,9 +153,30 @@ Function Assert-Vermin($ident) {
     Write-Host "Checking installed vermin version $ident"
 
 	$actual = vermin --version
-	if (!$actual -or ("hab $ident" -ne "$($actual.Replace('/', '-'))-x86_64-windows")) {
-		Write-Error "Unable to verify Habitat was succesfully installed"
+	if (!$actual) {
+		Write-Error "Unable to verify vermin was succesfully installed"
 	}
+
+}
+
+Function Configure-Vermin() {
+    Write-Host "Configuring vermin"
+
+    if(! (Test-Path "$HOME/.vermin/vms")) { New-Item "$HOME/.vermin/vms" -ItemType Directory | Out-Null}
+    if(! (Test-Path "$HOME/.vermin/images")) { New-Item "$HOME/.vermin/images" -ItemType Directory | Out-Null}
+
+    wget https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa -o "$HOME/.vermin/vermin_rsa"
+}
+
+Function Print-Howto() {
+
+  Write-Host ""
+  Write-Host "To list all available images:"
+  Write-Host "PS > vermin images"
+  Write-Host ""
+  Write-Host "To create a VM from an image:"
+  Write-Host "PS > vermin create <image>"
+  Write-Host ""
 
 }
 
@@ -172,7 +193,7 @@ function Get-RedirectedUrl() {
 
   do {
     try {
-      $response = Invoke-WebRequest -Method Head -WebSession $session -Uri $request_url
+      $response = Invoke-WebRequest -UseBasicParsing -Method Head -WebSession $session -Uri $request_url
 
       if($response.BaseResponse.ResponseUri -ne $null)
       {
@@ -212,7 +233,9 @@ try {
     }
     Expand-zip $archive.zip
     $fullIdent = Install-Vermin
-    #Assert-Vermin $fullIdent
+    Assert-Vermin $fullIdent
+    Configure-Vermin
+    Print-Howto
 
     Write-Host "Installation of vermin program complete."
 } finally {
