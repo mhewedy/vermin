@@ -24,6 +24,18 @@ For windows (PowerShell):
 C:\> iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/mhewedy/vermin/master/install.ps1'))
 ```
 
+### Manual installation:
+If you prefer to do manual installation then you need to follow the following steps:
+
+1. Download the binary matching your OS from [release](https://github.com/mhewedy/vermin/releases/latest)
+2. create the following directory structure in your home dir:
+```
+.vermin
+├── images
+└── vms
+```
+3. Download [vermin private key](https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa) into `$HOME/.vermin/vermin_rsa`
+
 ## Usage:
 
 <p align="center">
