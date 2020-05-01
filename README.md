@@ -44,7 +44,7 @@ $HOME/.vermin
 #### Build from source:
 Download the latest released source code archieve file from [releases](https://github.com/mhewedy/vermin/releases/latest) then:
 ```
-cd vermin && go build main.go
+go build main.go
 ```
 
 ## Usage:
