@@ -42,10 +42,15 @@ $HOME/.vermin
 4. On windows, you need to add `C:\Program Files\Oracle\VirtualBox` into you PATH environment variable.
 
 #### Build from source:
-Download the latest released source code archieve file from [releases](https://github.com/mhewedy/vermin/releases/latest) then:
-```
+Download the latest released source code archive file from [releases](https://github.com/mhewedy/vermin/releases/latest) then unzip:
+```bash
 go build main.go
 ```
+You can build using golang docker image:
+```bash
+# replace window by linux or darwin depending on your OS
+docker run -it -v $(pwd):/go -e GOPATH='' -e GOOS='windows' golang:latest go build
+``` 
 
 ## Usage:
 
