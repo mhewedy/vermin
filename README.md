@@ -62,7 +62,7 @@ $HOME/.vermin
 #### Build from Source:
 Download the latest released source code archive file from [releases](https://github.com/mhewedy/vermin/releases/latest) then unzip:
 ```bash
-go build main.go
+go build
 ```
 You can build using golang docker image:
 ```bash
