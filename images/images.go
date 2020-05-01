@@ -23,7 +23,7 @@ func Create(image string) error {
 		}
 	}
 
-	remote, err := listRemoteImages()
+	remote, err := listRemoteImages(false)
 	if err != nil {
 		return err
 	}
@@ -39,9 +39,9 @@ func Create(image string) error {
 	}
 
 	if rimage == nil {
-		display, _ := List()
-		return errors.New(fmt.Sprintf("invalid image name: '%s'.", image) +
-			" Valid images are:\n" + strings.Join(display, "\n"))
+		l, _ := List()
+		return errors.New(fmt.Sprintf("invalid image name: '%s',", image) +
+			" valid images are:\n" + strings.Join(l, "\n"))
 	}
 
 	return download(rimage)
@@ -53,7 +53,7 @@ type image struct {
 }
 
 func List() ([]string, error) {
-	list, err := list()
+	list, err := list(false)
 	if err != nil {
 		return nil, err
 	}
@@ -64,9 +64,9 @@ func List() ([]string, error) {
 	return result, nil
 }
 
-func Display() (string, error) {
+func Display(purgeCache bool) (string, error) {
 
-	list, err := list()
+	list, err := list(purgeCache)
 	if err != nil {
 		return "", err
 	}
@@ -82,7 +82,7 @@ func Display() (string, error) {
 	return result, nil
 }
 
-func list() ([]image, error) {
+func list(purgeCache bool) ([]image, error) {
 	var result []image
 
 	cached, err := listCachedImages()
@@ -93,7 +93,7 @@ func list() ([]image, error) {
 		result = append(result, image{cached[i], true})
 	}
 
-	remote, err := listRemoteImagesNames()
+	remote, err := listRemoteImagesNames(purgeCache)
 	if err != nil {
 		return nil, err
 	}

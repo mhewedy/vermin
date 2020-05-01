@@ -36,8 +36,8 @@ Use the image in creating a VM:
 $ vermin create <image>
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-
-		i, err := images.Display()
+		purge, _ := cmd.Flags().GetBool("purge")
+		i, err := images.Display(purge)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -57,5 +57,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	//imagesCmd.Flags().BoolP("all", "a", false, "List all VMs")
+	imagesCmd.Flags().BoolP("purge", "p", false, "Purge images list cache")
 }

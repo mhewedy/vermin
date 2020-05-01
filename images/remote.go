@@ -6,6 +6,7 @@ import (
 	"github.com/mhewedy/vermin/db"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -16,9 +17,8 @@ type rimage struct {
 	URL  string `csv:"url"`
 }
 
-func listRemoteImagesNames() ([]string, error) {
-
-	vms, err := listRemoteImages()
+func listRemoteImagesNames(purgeCache bool) ([]string, error) {
+	vms, err := listRemoteImages(purgeCache)
 	if err != nil {
 		return nil, err
 	}
@@ -32,17 +32,15 @@ func listRemoteImagesNames() ([]string, error) {
 	return images, nil
 }
 
-func listRemoteImages() ([]rimage, error) {
-	var tmp string
-	// read images csv from tmp cache
-	dir, err := ioutil.ReadDir(os.TempDir())
-	for i := range dir {
-		if strings.HasPrefix(dir[i].Name(), db.ImageFile) {
-			tmp = os.TempDir() + "/" + dir[i].Name()
-			break
+func listRemoteImages(purgeCache bool) ([]rimage, error) {
+	if purgeCache {
+		file, _ := getCSVTempFilePath()
+		if len(file) > 0 {
+			_ = os.Remove(file)
 		}
 	}
-
+	// read images csv from tmp cache
+	tmp, _ := getCSVTempFilePath()
 	// if not found, then download the file
 	if len(tmp) == 0 {
 		tmpFile, err := ioutil.TempFile("", db.ImageFile)
@@ -59,7 +57,7 @@ func listRemoteImages() ([]rimage, error) {
 
 	// parse the file as csv
 	var vms []rimage
-	err = csvtag.Load(csvtag.Config{
+	err := csvtag.Load(csvtag.Config{
 		Path: tmp,
 		Dest: &vms,
 	})
@@ -74,6 +72,17 @@ func listRemoteImages() ([]rimage, error) {
 	}
 
 	return vms, nil
+}
+
+func getCSVTempFilePath() (string, error) {
+	file, err := filepath.Glob(os.TempDir() + "/" + db.ImageFile + "*")
+	if err != nil {
+		return "", err
+	}
+	if len(file) == 0 {
+		return "", nil
+	}
+	return file[0], nil
 }
 
 // Check name follows <distro>/<version> name
