@@ -27,11 +27,11 @@ For windows (PowerShell):
 C:\> iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/mhewedy/vermin/master/install.ps1'))
 ```
 
-### Manual installation:
+#### Manual installation:
 
 > It is recommended to use the method above to install vermin, However If you prefer to do manual installation then you need to follow these steps:
 
-1. Download the binary matching your OS from [release](https://github.com/mhewedy/vermin/releases/latest)
+1. Download the binary matching your OS from [releases](https://github.com/mhewedy/vermin/releases/latest)
 2. create the following directory structure in your home dir:
 ```
 $HOME/.vermin
@@ -40,6 +40,12 @@ $HOME/.vermin
 ```
 3. Download [vermin private key](https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa) into `$HOME/.vermin/vermin_rsa`
 4. On windows, you need to add `C:\Program Files\Oracle\VirtualBox` into you PATH environment variable.
+
+#### Build from source:
+Download the latest released source code archieve file from [releases](https://github.com/mhewedy/vermin/releases/latest) then:
+```
+cd vermin && go build main.go
+```
 
 ## Usage:
 
