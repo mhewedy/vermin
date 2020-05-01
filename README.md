@@ -1,17 +1,15 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="70%"/> </center>
+<p style="text-align: center">
+  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="70%"/>
 </p>
 
 [![Build Status](https://github.com/mhewedy/vermin/workflows/Go/badge.svg)](https://github.com/mhewedy/vermin/actions?query=workflow%3AGo)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mhewedy/vermin)](https://goreportcard.com/report/github.com/mhewedy/vermin)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-
 # vermin
 ### The Smart Virtual Machines manager    
 
 Create, control and connect to VirtualBox VM instances.
-
 
 ### Menu
 
@@ -49,9 +47,9 @@ C:\> iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubus
 
 #### Manual installation:
 
-> It is recommended to use the method above to install vermin, However If you prefer to do manual installation then you need to follow these steps:
+> It is recommended to use the [automatic method](#Automatic-installation) to install vermin, However If you prefer to do manual installation then you need to follow these steps:
 
-1. Download the binary matching your OS from [releases](https://github.com/mhewedy/vermin/releases/latest)
+1. Download the binary matching your OS from [releases](https://github.com/mhewedy/vermin/releases/latest) unzip it and preferably put it in your PATH 
 2. create the following directory structure in your home dir:
 ```
 $HOME/.vermin
@@ -59,7 +57,7 @@ $HOME/.vermin
          └── vms
 ```
 3. Download [vermin private key](https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa) into `$HOME/.vermin/vermin_rsa`
-4. On windows, you need to add `C:\Program Files\Oracle\VirtualBox` into you PATH environment variable.
+4. On windows, you need to add `C:\Program Files\Oracle\VirtualBox` into you PATH.
 
 #### Build from Source:
 Download the latest released source code archive file from [releases](https://github.com/mhewedy/vermin/releases/latest) then unzip:
@@ -72,11 +70,11 @@ You can build using golang docker image:
 docker run -it -v $(pwd):/go -e GOPATH='' -e GOOS='windows' golang:latest go build
 ``` 
 ## Use cases:
-you use vermin when you need an easy way to obtain Linux up and running in minutes.
+Vermin can be used when you need an easy way to obtain a Linux up and running in minutes.
 
 For example, if you want to have an environment to try .NET Core and you don't want to mess with your own WLS installation, so you can create a VM to do whatever you want to do then remove it.
 
-Or if you want to try to install a Kafka cluster and you need something more than just a docker container so you can work with its different commands and settup cluster manually.
+Or if you want to try to install a Kafka cluster, and you need something more than just a docker container, so you can work with its different commands or want to practice setting up a cluster manually.
 
 Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
@@ -117,8 +115,8 @@ Flags:
 Use "vermin [command] --help" for more information about a command.
 ```
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin-v0.35-demo.gif"  alt="demo" width="120%"/> </center>
+<p style="text-align: center">
+  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin-v0.35-demo.gif"  alt="demo" width="120%"/>
 </p>
 
 #### Create a new VM
