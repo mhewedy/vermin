@@ -24,7 +24,7 @@ Create, control and connect to VirtualBox VM instances.
 - [Usage](#Usage)
 	- [Create a new VM](#Create-a-new-VM)
 	- [List VMs](#List-VMs)
-	- [Start-VM](#Start-VM)
+	- [Start VM](#Start-VM)
 	- [SSH into VM](#SSH-into-VM)
 	- [Stop VM](#Stop-VM)
 	- [Remove VM](#Remove-VM)
@@ -81,11 +81,6 @@ Or if you want to try to install a Kafka cluster and you need something more tha
 Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
 ## Usage:
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin-v0.35-demo.gif"  alt="demo" width="120%"/> </center>
-</p>
-
 ```text
 $ vermin
 Create, control and connect to VirtualBox VM instances
@@ -122,6 +117,10 @@ Flags:
 Use "vermin [command] --help" for more information about a command.
 ```
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin-v0.35-demo.gif"  alt="demo" width="120%"/> </center>
+</p>
+
 #### Create a new VM
 Use the following command to create a VM
 
@@ -152,7 +151,7 @@ VM NAME		IMAGE				CPUS	MEM	TAGS
 vm_01		ubuntu/focal			1	1024
 ```
 
-#### Start-VM
+#### Start VM
 ```shell script
 $ vermin start vm_01
 ```
