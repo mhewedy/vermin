@@ -10,10 +10,12 @@ DONE:
     * scp       (exists on win/nix)
 *  Logo drawing
 * Fix issue of invalid ssh session when login after start
-    
-TODO 
-* Test on windows 10 (build 1809)  - WIP
 * Build PowerShell install script (https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.ps1)
+* Test on windows 10 (build 1809)  - (Partially Done)
+    
+TODO: 
+- Write more test cases
+- Work on Clone to clone a VM (export: [vboxmanage export vm_01 --ovf20 -o ~/Documents/temp.ova] then import)
 
 POSTPONED:
 * Use progress (https://github.com/schollz/progressbar/issues/57)
