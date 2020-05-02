@@ -6,8 +6,8 @@ import (
 )
 
 func PrintProgress(title string) *chan bool {
-	fmt.Print(title + " ")
 	quit := make(chan bool, 10)
+	i := 0
 	go func() {
 		for {
 			select {
@@ -15,9 +15,18 @@ func PrintProgress(title string) *chan bool {
 				close(quit)
 				return
 			default:
-				fmt.Print(".")
-				time.Sleep(3 * time.Second)
+				const d = 3 * time.Second
+				if i == 0 {
+					time.Sleep(500 * time.Millisecond)
+				} else if i == 1 {
+					fmt.Print(title + " ")
+					time.Sleep(d)
+				} else {
+					fmt.Print(".")
+					time.Sleep(d)
+				}
 			}
+			i++
 		}
 	}()
 	return &quit
