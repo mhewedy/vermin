@@ -17,7 +17,7 @@ func PrintProgress(title string) *chan bool {
 			default:
 				const d = 3 * time.Second
 				if i == 0 {
-					time.Sleep(500 * time.Millisecond)
+					time.Sleep(1 * time.Second)
 				} else if i == 1 {
 					fmt.Print(title + " ")
 					time.Sleep(d)
