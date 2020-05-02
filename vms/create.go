@@ -9,6 +9,7 @@ import (
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/images"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"runtime"
 	"sort"
@@ -24,6 +25,14 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 	if err != nil {
 		return "", err
 	}
+
+	if err = os.MkdirAll(db.GetVMPath(vmName), 0755); err != nil {
+		return "", err
+	}
+	if err = ioutil.WriteFile(db.GetVMPath(vmName)+"/"+db.Image, []byte(imageName), 0755); err != nil {
+		return "", err
+	}
+
 	// execute command
 	fmt.Printf("Creating %s from image %s ", vmName, imageName)
 	if _, err = cmd.ExecuteP("vboxmanage",
@@ -34,9 +43,6 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 		"--cpus", fmt.Sprintf("%d", cpus),
 		"--memory", fmt.Sprintf("%d", mem),
 	); err != nil {
-		return "", err
-	}
-	if err = ioutil.WriteFile(db.GetVMPath(vmName)+"/"+db.Image, []byte(imageName), 0775); err != nil {
 		return "", err
 	}
 

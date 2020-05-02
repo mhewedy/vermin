@@ -16,7 +16,7 @@ func Tag(vmName string, tag string) error {
 		return err
 	}
 
-	return appendToFile(db.GetVMPath(vmName)+"/"+db.Tags, []byte(tag+"\n"), 0775)
+	return appendToFile(db.GetVMPath(vmName)+"/"+db.Tags, []byte(tag+"\n"), 0755)
 }
 
 func Start(vmName string) error {
