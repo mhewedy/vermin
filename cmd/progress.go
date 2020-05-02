@@ -5,13 +5,14 @@ import (
 	"time"
 )
 
-func PrintProgress() *chan bool {
-	quit := make(chan bool)
+func PrintProgress(title string) *chan bool {
+	fmt.Print(title + " ")
+	quit := make(chan bool, 10)
 	go func() {
 		for {
 			select {
 			case <-quit:
-				fmt.Println()
+				close(quit)
 				return
 			default:
 				fmt.Print(".")

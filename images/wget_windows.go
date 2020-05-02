@@ -9,6 +9,6 @@ func wget(url string, file string) (string, error) {
 	return cmd.Execute(fmt.Sprintf("(New-Object System.Net.WebClient).DownloadFile('%s', '%s')", url, file))
 }
 
-func wgetP(url string, file string) (string, error) {
-	return cmd.ExecuteP(fmt.Sprintf("(New-Object System.Net.WebClient).DownloadFile('%s', '%s')", url, file))
+func wgetP(title string, url string, file string) (string, error) {
+	return cmd.ExecuteP(title, fmt.Sprintf("(New-Object System.Net.WebClient).DownloadFile('%s', '%s')", url, file))
 }

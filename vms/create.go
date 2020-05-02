@@ -34,8 +34,8 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 	}
 
 	// execute command
-	fmt.Printf("Creating %s from image %s ", vmName, imageName)
-	if _, err = cmd.ExecuteP("vboxmanage",
+	if _, err = cmd.ExecuteP(fmt.Sprintf("Creating %s from image %s", vmName, imageName),
+		"vboxmanage",
 		"import", db.GetImageFilePath(imageName),
 		"--vsys", "0",
 		"--vmname", vmName,

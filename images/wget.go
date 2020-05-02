@@ -8,6 +8,6 @@ func wget(url string, file string) (string, error) {
 	return cmd.Execute("wget", "-O", file, url)
 }
 
-func wgetP(url string, file string) (string, error) {
-	return cmd.ExecuteP("wget", "-O", file, url)
+func wgetP(title string, url string, file string) (string, error) {
+	return cmd.ExecuteP(title, "wget", "-O", file, url)
 }

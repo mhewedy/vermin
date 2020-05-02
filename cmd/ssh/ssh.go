@@ -71,20 +71,20 @@ func ExecuteIArgs(vmName string, args ...string) error {
 
 // EstablishConn make sure connection to the vm is established or return an error if not
 func EstablishConn(vmName string) error {
-	fmt.Print("Establishing connection ")
-	q := cmd.PrintProgress()
-	defer func() { *q <- true }()
+	q := cmd.PrintProgress("Establishing connection")
+	defer func() { *q <- true; fmt.Println() }()
 
 	d := &delay{
 		max: 1 * time.Minute,
 	}
+	var err error
 	for {
-		if _, err := Execute(vmName, "ls"); err == nil {
+		if _, err = Execute(vmName, "ls"); err == nil {
 			break
 		}
-		if err := d.sleep(2); err != nil {
+		if err = d.sleep(2); err != nil {
 			break
 		}
 	}
-	return nil
+	return err
 }

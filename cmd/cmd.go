@@ -3,13 +3,16 @@ package cmd
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"runtime"
 )
 
 // ExecuteP execute and show progress
-func ExecuteP(command string, args ...string) (string, error) {
+//
+// title the msg to print as part of the waiting msg
+func ExecuteP(title string, command string, args ...string) (string, error) {
 	if runtime.GOOS == "windows" {
 		args = prepend(args, command)
 		command = "powershell"
@@ -27,8 +30,8 @@ func ExecuteP(command string, args ...string) (string, error) {
 		return "", errors.New(string(stderr.Bytes()))
 	}
 
-	q := PrintProgress()
-	defer func() { *q <- true }()
+	q := PrintProgress(title)
+	defer func() { *q <- true; fmt.Println() }()
 
 	if err := cmd.Wait(); err != nil {
 		return "", errors.New(string(stderr.Bytes()))

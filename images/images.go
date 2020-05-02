@@ -108,7 +108,6 @@ func list(purgeCache bool) ([]image, error) {
 
 func download(r *rimage) error {
 	fmt.Printf("Image '%s' could not be found. Attempting to find and install ...\n", r.Name)
-	fmt.Printf("Downloading: %s ", r.URL)
 
 	// download to a temp file
 	tmpFile, err := ioutil.TempFile("", strings.ReplaceAll(r.Name, "/", "_"))
@@ -118,7 +117,7 @@ func download(r *rimage) error {
 	_ = tmpFile.Close()
 	defer os.Remove(tmpFile.Name())
 
-	if _, err := wgetP(r.URL, tmpFile.Name()); err != nil {
+	if _, err := wgetP(fmt.Sprintf("Downloading: %s", r.URL), r.URL, tmpFile.Name()); err != nil {
 		return err
 	}
 
