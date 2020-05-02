@@ -72,7 +72,7 @@ docker run -it -v $(pwd):/go -e GOPATH='' -e GOOS='windows' golang:latest go bui
 ## Use cases:
 Vermin can be used when you need an easy way to obtain a Linux up and running in minutes.
 
-For example, if you want to have an environment to try .NET Core and you don't want to mess with your own WLS installation, so you can create a VM to do whatever you want to do then remove it.
+For example, if you want to have an environment to try .NET Core and you don't want to mess with your own WSL installation, so you can create a VM to do whatever you want to do then remove it.
 
 Or if you want to try to install a Kafka cluster, and you need something more than just a docker container, so you can work with its different commands or want to practice setting up a cluster manually.
 
