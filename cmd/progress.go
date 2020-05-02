@@ -6,7 +6,7 @@ import (
 )
 
 func PrintProgress(title string) *chan bool {
-	quit := make(chan bool, 10) // 10 is arbitrary number, we need a buffered channel in order not to lock the sender!
+	quit := make(chan bool, 1)
 	i := 0
 	go func() {
 		for {
