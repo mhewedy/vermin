@@ -19,3 +19,4 @@ TODO:
 
 POSTPONED:
 * Use progress (https://github.com/schollz/progressbar/issues/57)
+* consider use google drive (https://drive.google.com/uc?export=download&confirm=htAy&id=<fileid>) 
