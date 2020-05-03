@@ -142,6 +142,8 @@ centos/8
 ```
 > The *cached* flag means, the image has been already downloaded and cached before.
 
+> To get the most updadated image list (along with images locations) use the -p flag `vermin images -p`. this will not affect cached images. it will only get the most updated image list (image names along with thier remote locations).
+
 #### List VMs
 ```shell script
 $ vermin ps
