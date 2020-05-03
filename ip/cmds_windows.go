@@ -6,8 +6,7 @@ import (
 )
 
 func doPing(ip string) error {
-	_, err := cmd.Execute("ping", "-n", "1", "-w", "0.1", ip)
-	return err
+	return cmd.Run("ping", "-n", "1", "-w", "0.1", ip)
 }
 
 func getArpTable() []addr {

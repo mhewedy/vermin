@@ -86,6 +86,15 @@ func ExecuteI(command string, args ...string) error {
 	return nil
 }
 
+// Run runs command and return nothing
+func Run(command string, args ...string) error {
+	if runtime.GOOS == "windows" {
+		args = prepend(args, command)
+		command = "powershell"
+	}
+	return exec.Command(command, args...).Run()
+}
+
 func prepend(x []string, y string) []string {
 	x = append(x, "")
 	copy(x[1:], x)
