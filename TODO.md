@@ -14,8 +14,19 @@ DONE:
 * Test on windows 10 (build 1809)  - (Partially Done)
     
 TODO: 
-- Write more test cases
-- Work on Clone to clone a VM (export: [vboxmanage export vm_01 --ovf20 -o ~/Documents/temp.ova] then import)
+* Write more test cases
+* Work on Clone to clone a VM (export: [vboxmanage export vm_01 --ovf20 -o ~/Documents/temp.ova] then import)
+* Enable mounting:
+    on guest:
+    ```
+    sudo apt-get install virtualbox-guest-utils
+    sudo adduser $USER vboxsf
+    ```
+    on host:
+    ```
+    vboxmanage sharedfolder add vm_01 --name <unique_name_e.g._pwd> --hostpath $(pwd) --transient --automount --auto-mount-point /vermin
+    # --transient to be an option
+    ```
 
 POSTPONED:
 * Use progress (https://github.com/schollz/progressbar/issues/57)
