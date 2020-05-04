@@ -12,7 +12,7 @@ import (
 )
 
 func Tag(vmName string, tag string) error {
-	if err := checkRunningVM(vmName); err != nil {
+	if err := checkVM(vmName); err != nil {
 		return err
 	}
 	return db.WriteTag(vmName, tag)
