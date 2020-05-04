@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 )
 
 const (
@@ -44,16 +45,24 @@ func WriteTag(vmName string, tag string) error {
 	return appendToFile(GetVMPath(vmName)+"/"+tags, []byte(tag+"\n"), 0755)
 }
 
-func ReadTags(vmName string, defaultValue string) (string, error) {
-	return readFromFile(vmName, tags, defaultValue)
+func ReadTags(vmName string) (string, error) {
+	content, err := readFromFile(vmName, tags)
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSuffix(strings.ReplaceAll(content, "\n", ", "), ", "), nil
 }
 
 func WriteImageData(vmName string, imageName string) error {
 	return ioutil.WriteFile(GetVMPath(vmName)+"/"+image, []byte(imageName), 0755)
 }
 
-func ReadImageData(vmName string, defaultValue string) (string, error) {
-	return readFromFile(vmName, image, defaultValue)
+func ReadImageData(vmName string) (string, error) {
+	content, err := readFromFile(vmName, image)
+	if err != nil {
+		return "", err
+	}
+	return strings.ReplaceAll(content, "\n", ""), nil
 }
 
 func getVerminDir() string {

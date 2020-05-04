@@ -4,7 +4,6 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
-	"strings"
 )
 
 func appendToFile(filename string, data []byte, perm os.FileMode) error {
@@ -22,14 +21,10 @@ func appendToFile(filename string, data []byte, perm os.FileMode) error {
 	return err
 }
 
-func readFromFile(vm string, dbFile string, defaultValue string) (string, error) {
+func readFromFile(vm string, dbFile string) (string, error) {
 	b, err := ioutil.ReadFile(GetVMPath(vm) + "/" + dbFile)
 	if err != nil {
 		return "", err
 	}
-	v := strings.ReplaceAll(string(b), "\n", " ")
-	if len(v) == 0 {
-		return defaultValue, nil
-	}
-	return v, nil
+	return string(b), nil
 }

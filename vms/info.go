@@ -8,16 +8,44 @@ import (
 	"io/ioutil"
 	"os"
 	"sort"
-	"strconv"
 	"strings"
 )
 
+var (
+	format = "%-15s%-30s%-13s%-13s%s\n"
+	header = fmt.Sprintf(format, "VM NAME", "IMAGE", "CPUS", "MEM", "TAGS")
+)
+
 type vmInfo struct {
-	name  string
-	image string
-	cpu   int
-	mem   int
-	tags  string
+	name    string
+	image   string
+	hwSpecs hwSpecs
+	tags    string
+}
+
+type hwSpecs struct {
+	cpu string
+	mem string
+}
+
+func (v *vmInfo) String() string {
+	return fmt.Sprintf(format, v.name, v.image, v.hwSpecs.cpu, v.hwSpecs.mem, v.tags)
+}
+
+type vmInfoList []*vmInfo
+
+func (l vmInfoList) String() string {
+	var out string
+
+	sort.Slice(l, func(i, j int) bool {
+		return l[i].name < l[j].name
+	})
+	out += header
+	for _, e := range l {
+		out += e.String()
+	}
+
+	return out
 }
 
 func Ps(all bool) (string, error) {
@@ -25,7 +53,7 @@ func Ps(all bool) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return getVMsInfo(vms), nil
+	return getVMInfoList(vms), nil
 }
 
 // List return all vms that start with db.NamePrefix
@@ -58,10 +86,10 @@ func List(all bool) ([]string, error) {
 }
 
 // get get info about vms
-func getVMsInfo(vms []string) string {
+func getVMInfoList(vms []string) string {
 
 	if len(vms) == 0 {
-		return "VM NAME\t\tIMAGE\t\t\t\tCPUS\tMEM\tTAGS\n"
+		return header
 	}
 
 	ch := make(chan *vmInfo, len(vms))
@@ -74,13 +102,13 @@ func getVMsInfo(vms []string) string {
 
 	// collect from channel
 	var i int
-	out := make([]*vmInfo, 0)
+	infoList := make(vmInfoList, 0)
 
 	for {
 		select {
 		case vmInfo := <-ch:
 			if vmInfo != nil {
-				out = append(out, vmInfo)
+				infoList = append(infoList, vmInfo)
 			}
 			i++
 		}
@@ -89,21 +117,7 @@ func getVMsInfo(vms []string) string {
 		}
 	}
 
-	return asString(out)
-}
-
-func asString(vmInfos []*vmInfo) string {
-	var out string
-
-	sort.Slice(vmInfos, func(i, j int) bool {
-		return vmInfos[i].name < vmInfos[j].name
-	})
-	out += fmt.Sprintln("VM NAME\t\tIMAGE\t\t\t\tCPUS\tMEM\tTAGS")
-	for _, e := range vmInfos {
-		out += fmt.Sprintf("%s\t\t%s\t\t\t%d\t%d\t%s\n", e.name, e.image, e.cpu, e.mem, e.tags)
-	}
-
-	return out
+	return infoList.String()
 }
 
 func getVMInfo(vm string) *vmInfo {
@@ -112,23 +126,20 @@ func getVMInfo(vm string) *vmInfo {
 		return nil
 	}
 
-	c, m := getVMCpuAndMem(vm)
-	cpu, _ := strconv.Atoi(c)
-	mem, _ := strconv.Atoi(m)
+	hw := getHWSpecs(vm)
 
-	image, _ := db.ReadImageData(vm, "\t")
-	tags, _ := db.ReadTags(vm, "\t")
+	image, _ := db.ReadImageData(vm)
+	tags, _ := db.ReadTags(vm)
 
 	return &vmInfo{
-		name:  vm,
-		image: image,
-		cpu:   cpu,
-		mem:   mem,
-		tags:  tags,
+		name:    vm,
+		image:   image,
+		hwSpecs: hw,
+		tags:    tags,
 	}
 }
 
-func getVMCpuAndMem(vm string) (string, string) {
+func getHWSpecs(vm string) hwSpecs {
 	type vbox struct {
 		XMLName xml.Name `xml:"VirtualBox"`
 		Machine struct {
@@ -148,13 +159,15 @@ func getVMCpuAndMem(vm string) (string, string) {
 	err := xml.Unmarshal(b, &vb)
 
 	if err != nil {
-		return "", ""
+		return hwSpecs{}
 	}
 
 	cpuCount := vb.Machine.Hardware.CPU.Count
 	if len(cpuCount) == 0 {
 		cpuCount = "1"
 	}
-	return cpuCount,
-		vb.Machine.Hardware.Memory.RAMSize
+	return hwSpecs{
+		cpu: cpuCount,
+		mem: vb.Machine.Hardware.Memory.RAMSize,
+	}
 }
