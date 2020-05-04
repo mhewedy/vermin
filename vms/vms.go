@@ -15,8 +15,7 @@ func Tag(vmName string, tag string) error {
 	if err := checkRunningVM(vmName); err != nil {
 		return err
 	}
-
-	return appendToFile(db.GetVMPath(vmName)+"/"+db.Tags, []byte(tag+"\n"), 0755)
+	return db.WriteTag(vmName, tag)
 }
 
 func Start(vmName string) error {

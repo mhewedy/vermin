@@ -8,7 +8,6 @@ import (
 	"github.com/mhewedy/vermin/cmd/ssh"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/images"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -21,6 +20,7 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 	if err := images.Create(imageName); err != nil {
 		return "", err
 	}
+
 	vmName, err := nextName()
 	if err != nil {
 		return "", err
@@ -29,7 +29,8 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 	if err = os.MkdirAll(db.GetVMPath(vmName), 0755); err != nil {
 		return "", err
 	}
-	if err = ioutil.WriteFile(db.GetVMPath(vmName)+"/"+db.Image, []byte(imageName), 0755); err != nil {
+
+	if err = db.WriteImageData(vmName, imageName); err != nil {
 		return "", err
 	}
 

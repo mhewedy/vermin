@@ -43,7 +43,7 @@ func listRemoteImages(purgeCache bool) ([]rimage, error) {
 	tmp, _ := getCSVTempFilePath()
 	// if not found, then download the file
 	if len(tmp) == 0 {
-		tmpFile, err := ioutil.TempFile("", db.ImageFile)
+		tmpFile, err := ioutil.TempFile("", db.ImageFilePrefix)
 		if err != nil {
 			return nil, err
 		}
@@ -75,7 +75,7 @@ func listRemoteImages(purgeCache bool) ([]rimage, error) {
 }
 
 func getCSVTempFilePath() (string, error) {
-	file, err := filepath.Glob(os.TempDir() + "/" + db.ImageFile + "*")
+	file, err := filepath.Glob(os.TempDir() + "/" + db.ImageFilePrefix + "*")
 	if err != nil {
 		return "", err
 	}

@@ -116,8 +116,8 @@ func getVMInfo(vm string) *vmInfo {
 	cpu, _ := strconv.Atoi(c)
 	mem, _ := strconv.Atoi(m)
 
-	image := readFromVMDB(vm, db.Image, "\t")
-	tags := readFromVMDB(vm, db.Tags, "\t")
+	image, _ := db.ReadImageData(vm, "\t")
+	tags, _ := db.ReadTags(vm, "\t")
 
 	return &vmInfo{
 		name:  vm,
@@ -126,15 +126,6 @@ func getVMInfo(vm string) *vmInfo {
 		mem:   mem,
 		tags:  tags,
 	}
-}
-
-func readFromVMDB(vm string, dbFile string, defaultValue string) string {
-	b, _ := ioutil.ReadFile(db.GetVMPath(vm) + "/" + dbFile)
-	v := strings.ReplaceAll(string(b), "\n", " ")
-	if len(v) == 0 {
-		return defaultValue
-	}
-	return v
 }
 
 func getVMCpuAndMem(vm string) (string, string) {
