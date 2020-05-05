@@ -2,10 +2,10 @@ package ssh
 
 import (
 	"errors"
-	"fmt"
 	"github.com/mhewedy/vermin/cmd"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/ip"
+	"github.com/mhewedy/vermin/progress"
 	"time"
 )
 
@@ -71,8 +71,8 @@ func ExecuteIArgs(vmName string, args ...string) error {
 
 // EstablishConn make sure connection to the vm is established or return an error if not
 func EstablishConn(vmName string) error {
-	q := cmd.PrintProgress("Establishing connection")
-	defer func() { *q <- true; fmt.Println() }()
+	stop := progress.Show("Establishing connection")
+	defer stop()
 
 	d := &delay{
 		max: 1 * time.Minute,

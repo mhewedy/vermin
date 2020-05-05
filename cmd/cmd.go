@@ -3,7 +3,7 @@ package cmd
 import (
 	"bytes"
 	"errors"
-	"fmt"
+	"github.com/mhewedy/vermin/progress"
 	"os"
 	"os/exec"
 	"runtime"
@@ -30,8 +30,8 @@ func ExecuteP(title string, command string, args ...string) (string, error) {
 		return "", errors.New(string(stderr.Bytes()))
 	}
 
-	q := PrintProgress(title)
-	defer func() { *q <- true; fmt.Println() }()
+	stop := progress.Show(title)
+	defer stop()
 
 	if err := cmd.Wait(); err != nil {
 		return "", errors.New(string(stderr.Bytes()))

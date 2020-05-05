@@ -1,11 +1,13 @@
-package cmd
+package progress
 
 import (
 	"fmt"
 	"time"
 )
 
-func PrintProgress(title string) *chan bool {
+type StopFunc func()
+
+func Show(title string) StopFunc {
 	quit := make(chan bool, 1)
 	i := 0
 	go func() {
@@ -29,5 +31,6 @@ func PrintProgress(title string) *chan bool {
 			i++
 		}
 	}()
-	return &quit
+
+	return func() { quit <- true; fmt.Println() }
 }
