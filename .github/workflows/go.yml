@@ -29,8 +29,8 @@ jobs:
     - name: Set Version
       if: startsWith(github.ref, 'refs/tags/')
       run: |
-          echo 'package cli
-          const version = "${{ steps.get_version.outputs.VERSION }}"' > cli/version.go
+          echo 'package cmd
+          const version = "${{ steps.get_version.outputs.VERSION }}"' > cmd/version.go
 
     - name: Build
       run: |
