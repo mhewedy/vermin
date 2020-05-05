@@ -38,13 +38,14 @@ $ vermin create <image>
 To create VM with default settings and provide a script to provision the VM:
 $ vermin create <image> </path/to/shell/script.sh>
 `,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		imageName := args[0]
 		var script string
 		if len(args) > 1 {
 			script = args[1]
 			if _, err := os.Stat(script); err != nil {
-				return err
+				fmt.Println("file not found", script)
+				os.Exit(1)
 			}
 		}
 		cpus, _ := cmd.Flags().GetInt("cpus")
@@ -52,10 +53,11 @@ $ vermin create <image> </path/to/shell/script.sh>
 
 		vmName, err := vms.Create(imageName, script, cpus, mem)
 		if err != nil {
-			return err
+			fmt.Println(err)
+			os.Exit(1)
 		}
+
 		fmt.Printf("VM created successfuly\n\nTo start using the VM use:\n$ vermin ssh %s\n", vmName)
-		return nil
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
