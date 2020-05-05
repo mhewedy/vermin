@@ -46,7 +46,7 @@ func Find(vmName string, purge bool) (string, error) {
 		pong = true
 	}
 
-	return "", fmt.Errorf("cannot find ip for %s\nUse the command 'vermin ip %s -p' to purge cache", vmName, vmName)
+	return "", fmt.Errorf("cannot find ip for %s\nUse the command 'vermin ip -p %s' to purge cache", vmName, vmName)
 }
 
 func ping() {
