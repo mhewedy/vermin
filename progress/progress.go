@@ -9,7 +9,7 @@ type StopFunc func()
 
 func Show(title string) StopFunc {
 	quit := make(chan bool, 1)
-	i := 0
+	i, appendln := 0, false
 	go func() {
 		for {
 			select {
@@ -21,6 +21,7 @@ func Show(title string) StopFunc {
 				if i == 0 {
 					time.Sleep(1 * time.Second)
 				} else if i == 1 {
+					appendln = true
 					fmt.Print(title + " ")
 					time.Sleep(d)
 				} else {
@@ -32,5 +33,10 @@ func Show(title string) StopFunc {
 		}
 	}()
 
-	return func() { quit <- true; fmt.Println() }
+	return func() {
+		quit <- true
+		if appendln {
+			fmt.Println()
+		}
+	}
 }
