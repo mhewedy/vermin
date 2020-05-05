@@ -115,6 +115,7 @@ func start(vmName string) error {
 	if _, err := command.VBoxManage("startvm", vmName, "--type", "headless").Call(); err != nil {
 		return err
 	}
+
 	if err := ssh.EstablishConn(vmName); err != nil {
 		return err
 	}
