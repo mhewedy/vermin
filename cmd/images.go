@@ -13,46 +13,49 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cli
+package cmd
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/vms"
+	"github.com/mhewedy/vermin/images"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
-// psCmd represents the ps command
-var psCmd = &cobra.Command{
-	Use:   "ps",
-	Short: "List VMs",
-	Long: `List running VMs
-Use the -a|--all flag to list all VMs
+// imagesCmd represents the images command
+var imagesCmd = &cobra.Command{
+	Use:   "images",
+	Short: "List all available images",
+	Long: `List all available images
+
+Images are cached after the first time it is downloaded. Cached images are marked as (cached).
+The image comes in the format <os>/<version>, for example: ubuntu/bionic and centos/8
+
+Use the image in creating a VM:
+$ vermin create <image>
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-
-		all, _ := cmd.Flags().GetBool("all")
-
-		ps, err := vms.Ps(all)
+		purge, _ := cmd.Flags().GetBool("purge")
+		i, err := images.Display(purge)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Print(ps)
+		fmt.Print(i)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(psCmd)
+	rootCmd.AddCommand(imagesCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// psCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// imagesCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	psCmd.Flags().BoolP("all", "a", false, "List all VMs")
+	imagesCmd.Flags().BoolP("purge", "p", false, "Purge images list cache")
 }

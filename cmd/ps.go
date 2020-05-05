@@ -13,62 +13,46 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cli
+package cmd
 
 import (
-	"errors"
 	"fmt"
 	"github.com/mhewedy/vermin/vms"
 	"os"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
 
-// sshCmd represents the ssh command
-var sshCmd = &cobra.Command{
-	Use:   "ssh",
-	Short: "ssh into a running VM",
-	Long: `ssh into a running VM
-Examples:
-
-Open a terminal:
-$ vermin ssh vm_02 
-
-Execute remote command:
-$ vermin ssh vm_09 cat /etc/passwd
+// psCmd represents the ps command
+var psCmd = &cobra.Command{
+	Use:   "ps",
+	Short: "List VMs",
+	Long: `List running VMs
+Use the -a|--all flag to list all VMs
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
-		var command string
-		if len(args) > 1 {
-			command = strings.Join(args[1:], " ")
-		}
-		err := vms.SecureShell(vmName, command)
+
+		all, _ := cmd.Flags().GetBool("all")
+
+		ps, err := vms.Ps(all)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+		fmt.Print(ps)
 	},
-	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) < 1 {
-			return errors.New("vm required")
-		}
-		return nil
-	},
-	ValidArgsFunction: listRunningVms,
 }
 
 func init() {
-	rootCmd.AddCommand(sshCmd)
+	rootCmd.AddCommand(psCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// sshCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// psCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	//sshCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
+	psCmd.Flags().BoolP("all", "a", false, "List all VMs")
 }

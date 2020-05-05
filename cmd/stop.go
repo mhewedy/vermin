@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cli
+package cmd
 
 import (
 	"errors"
@@ -23,16 +23,14 @@ import (
 	"os"
 )
 
-// removeCmd represents the remove command
-var removeCmd = &cobra.Command{
-	Use:   "rm",
-	Short: "Remove a VM",
-	Long:  `Remove a VM`,
+// stopCmd represents the stop command
+var stopCmd = &cobra.Command{
+	Use:   "stop",
+	Short: "Stop a VM",
+	Long:  `Stop a VM`,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
-		force, _ := cmd.Flags().GetBool("force")
-
-		err := vms.Remove(vmName, force)
+		err := vms.Stop(vmName)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -44,19 +42,19 @@ var removeCmd = &cobra.Command{
 		}
 		return nil
 	},
-	ValidArgsFunction: listAllVms,
+	ValidArgsFunction: listRunningVms,
 }
 
 func init() {
-	rootCmd.AddCommand(removeCmd)
+	rootCmd.AddCommand(stopCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// removeCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// stopCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	removeCmd.Flags().BoolP("force", "f", false, "force remove running VM")
+	//stopCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
 }

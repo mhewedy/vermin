@@ -13,49 +13,55 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cli
+package cmd
 
 import (
+	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/images"
-	"os"
-
+	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
+	"os"
 )
 
-// imagesCmd represents the images command
-var imagesCmd = &cobra.Command{
-	Use:   "images",
-	Short: "List all available images",
-	Long: `List all available images
-
-Images are cached after the first time it is downloaded. Cached images are marked as (cached).
-The image comes in the format <os>/<version>, for example: ubuntu/bionic and centos/8
-
-Use the image in creating a VM:
-$ vermin create <image>
+// tagCmd represents the tag command
+var tagCmd = &cobra.Command{
+	Use:   "tag",
+	Short: "Tag a VM",
+	Long: `Tag a VM
+You can tag a VM as many times as you want
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		purge, _ := cmd.Flags().GetBool("purge")
-		i, err := images.Display(purge)
+		vmName := args[0]
+		tag := args[1]
+
+		err := vms.Tag(vmName, tag)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Print(i)
 	},
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 1 {
+			return errors.New("vm required")
+		}
+		if len(args) < 2 {
+			return errors.New("tag required")
+		}
+		return nil
+	},
+	ValidArgsFunction: listAllVms,
 }
 
 func init() {
-	rootCmd.AddCommand(imagesCmd)
+	rootCmd.AddCommand(tagCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// imagesCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// tagCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	imagesCmd.Flags().BoolP("purge", "p", false, "Purge images list cache")
+	tagCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
 }

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/mhewedy/vermin/cli"
+	"github.com/mhewedy/vermin/cmd"
 )
 
 func main() {
-	cli.Execute()
+	cmd.Execute()
 }

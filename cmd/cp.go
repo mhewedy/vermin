@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cli
+package cmd
 
 import (
 	"errors"
@@ -23,18 +23,35 @@ import (
 	"os"
 )
 
-// tagCmd represents the tag command
-var tagCmd = &cobra.Command{
-	Use:   "tag",
-	Short: "Tag a VM",
-	Long: `Tag a VM
-You can tag a VM as many times as you want
+// cpCmd represents the cp command
+var cpCmd = &cobra.Command{
+	Use:   "cp",
+	Short: "Copy files between host and VM",
+	Long: `Copy files between host and VM
+Examples:
+Copy file.txt from host to user's home directory inside the vm
+$ vermin cp vm_01 -l file.txt
+
+Copy file.txt from user's home directory inside the vm to the current directory on the host
+$ vermin cp vm_01 -r ~/project/file.txt
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
-		tag := args[1]
 
-		err := vms.Tag(vmName, tag)
+		var err error
+
+		l, _ := cmd.Flags().GetString("local-file")
+		r, _ := cmd.Flags().GetString("remote-file")
+
+		if len(l) > 0 {
+			err = vms.CopyFiles(vmName, l, true)
+		} else if len(r) > 0 {
+			err = vms.CopyFiles(vmName, r, false)
+		} else {
+			fmt.Println("missing file parameter, use -h for help.")
+			os.Exit(1)
+		}
+
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -44,24 +61,22 @@ You can tag a VM as many times as you want
 		if len(args) < 1 {
 			return errors.New("vm required")
 		}
-		if len(args) < 2 {
-			return errors.New("tag required")
-		}
 		return nil
 	},
-	ValidArgsFunction: listAllVms,
+	ValidArgsFunction: listRunningVms,
 }
 
 func init() {
-	rootCmd.AddCommand(tagCmd)
+	rootCmd.AddCommand(cpCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// tagCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// cpCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	tagCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
+	cpCmd.Flags().StringP("local-file", "l", "", "Local file to copy to VM home directory")
+	cpCmd.Flags().StringP("remote-file", "r", "", "VM file to copy to host at current directory")
 }
