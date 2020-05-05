@@ -3,6 +3,7 @@ package images
 import (
 	"errors"
 	"github.com/artonge/go-csv-tag"
+	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
 	"io/ioutil"
 	"os"
@@ -50,7 +51,7 @@ func listRemoteImages(purgeCache bool) ([]rimage, error) {
 		_ = tmpFile.Close()
 
 		tmp = tmpFile.Name()
-		if _, err = wget(imagesDBURL, tmp); err != nil {
+		if _, err = command.Wget(imagesDBURL, tmp).Call(); err != nil {
 			return nil, err
 		}
 	}

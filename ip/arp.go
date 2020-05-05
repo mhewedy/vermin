@@ -3,19 +3,15 @@
 package ip
 
 import (
-	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/command"
 	"strings"
 )
-
-func doPing(ip string) error {
-	return cmd.Run("ping", "-c", "1", "-W", "0.1", ip)
-}
 
 func getArpTable() []addr {
 
 	addrs := make([]addr, 0)
 
-	out, _ := cmd.Execute("arp", "-an")
+	out, _ := command.Arp("-an").Call()
 	entries := strings.Split(out, "\n")
 
 	for _, entry := range entries {

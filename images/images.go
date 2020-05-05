@@ -3,6 +3,7 @@ package images
 import (
 	"errors"
 	"fmt"
+	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
 	"io"
 	"io/ioutil"
@@ -117,7 +118,8 @@ func download(r *rimage) error {
 	_ = tmpFile.Close()
 	defer os.Remove(tmpFile.Name())
 
-	if _, err := wgetP(fmt.Sprintf("Downloading: %s", r.URL), r.URL, tmpFile.Name()); err != nil {
+	msg := fmt.Sprintf("Downloading: %s", r.URL)
+	if _, err := command.Wget(r.URL, tmpFile.Name()).CallWithProgress(msg); err != nil {
 		return err
 	}
 

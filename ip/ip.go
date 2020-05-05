@@ -2,7 +2,7 @@ package ip
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/command"
 	"strconv"
 	"strings"
 	"sync"
@@ -56,7 +56,7 @@ func ping() {
 	for i := range [max]int{} {
 		go func(i int) {
 			ip := getIPPrefix() + strconv.Itoa(i)
-			_ = doPing(ip)
+			_ = command.Ping(ip).Run()
 			wg.Done()
 		}(i)
 	}
@@ -66,7 +66,7 @@ func ping() {
 
 func getMACAddr(vmName string) (string, error) {
 
-	out, _ := cmd.Execute("vboxmanage", "showvminfo", vmName, "--machinereadable")
+	out, _ := command.VBoxManage("showvminfo", vmName, "--machinereadable").Call()
 	entries := strings.Fields(out)
 
 	for _, entry := range entries {

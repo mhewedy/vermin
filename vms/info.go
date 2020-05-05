@@ -3,7 +3,7 @@ package vms
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
 	"io/ioutil"
 	"os"
@@ -65,7 +65,7 @@ func List(all bool) ([]string, error) {
 		args[1] = "runningvms"
 	}
 
-	r, err := cmd.Execute("vboxmanage", args[:]...)
+	r, err := command.VBoxManage(args[:]...).Call()
 	if err != nil {
 		return nil, err
 	}

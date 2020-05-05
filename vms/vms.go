@@ -3,9 +3,9 @@ package vms
 import (
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/cmd"
-	"github.com/mhewedy/vermin/cmd/scp"
-	"github.com/mhewedy/vermin/cmd/ssh"
+	"github.com/mhewedy/vermin/command"
+	"github.com/mhewedy/vermin/command/scp"
+	"github.com/mhewedy/vermin/command/ssh"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/ip"
 	"os"
@@ -35,13 +35,13 @@ func Stop(vmName string) error {
 	}
 
 	fmt.Println("Stopping", vmName, "...")
-	if _, err := cmd.Execute("vboxmanage", "controlvm", vmName, "poweroff"); err != nil {
+	if _, err := command.VBoxManage("controlvm", vmName, "poweroff").Call(); err != nil {
 		return err
 	}
 	return nil
 }
 
-func SecureShell(vmName string, command string) error {
+func SecureShell(vmName string, cmd string) error {
 	if err := checkRunningVM(vmName); err != nil {
 		return err
 	}
@@ -49,10 +49,10 @@ func SecureShell(vmName string, command string) error {
 	if err := ssh.EstablishConn(vmName); err != nil {
 		return err
 	}
-	if len(command) == 0 {
+	if len(cmd) == 0 {
 		return ssh.OpenTerminal(vmName)
 	} else {
-		return ssh.ExecuteI(vmName, command)
+		return ssh.ExecuteI(vmName, cmd)
 	}
 }
 
@@ -66,7 +66,7 @@ func Remove(vmName string, force bool) error {
 	}
 	_ = Stop(vmName)
 	fmt.Println("Removing", vmName, "...")
-	if _, err := cmd.Execute("vboxmanage", "unregistervm", vmName, "--delete"); err != nil {
+	if _, err := command.VBoxManage("unregistervm", vmName, "--delete").Call(); err != nil {
 		return err
 	}
 	return os.RemoveAll(db.GetVMPath(vmName))

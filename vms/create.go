@@ -3,9 +3,9 @@ package vms
 import (
 	"bufio"
 	"fmt"
-	"github.com/mhewedy/vermin/cmd"
-	"github.com/mhewedy/vermin/cmd/scp"
-	"github.com/mhewedy/vermin/cmd/ssh"
+	"github.com/mhewedy/vermin/command"
+	"github.com/mhewedy/vermin/command/scp"
+	"github.com/mhewedy/vermin/command/ssh"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/images"
 	"os"
@@ -34,16 +34,16 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 		return "", err
 	}
 
-	// execute command
-	if _, err = cmd.ExecuteP(fmt.Sprintf("Creating %s from image %s", vmName, imageName),
-		"vboxmanage",
+	// execute import cmd
+	importCmd := command.VBoxManage(
 		"import", db.GetImageFilePath(imageName),
 		"--vsys", "0",
 		"--vmname", vmName,
 		"--basefolder", db.GetVMsBaseDir(),
 		"--cpus", fmt.Sprintf("%d", cpus),
 		"--memory", fmt.Sprintf("%d", mem),
-	); err != nil {
+	)
+	if _, err = importCmd.CallWithProgress(fmt.Sprintf("Creating %s from image %s", vmName, imageName)); err != nil {
 		return "", err
 	}
 
@@ -66,7 +66,7 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 
 func setNetworkAdapter(vmName string) error {
 	fmt.Println("Setting bridged network adapter ...")
-	r, err := cmd.Execute("vboxmanage", "list", "bridgedifs")
+	r, err := command.VBoxManage("list", "bridgedifs").Call()
 	if err != nil {
 		return err
 	}
@@ -79,14 +79,14 @@ func setNetworkAdapter(vmName string) error {
 	adapter := strings.ReplaceAll(string(l), "Name:", "")
 	adapter = strings.TrimSpace(adapter)
 
-	if _, err = cmd.Execute("vboxmanage", "modifyvm", vmName, "--nic1", "bridged"); err != nil {
+	if _, err = command.VBoxManage("modifyvm", vmName, "--nic1", "bridged").Call(); err != nil {
 		return nil
 	}
 
 	if runtime.GOOS == "windows" {
 		adapter = fmt.Sprintf(`"%s"`, adapter)
 	}
-	if _, err := cmd.Execute("vboxmanage", "modifyvm", vmName, "--bridgeadapter1", adapter); err != nil {
+	if _, err := command.VBoxManage("modifyvm", vmName, "--bridgeadapter1", adapter).Call(); err != nil {
 		return nil
 	}
 
@@ -112,7 +112,7 @@ func provision(vmName string, script string) error {
 
 func start(vmName string) error {
 	fmt.Println("Starting", vmName, "...")
-	if _, err := cmd.Execute("vboxmanage", "startvm", vmName, "--type", "headless"); err != nil {
+	if _, err := command.VBoxManage("startvm", vmName, "--type", "headless").Call(); err != nil {
 		return err
 	}
 	if err := ssh.EstablishConn(vmName); err != nil {

@@ -2,7 +2,7 @@ package ssh
 
 import (
 	"errors"
-	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/ip"
 	"github.com/mhewedy/vermin/progress"
@@ -33,27 +33,32 @@ func OpenTerminal(vmName string) error {
 	if err != nil {
 		return err
 	}
-	return cmd.ExecuteI("ssh", "-tt", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
-		db.GetUsername()+"@"+ipAddr)
+
+	return command.Ssh("-tt", "-i", db.GetPrivateKeyPath(),
+		"-o", "StrictHostKeyChecking=no", db.GetUsername()+"@"+ipAddr,
+	).Interact()
 }
 
-func Execute(vmName string, command string) (string, error) {
+func Execute(vmName string, cmd string) (string, error) {
 	ipAddr, err := ip.Find(vmName, false)
 	if err != nil {
 		return "", err
 	}
-	return cmd.Execute("ssh", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
-		db.GetUsername()+"@"+ipAddr, "--", command)
+
+	return command.Ssh("-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
+		db.GetUsername()+"@"+ipAddr, "--", cmd).Call()
 }
 
-//ExecuteI execute ssh in interactive mode
-func ExecuteI(vmName string, command string) error {
+//Interact execute ssh in interactive mode
+func ExecuteI(vmName string, cmd string) error {
 	ipAddr, err := ip.Find(vmName, false)
 	if err != nil {
 		return err
 	}
-	return cmd.ExecuteI("ssh", "-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no",
-		db.GetUsername()+"@"+ipAddr, "--", command)
+
+	return command.Ssh("-i", db.GetPrivateKeyPath(),
+		"-o", "StrictHostKeyChecking=no", db.GetUsername()+"@"+ipAddr, "--", cmd,
+	).Interact()
 }
 
 // ExecuteIArgs run ssh in interactive mode with args
@@ -66,7 +71,7 @@ func ExecuteIArgs(vmName string, args ...string) error {
 	var cargs = []string{"-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no", db.GetUsername() + "@" + ipAddr}
 	cargs = append(cargs, args...)
 
-	return cmd.ExecuteI("ssh", cargs...)
+	return command.Ssh(cargs...).Interact()
 }
 
 // EstablishConn make sure connection to the vm is established or return an error if not
