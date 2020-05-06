@@ -1,15 +1,23 @@
 package images
 
-func CanMount(image string) bool {
+import (
+	"fmt"
+	"strings"
+)
 
+func CheckCanMount(image string) error {
 	remote, _ := listRemoteImages(false)
 
-	for i := range remote {
-		r := remote[i]
-		if r.Name == image {
-			return r.Mount
-		}
+	dbImage, err := remote.findByName(image)
+	if err != nil {
+		return err
 	}
 
-	return false
+	if !dbImage.Mount {
+		mounted := remote.findByMount(true).names()
+		return fmt.Errorf("image '%s' cannot be mounted, "+
+			"images can be mounted are:\n%s", image, strings.Join(mounted, "\n"))
+	}
+
+	return nil
 }

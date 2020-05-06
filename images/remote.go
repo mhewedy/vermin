@@ -13,28 +13,7 @@ import (
 
 const imagesCSVURL = "https://raw.githubusercontent.com/mhewedy/vermin/master/images/images.csv"
 
-type dbImage struct {
-	Name  string `csv:"name"`
-	URL   string `csv:"url"`
-	Mount bool   `csv:"mount"`
-}
-
-func listRemoteImagesNames(purgeCache bool) ([]string, error) {
-	vms, err := listRemoteImages(purgeCache)
-	if err != nil {
-		return nil, err
-	}
-
-	images := make([]string, 0)
-
-	for i := range vms {
-		images = append(images, vms[i].Name)
-	}
-
-	return images, nil
-}
-
-func listRemoteImages(purgeCache bool) ([]dbImage, error) {
+func listRemoteImages(purgeCache bool) (dbImages, error) {
 	if purgeCache {
 		file, _ := getTempFilePath()
 		if len(file) > 0 {

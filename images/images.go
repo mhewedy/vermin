@@ -1,7 +1,6 @@
 package images
 
 import (
-	"errors"
 	"fmt"
 	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
@@ -26,28 +25,13 @@ func Download(image string) error {
 	if err != nil {
 		return err
 	}
-	// check image against remote
-	var dbImage *dbImage
-	for i := range remote {
-		r := remote[i]
-		if r.Name == image {
-			dbImage = &r
-			break
-		}
-	}
 
-	if dbImage == nil {
-		l, _ := List()
-		return errors.New(fmt.Sprintf("invalid image name: '%s',", image) +
-			" valid images are:\n" + strings.Join(l, "\n"))
+	dbImage, err := remote.findByName(image)
+	if err != nil {
+		return err
 	}
 
 	return download(dbImage)
-}
-
-type image struct {
-	name   string
-	cached bool
 }
 
 func List() ([]string, error) {
@@ -55,6 +39,7 @@ func List() ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	var result = make([]string, len(list))
 	for i := range list {
 		result[i] = list[i].name
@@ -63,13 +48,12 @@ func List() ([]string, error) {
 }
 
 func Display(purgeCache bool) (string, error) {
-
 	list, err := list(purgeCache)
 	if err != nil {
 		return "", err
 	}
-	var result string
 
+	var result string
 	for i := range list {
 		if list[i].cached {
 			result += list[i].name + "\t\t(cached)\n"
@@ -78,6 +62,11 @@ func Display(purgeCache bool) (string, error) {
 		}
 	}
 	return result, nil
+}
+
+type image struct {
+	name   string
+	cached bool
 }
 
 func list(purgeCache bool) ([]image, error) {
@@ -91,14 +80,15 @@ func list(purgeCache bool) ([]image, error) {
 		result = append(result, image{cached[i], true})
 	}
 
-	remote, err := listRemoteImagesNames(purgeCache)
+	remote, err := listRemoteImages(purgeCache)
 	if err != nil {
 		return nil, err
 	}
+
 	for i := range remote {
 		r := remote[i]
-		if !contains(cached, r) {
-			result = append(result, image{r, false})
+		if !contains(cached, r.Name) {
+			result = append(result, image{r.Name, false})
 		}
 	}
 	return result, nil
@@ -127,6 +117,7 @@ func download(r *dbImage) error {
 	if err := copyFile(tmpFile.Name(), db.ImagesDir+"/"+r.Name+".ova"); err != nil {
 		return err
 	}
+
 	return nil
 }
 
