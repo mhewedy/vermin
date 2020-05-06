@@ -9,20 +9,20 @@ import (
 	"runtime"
 )
 
-type Cmd struct {
+type cmd struct {
 	command string
 	args    []string
 }
 
-func (c *Cmd) Call() (string, error) {
+func (c *cmd) Call() (string, error) {
 	return c.call(false, "")
 }
 
-func (c *Cmd) CallWithProgress(msg string) (string, error) {
+func (c *cmd) CallWithProgress(msg string) (string, error) {
 	return c.call(true, msg)
 }
 
-func (c *Cmd) call(showProgress bool, msg string) (string, error) {
+func (c *cmd) call(showProgress bool, msg string) (string, error) {
 
 	if runtime.GOOS == "windows" {
 		c.args = prepend(c.args, c.command)
@@ -54,7 +54,7 @@ func (c *Cmd) call(showProgress bool, msg string) (string, error) {
 }
 
 // Execute execute commands in interactive mode
-func (c *Cmd) Interact() error {
+func (c *cmd) Interact() error {
 	if runtime.GOOS == "windows" {
 		c.args = prepend(c.args, c.command)
 		c.command = "powershell"
@@ -76,7 +76,7 @@ func (c *Cmd) Interact() error {
 }
 
 // Run runs command and return nothing
-func (c *Cmd) Run() error {
+func (c *cmd) Run() error {
 	if runtime.GOOS == "windows" {
 		c.args = prepend(c.args, c.command)
 		c.command = "powershell"

@@ -71,8 +71,7 @@ func setNetworkAdapter(vmName string) error {
 		return err
 	}
 
-	reader := bufio.NewReader(strings.NewReader(r))
-	l, _, err := reader.ReadLine()
+	l, _, err := bufio.NewReader(strings.NewReader(r)).ReadLine()
 	if err != nil {
 		return err
 	}
