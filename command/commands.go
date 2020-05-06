@@ -46,7 +46,7 @@ func Wget(url string, file string) *cmd {
 
 func Ssh(ipAddr string, extraArgs ...string) *cmd {
 
-	args := []string{"-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no", db.GetUsername() + "@" + ipAddr}
+	args := []string{"-i", db.PrivateKeyPath, "-o", "StrictHostKeyChecking=no", db.Username + "@" + ipAddr}
 	args = append(args, extraArgs...)
 
 	return &cmd{

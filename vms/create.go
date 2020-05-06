@@ -39,7 +39,7 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 		"import", db.GetImageFilePath(imageName),
 		"--vsys", "0",
 		"--vmname", vmName,
-		"--basefolder", db.GetVMsBaseDir(),
+		"--basefolder", db.VMsBaseDir,
 		"--cpus", fmt.Sprintf("%d", cpus),
 		"--memory", fmt.Sprintf("%d", mem),
 	)
@@ -133,12 +133,12 @@ func nextName() (string, error) {
 		curr = 0
 	} else {
 		sort.Slice(l, func(i, j int) bool {
-			ii, _ := strconv.Atoi(strings.ReplaceAll(l[i], db.NamePrefix, ""))
-			jj, _ := strconv.Atoi(strings.ReplaceAll(l[j], db.NamePrefix, ""))
+			ii, _ := strconv.Atoi(strings.ReplaceAll(l[i], db.VMNamePrefix, ""))
+			jj, _ := strconv.Atoi(strings.ReplaceAll(l[j], db.VMNamePrefix, ""))
 			return ii <= jj
 		})
-		curr, _ = strconv.Atoi(strings.ReplaceAll(l[len(l)-1], db.NamePrefix, ""))
+		curr, _ = strconv.Atoi(strings.ReplaceAll(l[len(l)-1], db.VMNamePrefix, ""))
 	}
 
-	return fmt.Sprintf(db.NamePrefix+"%02d", curr+1), nil
+	return fmt.Sprintf(db.VMNamePrefix+"%02d", curr+1), nil
 }

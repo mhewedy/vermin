@@ -124,10 +124,10 @@ func download(r *rimage) error {
 	}
 
 	// copy the downloaded file to images directory
-	if err := os.MkdirAll(db.GetImagesDir()+"/"+strings.Split(r.Name, "/")[0], 0755); err != nil {
+	if err := os.MkdirAll(db.ImagesDir+"/"+strings.Split(r.Name, "/")[0], 0755); err != nil {
 		return err
 	}
-	if err := copyFile(tmpFile.Name(), db.GetImagesDir()+"/"+r.Name+".ova"); err != nil {
+	if err := copyFile(tmpFile.Name(), db.ImagesDir+"/"+r.Name+".ova"); err != nil {
 		return err
 	}
 	return nil

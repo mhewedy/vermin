@@ -17,9 +17,7 @@ func CopyToVM(vmName string, localFile string, vmFile string) error {
 		return err
 	}
 
-	_, err = command.Scp("-i", db.GetPrivateKeyPath(), localFile,
-		db.GetUsername()+"@"+ipAddr+":"+vmFile,
-	).Call()
+	_, err = command.Scp("-i", db.PrivateKeyPath, localFile, db.Username+"@"+ipAddr+":"+vmFile).Call()
 
 	return err
 }
@@ -30,9 +28,7 @@ func CopyToLocalCWD(vmName string, vmFile string) error {
 		return err
 	}
 
-	_, err = command.Scp("-i", db.GetPrivateKeyPath(),
-		db.GetUsername()+"@"+ipAddr+":"+vmFile, "./",
-	).Call()
+	_, err = command.Scp("-i", db.PrivateKeyPath, db.Username+"@"+ipAddr+":"+vmFile, "./").Call()
 
 	return err
 }

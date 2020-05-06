@@ -56,7 +56,7 @@ func Ps(all bool) (string, error) {
 	return getVMInfoList(vms), nil
 }
 
-// List return all vms that start with db.NamePrefix
+// List return all vms that start with db.VMNamePrefix
 func List(all bool) ([]string, error) {
 	var args = [2]string{"list"}
 	if all {
@@ -76,7 +76,7 @@ func List(all bool) ([]string, error) {
 	for i := range fields {
 		if i%2 == 0 {
 			vmName := strings.ReplaceAll(fields[i], `"`, "")
-			if strings.HasPrefix(vmName, db.NamePrefix) {
+			if strings.HasPrefix(vmName, db.VMNamePrefix) {
 				vms = append(vms, vmName)
 			}
 		}

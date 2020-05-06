@@ -8,39 +8,31 @@ import (
 )
 
 const (
-	image = "image"
-	tags  = "tags"
+	image    = "image"
+	tags     = "tags"
+	Username = "vermin"
 )
 
 const (
-	NamePrefix      = "vm_"
-	ImageFilePrefix = "vermin_images.csv."
+	VMNamePrefix       = "vm_"
+	ImagesDBFilePrefix = "vermin_images.csv."
 )
 
-func GetImagesDir() string {
-	return getVerminDir() + string(os.PathSeparator) + "images"
-}
-
-func GetVMsBaseDir() string {
-	return getVerminDir() + string(os.PathSeparator) + "vms"
-}
+var (
+	ImagesDir      = getVerminDir() + string(os.PathSeparator) + "images"
+	VMsBaseDir     = getVerminDir() + string(os.PathSeparator) + "vms"
+	PrivateKeyPath = getVerminDir() + string(os.PathSeparator) + "vermin_rsa"
+)
 
 func GetImageFilePath(imageName string) string {
-	return GetImagesDir() + string(os.PathSeparator) + imageName + ".ova"
+	return ImagesDir + string(os.PathSeparator) + imageName + ".ova"
 }
 
 func GetVMPath(vm string) string {
-	return GetVMsBaseDir() + string(os.PathSeparator) + vm
+	return VMsBaseDir + string(os.PathSeparator) + vm
 }
 
-func GetPrivateKeyPath() string {
-	return getVerminDir() + string(os.PathSeparator) + "vermin_rsa"
-}
-
-func GetUsername() string {
-	return "vermin"
-}
-
+// ----
 func WriteTag(vmName string, tag string) error {
 	return appendToFile(GetVMPath(vmName)+"/"+tags, []byte(tag+"\n"), 0755)
 }
@@ -52,6 +44,8 @@ func ReadTags(vmName string) (string, error) {
 	}
 	return strings.TrimSuffix(strings.ReplaceAll(content, "\n", ", "), ", "), nil
 }
+
+// ----
 
 func WriteImageData(vmName string, imageName string) error {
 	return ioutil.WriteFile(GetVMPath(vmName)+"/"+image, []byte(imageName), 0755)

@@ -10,7 +10,7 @@ import (
 const ova = ".ova"
 
 func listCachedImages() ([]string, error) {
-	baseDir := db.GetImagesDir() + string(os.PathSeparator)
+	baseDir := db.ImagesDir + string(os.PathSeparator)
 
 	images := make([]string, 0)
 
