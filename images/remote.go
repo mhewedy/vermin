@@ -2,7 +2,7 @@ package images
 
 import (
 	"errors"
-	"github.com/artonge/go-csv-tag"
+	"github.com/artonge/go-csv-tag/v2"
 	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
 	"io/ioutil"
@@ -11,11 +11,12 @@ import (
 	"strings"
 )
 
-const imagesDBURL = "https://raw.githubusercontent.com/mhewedy/vermin/master/images/images.csv"
+const imagesCSVURL = "https://raw.githubusercontent.com/mhewedy/vermin/master/images/images.csv"
 
-type rimage struct {
-	Name string `csv:"name"`
-	URL  string `csv:"url"`
+type dbImage struct {
+	Name  string `csv:"name"`
+	URL   string `csv:"url"`
+	Mount bool   `csv:"mount"`
 }
 
 func listRemoteImagesNames(purgeCache bool) ([]string, error) {
@@ -33,15 +34,15 @@ func listRemoteImagesNames(purgeCache bool) ([]string, error) {
 	return images, nil
 }
 
-func listRemoteImages(purgeCache bool) ([]rimage, error) {
+func listRemoteImages(purgeCache bool) ([]dbImage, error) {
 	if purgeCache {
-		file, _ := getCSVTempFilePath()
+		file, _ := getTempFilePath()
 		if len(file) > 0 {
 			_ = os.Remove(file)
 		}
 	}
 	// read images csv from tmp cache
-	tmp, _ := getCSVTempFilePath()
+	tmp, _ := getTempFilePath()
 	// if not found, then download the file
 	if len(tmp) == 0 {
 		tmpFile, err := ioutil.TempFile("", db.ImagesDBFilePrefix)
@@ -51,31 +52,26 @@ func listRemoteImages(purgeCache bool) ([]rimage, error) {
 		_ = tmpFile.Close()
 
 		tmp = tmpFile.Name()
-		if _, err = command.Wget(imagesDBURL, tmp).Call(); err != nil {
+		if _, err = command.Wget(imagesCSVURL, tmp).Call(); err != nil {
 			return nil, err
 		}
 	}
 
 	// parse the file as csv
-	var vms []rimage
-	err := csvtag.Load(csvtag.Config{
-		Path: tmp,
-		Dest: &vms,
-	})
+	var dbImages []dbImage
 
-	if err != nil {
+	if err := csvtag.LoadFromPath(tmp, &dbImages); err != nil {
 		return nil, err
 	}
 
-	err = validate(vms)
-	if err != nil {
+	if err := validate(dbImages); err != nil {
 		return nil, err
 	}
 
-	return vms, nil
+	return dbImages, nil
 }
 
-func getCSVTempFilePath() (string, error) {
+func getTempFilePath() (string, error) {
 	file, err := filepath.Glob(os.TempDir() + "/" + db.ImagesDBFilePrefix + "*")
 	if err != nil {
 		return "", err
@@ -88,7 +84,7 @@ func getCSVTempFilePath() (string, error) {
 
 // Check name follows <distro>/<version> name
 // Check Unique name
-func validate(vms []rimage) error {
+func validate(vms []dbImage) error {
 	names := make(map[string]bool)
 
 	for i := range vms {

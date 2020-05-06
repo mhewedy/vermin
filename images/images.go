@@ -30,22 +30,36 @@ func Create(image string) error {
 	}
 
 	// check image against remote
-	var rimage *rimage
+	var dbImage *dbImage
 	for i := range remote {
 		r := remote[i]
 		if r.Name == image {
-			rimage = &r
+			dbImage = &r
 			break
 		}
 	}
 
-	if rimage == nil {
+	if dbImage == nil {
 		l, _ := List()
 		return errors.New(fmt.Sprintf("invalid image name: '%s',", image) +
 			" valid images are:\n" + strings.Join(l, "\n"))
 	}
 
-	return download(rimage)
+	return download(dbImage)
+}
+
+func CanMount(image string) bool {
+
+	remote, _ := listRemoteImages(false)
+
+	for i := range remote {
+		r := remote[i]
+		if r.Name == image {
+			return r.Mount
+		}
+	}
+
+	return false
 }
 
 type image struct {
@@ -107,7 +121,7 @@ func list(purgeCache bool) ([]image, error) {
 	return result, nil
 }
 
-func download(r *rimage) error {
+func download(r *dbImage) error {
 	fmt.Printf("Image '%s' could not be found. Attempting to find and install ...\n", r.Name)
 
 	// download to a temp file
