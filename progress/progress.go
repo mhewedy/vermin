@@ -10,6 +10,7 @@ type StopFunc func()
 func Show(title string) StopFunc {
 	quit := make(chan bool, 1)
 	i, appendln := 0, false
+
 	go func() {
 		for {
 			select {
