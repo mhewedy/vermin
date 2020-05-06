@@ -17,11 +17,11 @@ import (
 )
 
 func Create(imageName string, script string, cpus int, mem int) (string, error) {
-	if err := images.Create(imageName); err != nil {
+	if err := images.Download(imageName); err != nil {
 		return "", err
 	}
 
-	vmName, err := nextName()
+	vmName, err := buildVMName()
 	if err != nil {
 		return "", err
 	}
@@ -121,7 +121,7 @@ func start(vmName string) error {
 	return nil
 }
 
-func nextName() (string, error) {
+func buildVMName() (string, error) {
 	var curr int
 
 	l, err := List(true)

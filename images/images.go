@@ -11,24 +11,21 @@ import (
 	"strings"
 )
 
-func Create(image string) error {
+func Download(image string) error {
 	// check image against cached
 	cached, err := listCachedImages()
 	if err != nil {
 		return err
 	}
 
-	for i := range cached {
-		if cached[i] == image {
-			return nil // already cached
-		}
+	if contains(cached, image) {
+		return nil
 	}
 
 	remote, err := listRemoteImages(false)
 	if err != nil {
 		return err
 	}
-
 	// check image against remote
 	var dbImage *dbImage
 	for i := range remote {
@@ -46,20 +43,6 @@ func Create(image string) error {
 	}
 
 	return download(dbImage)
-}
-
-func CanMount(image string) bool {
-
-	remote, _ := listRemoteImages(false)
-
-	for i := range remote {
-		r := remote[i]
-		if r.Name == image {
-			return r.Mount
-		}
-	}
-
-	return false
 }
 
 type image struct {
