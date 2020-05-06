@@ -9,6 +9,8 @@ github.com/artonge/go-csv-tag/v2 v2.0.6 h1:GettkxbiBJoV6BsjwZDg83Mb7s47VU+uQK7dJ
 github.com/artonge/go-csv-tag/v2 v2.0.6/go.mod h1:MhLKePA0uu/+2jUJ4IER31uhRV/0GsIKyrSqSRR7Mkc=
 github.com/artonge/go-csv-tag/v2 v2.0.7-0.20200506152139-d2bea776bc6c h1:Cif1dWZCvXXMRaVXs0nO6rOgoOUDlAgohXAolVXEHFA=
 github.com/artonge/go-csv-tag/v2 v2.0.7-0.20200506152139-d2bea776bc6c/go.mod h1:MhLKePA0uu/+2jUJ4IER31uhRV/0GsIKyrSqSRR7Mkc=
+github.com/artonge/go-csv-tag/v2 v2.0.7 h1:15R880S8+SHSKjvCZyNE2r3gNSaS0RQlGuU7s+w2/Fw=
+github.com/artonge/go-csv-tag/v2 v2.0.7/go.mod h1:MhLKePA0uu/+2jUJ4IER31uhRV/0GsIKyrSqSRR7Mkc=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
 github.com/cespare/xxhash v1.1.0/go.mod h1:XrSqR1VqqWfGrhpAt58auRo0WTKS1nRRg3ghfAqPWnc=
