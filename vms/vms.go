@@ -49,10 +49,11 @@ func SecureShell(vmName string, cmd string) error {
 	if err := ssh.EstablishConn(vmName); err != nil {
 		return err
 	}
+
 	if len(cmd) == 0 {
 		return ssh.OpenTerminal(vmName)
 	} else {
-		return ssh.ExecuteI(vmName, cmd)
+		return ssh.Interact(vmName, cmd)
 	}
 }
 
@@ -81,11 +82,13 @@ func PortForward(vmName string, ports string) error {
 	if err != nil {
 		return err
 	}
+
 	if err := ssh.EstablishConn(vmName); err != nil {
 		return err
 	}
+
 	fmt.Println("Connected. Press CTRL+C anytime to stop")
-	if err := ssh.ExecuteIArgs(vmName, append(a, "-N")...); err != nil {
+	if err := ssh.WithArgs(vmName, append(a, "-N")); err != nil {
 		return err
 	}
 

@@ -2,6 +2,7 @@ package command
 
 import (
 	"fmt"
+	"github.com/mhewedy/vermin/db"
 	"runtime"
 )
 
@@ -43,7 +44,11 @@ func Wget(url string, file string) *Cmd {
 	}
 }
 
-func Ssh(args ...string) *Cmd {
+func Ssh(ipAddr string, extraArgs ...string) *Cmd {
+
+	args := []string{"-i", db.GetPrivateKeyPath(), "-o", "StrictHostKeyChecking=no", db.GetUsername() + "@" + ipAddr}
+	args = append(args, extraArgs...)
+
 	return &Cmd{
 		command: "ssh",
 		args:    args,
