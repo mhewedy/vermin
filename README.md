@@ -100,6 +100,7 @@ Available Commands:
   help        Help about any command
   images      List all available images
   ip          Show IP address for a running VM
+  mount       Mount host path inside the VM
   port        Forward port(s) from a VM to host
   ps          List VMs
   rm          Remove a VM
