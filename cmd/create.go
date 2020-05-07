@@ -43,10 +43,7 @@ $ vermin create <image> </path/to/shell/script.sh>
 		var script string
 		if len(args) > 1 {
 			script = args[1]
-			if _, err := os.Stat(script); err != nil {
-				fmt.Println("file not found", script)
-				os.Exit(1)
-			}
+			checkFilePath(script)
 		}
 		cpus, _ := cmd.Flags().GetInt("cpus")
 		mem, _ := cmd.Flags().GetInt("mem")

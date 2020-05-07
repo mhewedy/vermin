@@ -25,7 +25,9 @@ func FindByPrefix(vmName string, prefix string) ([]string, error) {
 	for i := range entries {
 		entry := entries[i]
 		if strings.HasPrefix(entry, prefix) {
-			values = append(values, strings.Split(entry, "=")[1])
+			value := strings.Split(entry, "=")[1]
+			value = strings.Trim(value, `""`)
+			values = append(values, value)
 		}
 	}
 

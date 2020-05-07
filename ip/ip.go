@@ -67,13 +67,11 @@ func ping() {
 
 func getMACAddr(vmName string) (string, error) {
 	mac, found, _ := info.FindFirstByPrefix(vmName, "macaddress1")
-
-	if found {
-		mac = strings.ToLower(strings.Trim(mac, `""`))
-		return formatMACAddr(mac), nil
+	if !found {
+		return "", fmt.Errorf("unable to get mac address for %s\nUse the command 'vermin ps -a' to list all vms", vmName)
 	}
 
-	return "", fmt.Errorf("unable to get mac address for %s\nUse the command 'vermin ps -a' to list all vms", vmName)
+	return formatMACAddr(strings.ToLower(mac)), nil
 }
 
 func formatMACAddr(mac string) string {
