@@ -96,7 +96,7 @@ func list(purgeCache bool) ([]image, error) {
 }
 
 func download(r *dbImage) error {
-	fmt.Printf("Image '%s' could not be found. Attempting to find and install ...\n", r.Name)
+	fmt.Printf("Image '%s' could not be found. Attempting to find and install \n", r.Name)
 
 	// download to a temp file
 	tmpFile, err := ioutil.TempFile("", strings.ReplaceAll(r.Name, "/", "_"))

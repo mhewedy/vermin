@@ -65,7 +65,7 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 }
 
 func setNetworkAdapter(vmName string) error {
-	fmt.Println("Setting bridged network adapter ...")
+	fmt.Println("Setting bridged network adapter")
 	r, err := command.VBoxManage("list", "bridgedifs").Call()
 	if err != nil {
 		return err
@@ -93,7 +93,7 @@ func setNetworkAdapter(vmName string) error {
 }
 
 func provision(vmName string, script string) error {
-	fmt.Println("Provisioning", vmName, "...")
+	fmt.Println("Provisioning", vmName)
 
 	vmFile := "/tmp/" + filepath.Base(script)
 	if err := scp.CopyToVM(vmName, script, vmFile); err != nil {
@@ -110,7 +110,7 @@ func provision(vmName string, script string) error {
 }
 
 func start(vmName string) error {
-	fmt.Println("Starting", vmName, "...")
+	fmt.Println("Starting", vmName)
 	if _, err := command.VBoxManage("startvm", vmName, "--type", "headless").Call(); err != nil {
 		return err
 	}
