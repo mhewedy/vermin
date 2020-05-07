@@ -3,6 +3,7 @@ package ip
 import (
 	"fmt"
 	"github.com/mhewedy/vermin/command"
+	"github.com/mhewedy/vermin/db/info"
 	"strconv"
 	"strings"
 	"sync"
@@ -65,17 +66,13 @@ func ping() {
 }
 
 func getMACAddr(vmName string) (string, error) {
+	mac, found, _ := info.FindFirstByPrefix(vmName, "macaddress1")
 
-	out, _ := command.VBoxManage("showvminfo", vmName, "--machinereadable").Call()
-	entries := strings.Fields(out)
-
-	for _, entry := range entries {
-		if strings.HasPrefix(entry, "macaddress1") {
-			mac := strings.Split(entry, "=")[1]
-			mac = strings.ToLower(strings.Trim(mac, `""`))
-			return formatMACAddr(mac), nil
-		}
+	if found {
+		mac = strings.ToLower(strings.Trim(mac, `""`))
+		return formatMACAddr(mac), nil
 	}
+
 	return "", fmt.Errorf("unable to get mac address for %s\nUse the command 'vermin ps -a' to list all vms", vmName)
 }
 
