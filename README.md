@@ -11,6 +11,10 @@
 
 Create, control and connect to VirtualBox VM instances.
 
+<p style="text-align: center">
+  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin-v0.35-demo.gif"  alt="demo" width="120%"/>
+</p>
+
 ### Menu
 
 - [Prerequisites](#Prerequisites)
@@ -115,10 +119,6 @@ Flags:
 
 Use "vermin [command] --help" for more information about a command.
 ```
-
-<p style="text-align: center">
-  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin-v0.35-demo.gif"  alt="demo" width="120%"/>
-</p>
 
 #### Create a new VM
 Use the following command to create a VM
