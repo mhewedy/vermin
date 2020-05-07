@@ -12,10 +12,6 @@ DONE:
 * Fix issue of invalid ssh session when login after start
 * Build PowerShell install script (https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.ps1)
 * Test on windows 10 (build 1809)  - (Partially Done)
-    
-TODO: 
-* Write more test cases
-* Work on Clone to clone a VM (export: [vboxmanage export vm_01 --ovf20 -o ~/Documents/temp.ova] then import)
 * Enable mounting:
     on guest:
     ```
@@ -27,6 +23,11 @@ TODO:
     vboxmanage sharedfolder add vm_01 --name <unique_name_e.g._pwd> --hostpath $(pwd) --transient --automount --auto-mount-point /vermin
     # --transient to be an option
     ```
+
+    
+TODO: 
+* Write more test cases
+* Work on Clone to clone a VM (export: [vboxmanage export vm_01 --ovf20 -o ~/Documents/temp.ova] then import)
 
 POSTPONED:
 * Use progress (https://github.com/schollz/progressbar/issues/57)

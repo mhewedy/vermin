@@ -34,6 +34,10 @@ function main() {
   sudo mkdir -p /home/vermin/.ssh &&
     wget https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa.pub -O - | sudo tee -a /home/vermin/.ssh/authorized_keys &&
     sudo chmod 400 /home/vermin/.ssh/authorized_keys && sudo chown vermin:vermin /home/vermin/.ssh/authorized_keys
+
+  # install virtualbox guest utils
+  #sudo apt-get install virtualbox-guest-utils
+  #sudo adduser $USER vboxsf
 }
 
 main
