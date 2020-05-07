@@ -5,6 +5,7 @@ import (
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/db/info"
 	"github.com/mhewedy/vermin/images"
+	"path/filepath"
 	"strconv"
 	"time"
 )
@@ -27,11 +28,16 @@ func Mount(vmName string, hostPath string) error {
 		return err
 	}
 
+	absHostPath, err := filepath.Abs(hostPath)
+	if err != nil {
+		return err
+	}
+
 	if _, err = command.VBoxManage("sharedfolder",
 		"add",
 		vmName,
 		"--name", strconv.FormatInt(time.Now().Unix(), 10),
-		"--hostpath", hostPath,
+		"--hostpath", absHostPath,
 		"--transient",
 		"--automount",
 		"--auto-mount-point", "/vermin").Call(); err != nil {
