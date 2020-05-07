@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+const format = "\r✔ %s\n"
+
 type StopFunc func()
 
 func Immediate(msg ...string) {
@@ -13,7 +15,8 @@ func Immediate(msg ...string) {
 	for _, m := range msg {
 		msgs += m + " "
 	}
-	fmt.Printf("\r✔ %s\n", msgs)
+
+	fmt.Printf(format, msgs)
 }
 
 func Show(msg string) StopFunc {
@@ -47,7 +50,7 @@ func Show(msg string) StopFunc {
 	return func() {
 		quit <- true
 		if isWritten {
-			fmt.Printf("\r✔ %s\n", msg)
+			fmt.Printf(format, msg)
 		}
 	}
 }
