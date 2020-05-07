@@ -113,7 +113,7 @@ func download(r *dbImage) error {
 
 	bar := progressbar.DefaultBytes(
 		resp.ContentLength,
-		fmt.Sprintf("Downloading: %s ", r.URL),
+		"Downloading",
 	)
 	if _, err = io.Copy(io.MultiWriter(tmpFile, bar), resp.Body); err != nil {
 		return err

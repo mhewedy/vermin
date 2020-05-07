@@ -8,6 +8,7 @@ import (
 	"github.com/mhewedy/vermin/command/ssh"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/images"
+	"github.com/mhewedy/vermin/progress"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -65,7 +66,7 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 }
 
 func setNetworkAdapter(vmName string) error {
-	fmt.Println("Setting bridged network adapter")
+	progress.Immediate("Setting bridged network adapter")
 	r, err := command.VBoxManage("list", "bridgedifs").Call()
 	if err != nil {
 		return err
@@ -110,7 +111,7 @@ func provision(vmName string, script string) error {
 }
 
 func start(vmName string) error {
-	fmt.Println("Starting", vmName)
+	progress.Immediate("Starting", vmName)
 	if _, err := command.VBoxManage("startvm", vmName, "--type", "headless").Call(); err != nil {
 		return err
 	}
