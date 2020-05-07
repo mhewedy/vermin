@@ -1,7 +1,6 @@
 package command
 
 import (
-	"fmt"
 	"github.com/mhewedy/vermin/db"
 	"runtime"
 )
@@ -24,23 +23,6 @@ func Arp(args ...string) *cmd {
 	return &cmd{
 		command: "arp",
 		args:    args,
-	}
-}
-
-func Wget(url string, file string) *cmd {
-	if runtime.GOOS == "windows" {
-		return &cmd{
-			command: fmt.Sprintf("(New-Object System.Net.WebClient).DownloadFile('%s', '%s')", url, file),
-		}
-	} else {
-		return &cmd{
-			command: "wget",
-			args: []string{
-				"-O",
-				file,
-				url,
-			},
-		}
 	}
 }
 

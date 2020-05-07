@@ -3,9 +3,10 @@ package images
 import (
 	"errors"
 	"github.com/artonge/go-csv-tag/v2"
-	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
+	"io"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,23 +16,31 @@ const imagesCSVURL = "https://raw.githubusercontent.com/mhewedy/vermin/master/im
 
 func listRemoteImages(purgeCache bool) (dbImages, error) {
 	if purgeCache {
-		file, _ := getTempFilePath()
+		file, _ := getCSVTempFilePath()
 		if len(file) > 0 {
 			_ = os.Remove(file)
 		}
 	}
-	// read images csv from tmp cache
-	tmp, _ := getTempFilePath()
+	// read images csv from csvFile cache
+	csvFile, _ := getCSVTempFilePath()
+
 	// if not found, then download the file
-	if len(tmp) == 0 {
+	if len(csvFile) == 0 {
 		tmpFile, err := ioutil.TempFile("", db.ImagesDBFilePrefix)
 		if err != nil {
 			return nil, err
 		}
-		_ = tmpFile.Close()
+		defer tmpFile.Close()
 
-		tmp = tmpFile.Name()
-		if _, err = command.Wget(imagesCSVURL, tmp).Call(); err != nil {
+		csvFile = tmpFile.Name()
+
+		resp, err := http.Get(imagesCSVURL)
+		if err != nil {
+			return nil, err
+		}
+		defer resp.Body.Close()
+
+		if _, err := io.Copy(tmpFile, resp.Body); err != nil {
 			return nil, err
 		}
 	}
@@ -39,7 +48,7 @@ func listRemoteImages(purgeCache bool) (dbImages, error) {
 	// parse the file as csv
 	var dbImages []dbImage
 
-	if err := csvtag.LoadFromPath(tmp, &dbImages); err != nil {
+	if err := csvtag.LoadFromPath(csvFile, &dbImages); err != nil {
 		return nil, err
 	}
 
@@ -50,7 +59,7 @@ func listRemoteImages(purgeCache bool) (dbImages, error) {
 	return dbImages, nil
 }
 
-func getTempFilePath() (string, error) {
+func getCSVTempFilePath() (string, error) {
 	file, err := filepath.Glob(os.TempDir() + "/" + db.ImagesDBFilePrefix + "*")
 	if err != nil {
 		return "", err

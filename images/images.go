@@ -2,10 +2,11 @@ package images
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
+	"github.com/schollz/progressbar/v3"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"strings"
 )
@@ -102,11 +103,19 @@ func download(r *dbImage) error {
 	if err != nil {
 		return err
 	}
-	_ = tmpFile.Close()
 	defer os.Remove(tmpFile.Name())
 
-	msg := fmt.Sprintf("Downloading: %s", r.URL)
-	if _, err := command.Wget(r.URL, tmpFile.Name()).CallWithProgress(msg); err != nil {
+	resp, err := http.Get(r.URL)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	bar := progressbar.DefaultBytes(
+		resp.ContentLength,
+		fmt.Sprintf("Downloading: %s ", r.URL),
+	)
+	if _, err = io.Copy(io.MultiWriter(tmpFile, bar), resp.Body); err != nil {
 		return err
 	}
 
@@ -114,6 +123,7 @@ func download(r *dbImage) error {
 	if err := os.MkdirAll(db.ImagesDir+"/"+strings.Split(r.Name, "/")[0], 0755); err != nil {
 		return err
 	}
+
 	if err := copyFile(tmpFile.Name(), db.ImagesDir+"/"+r.Name+".ova"); err != nil {
 		return err
 	}
