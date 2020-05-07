@@ -15,7 +15,7 @@ type delay struct {
 func (b *delay) sleep(seconds int) error {
 	elapsed := time.Now().Sub(b.start).Milliseconds()
 	if !b.start.IsZero() && elapsed >= b.max.Milliseconds() {
-		return errors.New("cannot accomplish task, time elapsed")
+		return errors.New("Cannot accomplish task, time elapsed")
 	}
 	if b.iter == 0 {
 		b.start = time.Now()

@@ -69,12 +69,12 @@ func validate(vms []dbImage) error {
 	for i := range vms {
 		// check name
 		if len(strings.Split(vms[i].Name, "/")) != 2 {
-			return errors.New("name doesn't follow pattern <distro>/<version>")
+			return errors.New("Name doesn't follow pattern <distro>/<version>")
 		}
 		// check duplicate
 		_, found := names[vms[i].Name]
 		if found {
-			return errors.New("remote list cannot contains duplicates")
+			return errors.New("Remote list cannot contains duplicates")
 		}
 
 		names[vms[i].Name] = true

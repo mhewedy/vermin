@@ -47,7 +47,7 @@ func Find(vmName string, purge bool) (string, error) {
 		pong = true
 	}
 
-	return "", fmt.Errorf("cannot find ip for %s\nUse the command 'vermin ip -p %s' to purge cache", vmName, vmName)
+	return "", fmt.Errorf("Cannot find ip for %s\nUse the command 'vermin ip -p %s' to purge cache", vmName, vmName)
 }
 
 func ping() {
@@ -68,7 +68,7 @@ func ping() {
 func getMACAddr(vmName string) (string, error) {
 	mac, found, _ := info.FindFirstByPrefix(vmName, "macaddress1")
 	if !found {
-		return "", fmt.Errorf("unable to get mac address for %s\nUse the command 'vermin ps -a' to list all vms", vmName)
+		return "", fmt.Errorf("Unable to get mac address for %s\nUse the command 'vermin ps -a' to list all vms", vmName)
 	}
 
 	return formatMACAddr(strings.ToLower(mac)), nil

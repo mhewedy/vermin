@@ -58,7 +58,7 @@ $ vermin create <image> </path/to/shell/script.sh>
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
-			return errors.New("image required\nUse the command 'vermin images' to list all images available")
+			return errors.New("Image required\nUse the command 'vermin images' to list all images available")
 		}
 		return nil
 	},

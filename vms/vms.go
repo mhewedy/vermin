@@ -59,7 +59,7 @@ func SecureShell(vmName string, cmd string) error {
 
 func Remove(vmName string, force bool) error {
 	if !force && isRunningVM(vmName) {
-		return errors.New("cannot stop running VM, use -f flag to force remove")
+		return errors.New("Cannot stop running VM, use -f flag to force remove")
 	}
 
 	if err := checkVM(vmName); err != nil {
