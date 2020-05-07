@@ -3,6 +3,7 @@ package command
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"github.com/mhewedy/vermin/progress"
 	"os"
 	"os/exec"
@@ -28,6 +29,8 @@ func (c *cmd) call(showProgress bool, msg string) (string, error) {
 		c.args = prepend(c.args, c.command)
 		c.command = "powershell"
 	}
+
+	c.log()
 
 	cmd := exec.Command(c.command, c.args...)
 
@@ -60,6 +63,8 @@ func (c *cmd) Interact() error {
 		c.command = "powershell"
 	}
 
+	c.log()
+
 	cmd := exec.Command(c.command, c.args...)
 
 	cmd.Stdout = os.Stdout
@@ -81,9 +86,22 @@ func (c *cmd) Run() error {
 		c.args = prepend(c.args, c.command)
 		c.command = "powershell"
 	}
+
+	c.log()
+
 	return exec.Command(c.command, c.args...).Run()
 }
 
 func prepend(x []string, y string) []string {
 	return append([]string{y}, x...)
+}
+
+func (c *cmd) log() {
+	if _, ok := os.LookupEnv("VERMIN_DEBUG"); ok {
+		fmt.Print("$ ", c.command, " ")
+		for _, arg := range c.args {
+			fmt.Print(arg, " ")
+		}
+		fmt.Println()
+	}
 }
