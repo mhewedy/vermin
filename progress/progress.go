@@ -2,6 +2,7 @@ package progress
 
 import (
 	"fmt"
+	"github.com/schollz/progressbar/v3"
 	"time"
 )
 
@@ -11,6 +12,11 @@ func Show(title string) StopFunc {
 	quit := make(chan bool, 1)
 	i, appendln := 0, false
 
+	bar := progressbar.NewOptions(-1,
+		progressbar.OptionSetDescription(title),
+		progressbar.OptionSpinnerType(11),
+	)
+
 	go func() {
 		for {
 			select {
@@ -18,16 +24,12 @@ func Show(title string) StopFunc {
 				close(quit)
 				return
 			default:
-				const d = 3 * time.Second
 				if i == 0 {
 					time.Sleep(1 * time.Second)
-				} else if i == 1 {
-					appendln = true
-					fmt.Print(title + " ")
-					time.Sleep(d)
 				} else {
-					fmt.Print(".")
-					time.Sleep(d)
+					appendln = true
+					_ = bar.Add(1)
+					time.Sleep(100 * time.Millisecond)
 				}
 			}
 			i++
@@ -37,6 +39,7 @@ func Show(title string) StopFunc {
 	return func() {
 		quit <- true
 		if appendln {
+			fmt.Printf("\r✔ %s", title)
 			fmt.Println()
 		}
 	}
