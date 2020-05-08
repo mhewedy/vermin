@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/db/info"
 	"io/ioutil"
 	"os"
 	"sort"
@@ -12,14 +13,15 @@ import (
 )
 
 var (
-	format = "%-15s%-30s%-13s%-13s%s\n"
-	header = fmt.Sprintf(format, "VM NAME", "IMAGE", "CPUS", "MEM", "TAGS")
+	format = "%-15s%-27s%-10s%-10s%-13s%s\n"
+	header = fmt.Sprintf(format, "VM NAME", "IMAGE", "CPUS", "MEM", "DISK", "TAGS")
 )
 
 type vmInfo struct {
 	name    string
 	image   string
 	hwSpecs hwSpecs
+	disk    string
 	tags    string
 }
 
@@ -29,7 +31,7 @@ type hwSpecs struct {
 }
 
 func (v *vmInfo) String() string {
-	return fmt.Sprintf(format, v.name, v.image, v.hwSpecs.cpu, v.hwSpecs.mem, v.tags)
+	return fmt.Sprintf(format, v.name, v.image, v.hwSpecs.cpu, v.hwSpecs.mem, v.disk, v.tags)
 }
 
 type vmInfoList []*vmInfo
@@ -127,7 +129,7 @@ func getVMInfo(vm string) *vmInfo {
 	}
 
 	hw := getHWSpecs(vm)
-
+	disk := getDiskSizeGB(vm)
 	image, _ := db.ReadImageData(vm)
 	tags, _ := db.ReadTags(vm)
 
@@ -135,8 +137,21 @@ func getVMInfo(vm string) *vmInfo {
 		name:    vm,
 		image:   image,
 		hwSpecs: hw,
+		disk:    disk,
 		tags:    tags,
 	}
+}
+
+func getDiskSizeGB(vm string) string {
+	var disk string
+	diskFile, ok, _ := info.FindFirstByPrefix(vm, `"SATA-0-0"`)
+	if ok {
+		stat, _ := os.Stat(diskFile)
+		if stat != nil {
+			disk = fmt.Sprintf("%.1fGB", float64(stat.Size())/(1042*1024*1024.0))
+		}
+	}
+	return disk
 }
 
 func getHWSpecs(vm string) hwSpecs {
