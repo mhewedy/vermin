@@ -18,13 +18,13 @@ var (
 type vmInfo struct {
 	name  string
 	image string
-	vbox  *info.VBox
+	box   *info.Box
 	disk  string
 	tags  string
 }
 
 func (v *vmInfo) String() string {
-	return fmt.Sprintf(format, v.name, v.image, v.vbox.CPU, v.vbox.Mem, v.disk, v.tags)
+	return fmt.Sprintf(format, v.name, v.image, v.box.CPU, v.box.Mem, v.disk, v.tags)
 }
 
 type vmInfoList []*vmInfo
@@ -80,7 +80,6 @@ func List(all bool) ([]string, error) {
 	return vms, nil
 }
 
-// get get vmSpec about vms
 func getVMInfoList(vms []string) string {
 
 	if len(vms) == 0 {
@@ -116,26 +115,25 @@ func getVMInfoList(vms []string) string {
 }
 
 func getVMInfo(vm string) *vmInfo {
-
 	if _, err := os.Stat(db.GetVMPath(vm)); os.IsNotExist(err) {
 		return nil
 	}
 
-	vbox, _ := info.Get(vm)
-	disk := getDiskSizeGB(vm, vbox.HDLocation)
+	box, _ := info.GetBoxInfo(vm)
+	disk := getDiskSizeInGB(vm, box.HDLocation)
 	image, _ := db.ReadImageData(vm)
 	tags, _ := db.ReadTags(vm)
 
 	return &vmInfo{
 		name:  vm,
 		image: image,
-		vbox:  vbox,
+		box:   box,
 		disk:  disk,
 		tags:  tags,
 	}
 }
 
-func getDiskSizeGB(vm string, hdLocation string) string {
+func getDiskSizeInGB(vm string, hdLocation string) string {
 	stat, err := os.Stat(db.GetVMPath(vm) + string(os.PathSeparator) + hdLocation)
 	if err != nil {
 		return ""

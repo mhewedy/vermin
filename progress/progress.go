@@ -36,7 +36,7 @@ func Show(msg string) StopFunc {
 				return
 			default:
 				if i == 0 {
-					time.Sleep(1 * time.Second)
+					time.Sleep(500 * time.Millisecond)
 				} else {
 					isWritten = true
 					_ = bar.Add(1)

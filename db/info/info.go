@@ -6,10 +6,11 @@ import (
 	"io/ioutil"
 )
 
-type VBox struct {
+type Box struct {
 	CPU        string
 	Mem        string
 	HDLocation string
+	MACAddr    string
 }
 
 type vbox struct {
@@ -29,11 +30,16 @@ type vbox struct {
 			Memory struct {
 				RAMSize string `xml:"RAMSize,attr"`
 			} `xml:"Memory"`
+			Network struct {
+				Adapter struct {
+					MACAddress string `xml:"MACAddress,attr"`
+				} `xml:"Adapter"`
+			} `xml:"Network"`
 		} `xml:"Hardware"`
 	} `xml:"Machine"`
 }
 
-func Get(vm string) (*VBox, error) {
+func GetBoxInfo(vm string) (*Box, error) {
 	var vb vbox
 	b, _ := ioutil.ReadFile(db.GetVMPath(vm) + "/" + vm + ".vbox")
 	err := xml.Unmarshal(b, &vb)
@@ -46,9 +52,10 @@ func Get(vm string) (*VBox, error) {
 	if len(cpuCount) == 0 {
 		cpuCount = "1"
 	}
-	return &VBox{
+	return &Box{
 		CPU:        cpuCount,
 		Mem:        vb.Machine.Hardware.Memory.RAMSize,
 		HDLocation: vb.Machine.MediaRegistry.HardDisks.HardDisk.Location,
+		MACAddr:    vb.Machine.Hardware.Network.Adapter.MACAddress,
 	}, nil
 }
