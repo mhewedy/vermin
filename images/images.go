@@ -111,10 +111,8 @@ func download(r *dbImage) error {
 	}
 	defer resp.Body.Close()
 
-	bar := progressbar.DefaultBytes(
-		resp.ContentLength,
-		"Downloading",
-	)
+	bar := buildDownloadBar(resp)
+
 	if _, err = io.Copy(io.MultiWriter(tmpFile, bar), resp.Body); err != nil {
 		return err
 	}
@@ -129,6 +127,16 @@ func download(r *dbImage) error {
 	}
 
 	return nil
+}
+
+func buildDownloadBar(resp *http.Response) *progressbar.ProgressBar {
+	bar := progressbar.DefaultBytes(
+		resp.ContentLength,
+		"Downloading",
+	)
+	progressbar.OptionSetTheme(progressbar.Theme{
+		Saucer: "#", SaucerPadding: ".", BarStart: "[", BarEnd: "]"})(bar)
+	return bar
 }
 
 func contains(a []string, s string) bool {
