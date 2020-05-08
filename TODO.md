@@ -23,6 +23,7 @@ DONE:
     vboxmanage sharedfolder add vm_01 --name <unique_name_e.g._pwd> --hostpath $(pwd) --transient --automount --auto-mount-point /vermin
     # --transient to be an option
     ```
+* Use progress (https://github.com/schollz/progressbar/issues/57)
 
     
 TODO: 
@@ -30,5 +31,4 @@ TODO:
 * Work on Clone to clone a VM (export: [vboxmanage export vm_01 --ovf20 -o ~/Documents/temp.ova] then import)
 
 POSTPONED:
-* Use progress (https://github.com/schollz/progressbar/issues/57)
 * consider use google drive (https://drive.google.com/uc?export=download&confirm=htAy&id=<fileid>) 
