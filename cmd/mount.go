@@ -48,8 +48,11 @@ Note:
 		}
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 1 {
+			return errors.New("vm required")
+		}
 		if len(args) < 2 {
-			return errors.New("Invalid number of arguments passed, Use vermin mount -h to show help.")
+			return errors.New("path required")
 		}
 		return nil
 	},
