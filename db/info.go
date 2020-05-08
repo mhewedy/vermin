@@ -1,8 +1,7 @@
-package info
+package db
 
 import (
 	"encoding/xml"
-	"github.com/mhewedy/vermin/db"
 	"io/ioutil"
 )
 
@@ -41,7 +40,7 @@ type vbox struct {
 
 func GetBoxInfo(vm string) (*Box, error) {
 	var vb vbox
-	b, _ := ioutil.ReadFile(db.GetVMPath(vm) + "/" + vm + ".vbox")
+	b, _ := ioutil.ReadFile(GetVMPath(vm) + "/" + vm + ".vbox")
 	err := xml.Unmarshal(b, &vb)
 
 	if err != nil {

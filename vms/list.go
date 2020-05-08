@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
-	"github.com/mhewedy/vermin/db/info"
 	"os"
 	"sort"
 	"strings"
@@ -18,7 +17,7 @@ var (
 type vmInfo struct {
 	name  string
 	image string
-	box   *info.Box
+	box   *db.Box
 	disk  string
 	tags  string
 }
@@ -119,7 +118,7 @@ func getVMInfo(vm string) *vmInfo {
 		return nil
 	}
 
-	box, _ := info.GetBoxInfo(vm)
+	box, _ := db.GetBoxInfo(vm)
 	disk := getDiskSizeInGB(vm, box.HDLocation)
 	image, _ := db.ReadImageData(vm)
 	tags, _ := db.ReadTags(vm)

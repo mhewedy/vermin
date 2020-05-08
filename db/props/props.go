@@ -1,5 +1,5 @@
 // This package modeled around showvminfo subcommand which yield a bad performance.
-// Consider using db/info package (which depends on parsing the vbox xml file) instead whenever possible
+// Consider using db package whenever possible.
 package props
 
 import (

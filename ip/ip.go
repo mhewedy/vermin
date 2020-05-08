@@ -3,7 +3,7 @@ package ip
 import (
 	"fmt"
 	"github.com/mhewedy/vermin/command"
-	"github.com/mhewedy/vermin/db/info"
+	"github.com/mhewedy/vermin/db"
 	"strconv"
 	"strings"
 	"sync"
@@ -66,7 +66,7 @@ func ping() {
 }
 
 func getMACAddr(vmName string) (string, error) {
-	box, err := info.GetBoxInfo(vmName)
+	box, err := db.GetBoxInfo(vmName)
 	if err != nil {
 		return "", err
 	}
