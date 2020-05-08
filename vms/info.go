@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
-	"github.com/mhewedy/vermin/db/info"
 	"io/ioutil"
 	"os"
 	"sort"
@@ -26,8 +25,9 @@ type vmInfo struct {
 }
 
 type hwSpecs struct {
-	cpu string
-	mem string
+	cpu        string
+	mem        string
+	hdLocation string
 }
 
 func (v *vmInfo) String() string {
@@ -129,7 +129,7 @@ func getVMInfo(vm string) *vmInfo {
 	}
 
 	hw := getHWSpecs(vm)
-	disk := getDiskSizeGB(vm)
+	disk := getDiskSizeGB(vm, hw.hdLocation)
 	image, _ := db.ReadImageData(vm)
 	tags, _ := db.ReadTags(vm)
 
@@ -142,22 +142,25 @@ func getVMInfo(vm string) *vmInfo {
 	}
 }
 
-func getDiskSizeGB(vm string) string {
-	var disk string
-	diskFile, ok, _ := info.FindFirstByPrefix(vm, `"SATA-0-0"`)
-	if ok {
-		stat, _ := os.Stat(diskFile)
-		if stat != nil {
-			disk = fmt.Sprintf("%.1fGB", float64(stat.Size())/(1042*1024*1024.0))
-		}
+func getDiskSizeGB(vm string, hdLocation string) string {
+	stat, err := os.Stat(db.GetVMPath(vm) + string(os.PathSeparator) + hdLocation)
+	if err != nil {
+		return ""
 	}
-	return disk
+	return fmt.Sprintf("%.1fGB", float64(stat.Size())/(1042*1024*1024.0))
 }
 
 func getHWSpecs(vm string) hwSpecs {
 	type vbox struct {
 		XMLName xml.Name `xml:"VirtualBox"`
 		Machine struct {
+			MediaRegistry struct {
+				HardDisks struct {
+					HardDisk struct {
+						Location string `xml:"location,attr"`
+					} `xml:"HardDisk"`
+				} `xml:"HardDisks"`
+			} `xml:"MediaRegistry"`
 			Hardware struct {
 				CPU struct {
 					Count string `xml:"count,attr"`
@@ -182,7 +185,8 @@ func getHWSpecs(vm string) hwSpecs {
 		cpuCount = "1"
 	}
 	return hwSpecs{
-		cpu: cpuCount,
-		mem: vb.Machine.Hardware.Memory.RAMSize,
+		cpu:        cpuCount,
+		mem:        vb.Machine.Hardware.Memory.RAMSize,
+		hdLocation: vb.Machine.MediaRegistry.HardDisks.HardDisk.Location,
 	}
 }
