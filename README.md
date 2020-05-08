@@ -148,8 +148,10 @@ centos/8
 #### List VMs
 ```shell script
 $ vermin ps
-VM NAME		IMAGE				CPUS	MEM	TAGS
-vm_01		ubuntu/focal			1	1024
+VM NAME        IMAGE                      CPUS      MEM       DISK         TAGS
+vm_01          alpine/3.11                1         1024      0.8GB
+vm_02          ubuntu/focal               1         1024      2.6GB
+vm_03          centos/8                   1         1024      2.0GB
 ```
 
 #### Start VM
