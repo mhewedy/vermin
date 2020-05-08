@@ -1,11 +1,10 @@
 package vms
 
 import (
-	"encoding/xml"
 	"fmt"
 	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
-	"io/ioutil"
+	"github.com/mhewedy/vermin/db/info"
 	"os"
 	"sort"
 	"strings"
@@ -17,21 +16,15 @@ var (
 )
 
 type vmInfo struct {
-	name    string
-	image   string
-	hwSpecs hwSpecs
-	disk    string
-	tags    string
-}
-
-type hwSpecs struct {
-	cpu        string
-	mem        string
-	hdLocation string
+	name  string
+	image string
+	vbox  *info.VBox
+	disk  string
+	tags  string
 }
 
 func (v *vmInfo) String() string {
-	return fmt.Sprintf(format, v.name, v.image, v.hwSpecs.cpu, v.hwSpecs.mem, v.disk, v.tags)
+	return fmt.Sprintf(format, v.name, v.image, v.vbox.CPU, v.vbox.Mem, v.disk, v.tags)
 }
 
 type vmInfoList []*vmInfo
@@ -87,7 +80,7 @@ func List(all bool) ([]string, error) {
 	return vms, nil
 }
 
-// get get info about vms
+// get get vmSpec about vms
 func getVMInfoList(vms []string) string {
 
 	if len(vms) == 0 {
@@ -128,17 +121,17 @@ func getVMInfo(vm string) *vmInfo {
 		return nil
 	}
 
-	hw := getHWSpecs(vm)
-	disk := getDiskSizeGB(vm, hw.hdLocation)
+	vbox, _ := info.Get(vm)
+	disk := getDiskSizeGB(vm, vbox.HDLocation)
 	image, _ := db.ReadImageData(vm)
 	tags, _ := db.ReadTags(vm)
 
 	return &vmInfo{
-		name:    vm,
-		image:   image,
-		hwSpecs: hw,
-		disk:    disk,
-		tags:    tags,
+		name:  vm,
+		image: image,
+		vbox:  vbox,
+		disk:  disk,
+		tags:  tags,
 	}
 }
 
@@ -148,45 +141,4 @@ func getDiskSizeGB(vm string, hdLocation string) string {
 		return ""
 	}
 	return fmt.Sprintf("%.1fGB", float64(stat.Size())/(1042*1024*1024.0))
-}
-
-func getHWSpecs(vm string) hwSpecs {
-	type vbox struct {
-		XMLName xml.Name `xml:"VirtualBox"`
-		Machine struct {
-			MediaRegistry struct {
-				HardDisks struct {
-					HardDisk struct {
-						Location string `xml:"location,attr"`
-					} `xml:"HardDisk"`
-				} `xml:"HardDisks"`
-			} `xml:"MediaRegistry"`
-			Hardware struct {
-				CPU struct {
-					Count string `xml:"count,attr"`
-				} `xml:"CPU"`
-				Memory struct {
-					RAMSize string `xml:"RAMSize,attr"`
-				} `xml:"Memory"`
-			} `xml:"Hardware"`
-		} `xml:"Machine"`
-	}
-
-	var vb vbox
-	b, _ := ioutil.ReadFile(db.GetVMPath(vm) + "/" + vm + ".vbox")
-	err := xml.Unmarshal(b, &vb)
-
-	if err != nil {
-		return hwSpecs{}
-	}
-
-	cpuCount := vb.Machine.Hardware.CPU.Count
-	if len(cpuCount) == 0 {
-		cpuCount = "1"
-	}
-	return hwSpecs{
-		cpu:        cpuCount,
-		mem:        vb.Machine.Hardware.Memory.RAMSize,
-		hdLocation: vb.Machine.MediaRegistry.HardDisks.HardDisk.Location,
-	}
 }

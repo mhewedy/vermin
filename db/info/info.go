@@ -1,48 +1,54 @@
 package info
 
 import (
-	"github.com/mhewedy/vermin/command"
-	"strings"
+	"encoding/xml"
+	"github.com/mhewedy/vermin/db"
+	"io/ioutil"
 )
 
-func Get(vmName string) ([]string, error) {
-	out, err := command.VBoxManage("showvminfo", vmName, "--machinereadable").Call()
+type VBox struct {
+	CPU        string
+	Mem        string
+	HDLocation string
+}
+
+type vbox struct {
+	XMLName xml.Name `xml:"VirtualBox"`
+	Machine struct {
+		MediaRegistry struct {
+			HardDisks struct {
+				HardDisk struct {
+					Location string `xml:"location,attr"`
+				} `xml:"HardDisk"`
+			} `xml:"HardDisks"`
+		} `xml:"MediaRegistry"`
+		Hardware struct {
+			CPU struct {
+				Count string `xml:"count,attr"`
+			} `xml:"CPU"`
+			Memory struct {
+				RAMSize string `xml:"RAMSize,attr"`
+			} `xml:"Memory"`
+		} `xml:"Hardware"`
+	} `xml:"Machine"`
+}
+
+func Get(vm string) (*VBox, error) {
+	var vb vbox
+	b, _ := ioutil.ReadFile(db.GetVMPath(vm) + "/" + vm + ".vbox")
+	err := xml.Unmarshal(b, &vb)
+
 	if err != nil {
 		return nil, err
 	}
-	return strings.Fields(out), nil
-}
 
-func FindByPrefix(vmName string, prefix string) ([]string, error) {
-
-	entries, err := Get(vmName)
-	if err != nil {
-		return nil, err
+	cpuCount := vb.Machine.Hardware.CPU.Count
+	if len(cpuCount) == 0 {
+		cpuCount = "1"
 	}
-
-	var values []string
-
-	for i := range entries {
-		entry := entries[i]
-		if strings.HasPrefix(entry, prefix) {
-			value := strings.Split(entry, "=")[1]
-			value = strings.Trim(value, `""`)
-			values = append(values, value)
-		}
-	}
-
-	return values, nil
-}
-
-func FindFirstByPrefix(vmName string, prefix string) (string, bool, error) {
-	byPrefix, err := FindByPrefix(vmName, prefix)
-	if err != nil {
-		return "", false, err
-	}
-
-	if len(byPrefix) == 0 {
-		return "", false, nil
-	}
-
-	return byPrefix[0], true, nil
+	return &VBox{
+		CPU:        cpuCount,
+		Mem:        vb.Machine.Hardware.Memory.RAMSize,
+		HDLocation: vb.Machine.MediaRegistry.HardDisks.HardDisk.Location,
+	}, nil
 }

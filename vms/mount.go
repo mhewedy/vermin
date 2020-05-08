@@ -3,7 +3,7 @@ package vms
 import (
 	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
-	"github.com/mhewedy/vermin/db/info"
+	"github.com/mhewedy/vermin/db/props"
 	"github.com/mhewedy/vermin/images"
 	"path/filepath"
 	"strconv"
@@ -48,7 +48,7 @@ func Mount(vmName string, hostPath string) error {
 }
 
 func removeMounts(vmName string) error {
-	transientMounts, err := info.FindByPrefix(vmName, "SharedFolderNameTransientMapping")
+	transientMounts, err := props.FindByPrefix(vmName, "SharedFolderNameTransientMapping")
 	if err != nil {
 		return err
 	}

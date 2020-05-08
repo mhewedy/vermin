@@ -3,7 +3,7 @@ package ip
 import (
 	"fmt"
 	"github.com/mhewedy/vermin/command"
-	"github.com/mhewedy/vermin/db/info"
+	"github.com/mhewedy/vermin/db/props"
 	"strconv"
 	"strings"
 	"sync"
@@ -66,7 +66,7 @@ func ping() {
 }
 
 func getMACAddr(vmName string) (string, error) {
-	mac, found, _ := info.FindFirstByPrefix(vmName, "macaddress1")
+	mac, found, _ := props.FindFirstByPrefix(vmName, "macaddress1")
 	if !found {
 		return "", fmt.Errorf("Unable to get mac address for %s\nUse the command 'vermin ps -a' to list all vms", vmName)
 	}
