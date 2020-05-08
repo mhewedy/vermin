@@ -45,7 +45,7 @@ func (c *cmd) call(showProgress bool, msg string) (string, error) {
 	}
 
 	if showProgress {
-		stop := progress.Show(msg)
+		stop := progress.Show(msg, false)
 		defer stop()
 	}
 

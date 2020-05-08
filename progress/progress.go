@@ -19,7 +19,7 @@ func Immediate(msg ...string) {
 	fmt.Printf(format, msgs)
 }
 
-func Show(msg string) StopFunc {
+func Show(msg string, initialWait bool) StopFunc {
 	quit := make(chan bool, 1)
 	i, isWritten := 0, false
 
@@ -35,8 +35,8 @@ func Show(msg string) StopFunc {
 				close(quit)
 				return
 			default:
-				if i == 0 {
-					time.Sleep(500 * time.Millisecond)
+				if initialWait && i == 0 {
+					time.Sleep(600 * time.Millisecond)
 				} else {
 					isWritten = true
 					_ = bar.Add(1)

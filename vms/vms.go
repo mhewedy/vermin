@@ -8,6 +8,7 @@ import (
 	"github.com/mhewedy/vermin/command/ssh"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/ip"
+	"github.com/mhewedy/vermin/progress"
 	"os"
 )
 
@@ -34,7 +35,7 @@ func Stop(vmName string) error {
 		return err
 	}
 
-	fmt.Println("Stopping", vmName)
+	progress.Immediate("Stopping", vmName)
 	if _, err := command.VBoxManage("controlvm", vmName, "poweroff").Call(); err != nil {
 		return err
 	}
@@ -66,8 +67,9 @@ func Remove(vmName string, force bool) error {
 		return err
 	}
 	_ = Stop(vmName)
-	fmt.Println("Removing", vmName)
-	if _, err := command.VBoxManage("unregistervm", vmName, "--delete").Call(); err != nil {
+
+	msg := fmt.Sprintf("Removing %s", vmName)
+	if _, err := command.VBoxManage("unregistervm", vmName, "--delete").CallWithProgress(msg); err != nil {
 		return err
 	}
 	return os.RemoveAll(db.GetVMPath(vmName))

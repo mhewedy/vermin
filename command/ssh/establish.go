@@ -27,7 +27,7 @@ func (b *delay) sleep(seconds int) error {
 
 // EstablishConn make sure connection to the vm is established or return an error if not
 func EstablishConn(vmName string) error {
-	stop := progress.Show("Establishing connection")
+	stop := progress.Show("Establishing connection", true)
 	defer stop()
 
 	d := &delay{
