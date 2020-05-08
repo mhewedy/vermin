@@ -7,21 +7,22 @@ import (
 )
 
 type delay struct {
-	iter  int
-	start time.Time
-	max   time.Duration
+	errMsg string
+	iter   int
+	start  time.Time
+	max    time.Duration
 }
 
-func (b *delay) sleep(seconds int) error {
+func (b *delay) sleep() error {
 	elapsed := time.Now().Sub(b.start).Milliseconds()
 	if !b.start.IsZero() && elapsed >= b.max.Milliseconds() {
-		return errors.New("Cannot accomplish task, time elapsed")
+		return errors.New(b.errMsg)
 	}
 	if b.iter == 0 {
 		b.start = time.Now()
 	}
 	b.iter++
-	time.Sleep(time.Duration(seconds) * time.Second)
+	time.Sleep(100 * time.Millisecond)
 	return nil
 }
 
@@ -31,14 +32,15 @@ func EstablishConn(vmName string) error {
 	defer stop()
 
 	d := &delay{
-		max: 1 * time.Minute,
+		errMsg: "Cannot establish connection.",
+		max:    1 * time.Minute,
 	}
 	var err error
 	for {
 		if _, err = Execute(vmName, "ls"); err == nil {
 			break
 		}
-		if err = d.sleep(2); err != nil {
+		if err = d.sleep(); err != nil {
 			break
 		}
 	}
