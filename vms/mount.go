@@ -40,7 +40,8 @@ func Mount(vmName string, hostPath string) error {
 		"--hostpath", absHostPath,
 		"--transient",
 		"--automount",
-		"--auto-mount-point", "/vermin").Call(); err != nil {
+		"--auto-mount-point",
+		"/vermin").Call(); err != nil {
 		return err
 	}
 
