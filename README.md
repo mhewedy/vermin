@@ -12,7 +12,7 @@
 Create, control and connect to VirtualBox VM instances.
 
 <p style="text-align: center">
-  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin-v0.35-demo.gif"  alt="demo" width="120%"/>
+  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin-v0.56.0-demo.gif"  alt="demo" width="120%"/>
 </p>
 
 ### Menu
