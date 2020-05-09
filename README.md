@@ -5,7 +5,7 @@
 
 # <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="30%"/>
 
-### Vermin: The Smart Virtual Machines manager
+### Vermin: The smart virtual machines manager
 
 Create, control and connect to VirtualBox VM instances.
       
