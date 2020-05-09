@@ -202,4 +202,4 @@ $ vermin port vm_01 8080-8090
 
 
 ## Contributors
-Special thanks to @aseldesouky for contributing the logo
+Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
