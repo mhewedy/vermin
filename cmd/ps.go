@@ -27,7 +27,7 @@ import (
 var psCmd = &cobra.Command{
 	Use:   "ps",
 	Short: "List VMs",
-	Long: `List running VMs
+	Long: `List VMs
 Use the -a|--all flag to list all VMs
 `,
 	Run: func(cmd *cobra.Command, args []string) {

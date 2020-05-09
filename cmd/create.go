@@ -26,8 +26,8 @@ import (
 // createCmd represents the create command
 var createCmd = &cobra.Command{
 	Use:   "create",
-	Short: "Create VM from an image",
-	Long: `Create VM from an image
+	Short: "Create a new VM",
+	Long: `Create a new VM
 
 To list all available images:
 $ vermin images

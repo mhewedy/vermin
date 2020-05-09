@@ -26,8 +26,8 @@ import (
 // imagesCmd represents the images command
 var imagesCmd = &cobra.Command{
 	Use:   "images",
-	Short: "List all available images",
-	Long: `List all available images
+	Short: "List remote and cached images",
+	Long: `List remote and cached images
 
 Images are cached after the first time it is downloaded. Cached images are marked as (cached).
 The image comes in the format <os>/<version>, for example: ubuntu/bionic and centos/8

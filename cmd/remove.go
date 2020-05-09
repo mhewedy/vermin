@@ -26,16 +26,17 @@ import (
 // removeCmd represents the remove command
 var removeCmd = &cobra.Command{
 	Use:   "rm",
-	Short: "Remove a VM",
-	Long:  `Remove a VM`,
+	Short: "Remove one or more VM",
+	Long:  `Remove one or more VM`,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
-		force, _ := cmd.Flags().GetBool("force")
+		for _, vmName := range args {
+			force, _ := cmd.Flags().GetBool("force")
 
-		err := vms.Remove(vmName, force)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			err := vms.Remove(vmName, force)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
 		}
 	},
 	Args: func(cmd *cobra.Command, args []string) error {

@@ -26,14 +26,15 @@ import (
 // stopCmd represents the stop command
 var stopCmd = &cobra.Command{
 	Use:   "stop",
-	Short: "Stop a VM",
-	Long:  `Stop a VM`,
+	Short: "Stop one or more running VMs",
+	Long:  `Stop one or more running VMs`,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
-		err := vms.Stop(vmName)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+		for _, vmName := range args {
+			err := vms.Stop(vmName)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
 		}
 	},
 	Args: func(cmd *cobra.Command, args []string) error {

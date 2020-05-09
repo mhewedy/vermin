@@ -26,14 +26,15 @@ import (
 // startCmd represents the start command
 var startCmd = &cobra.Command{
 	Use:   "start",
-	Short: "Start a VM",
-	Long:  `Start a VM`,
+	Short: "Start one or more stopped VMs",
+	Long:  `Start one or more stopped VMs`,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
-		err := vms.Start(vmName)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+		for _, vmName := range args {
+			err := vms.Start(vmName)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
 		}
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
