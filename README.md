@@ -6,11 +6,14 @@
 # vermin
 ### The Smart Virtual Machines manager
 
+<div>
+<span>
 Create, control and connect to VirtualBox VM instances.
-
-<p style="text-align: center">
+</span>
+<span>
   <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="30%"/>
-</p>
+</span>
+</div>
 
 
 <a href="https://asciinema.org/a/327940?speed=2&autoplay=1&cols=150&rows=35&size=medium"><img src="https://asciinema.org/a/327940.png" width="836"/></a>
