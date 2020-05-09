@@ -32,9 +32,8 @@ var portCmd = &cobra.Command{
 	Long: `Forward port(s) from a VM to host
 
 Usage: vermin port <vm> <vm port>[:local port] [<vm port>[:local port]]
-
-Examples:
-
+`,
+	Example: `
 Forward vm port 4040 to local port 4040:
 $ vermin port vm_01 4040
 

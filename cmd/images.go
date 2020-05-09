@@ -28,10 +28,11 @@ var imagesCmd = &cobra.Command{
 	Use:   "images",
 	Short: "List remote and cached images",
 	Long: `List remote and cached images
-
+	
 Images are cached after the first time it is downloaded. Cached images are marked as (cached).
 The image comes in the format <os>/<version>, for example: ubuntu/bionic and centos/8
-
+`,
+	Example: `
 Use the image in creating a VM:
 $ vermin create <image>
 `,

@@ -30,8 +30,8 @@ var ipCmd = &cobra.Command{
 	Long: `Show IP address for a running VM
 
 Sometimes, the IP information being stale, so you might need use the --purge|-p flag
-
-Examples:
+`,
+	Example: `
 $ vermin ip vm_11
 To purge the IP cache:
 $ vermin ip vm_05 -p

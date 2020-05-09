@@ -27,10 +27,9 @@ import (
 var sshCmd = &cobra.Command{
 	Use:   "ssh",
 	Short: "ssh into a running VM",
-	Long: `ssh into a running VM
-Examples:
+	Long:  `ssh into a running VM`,
+	Example: `
 
-Open a terminal:
 $ vermin ssh vm_02
 `,
 	Run: func(cmd *cobra.Command, args []string) {

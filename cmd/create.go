@@ -27,8 +27,8 @@ import (
 var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "Create a new VM",
-	Long: `Create a new VM
-
+	Long:  "Create a new VM",
+	Example: `
 To list all available images:
 $ vermin images
 

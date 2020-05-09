@@ -29,9 +29,8 @@ import (
 var execCmd = &cobra.Command{
 	Use:   "exec",
 	Short: "Run a command in a running VM",
-	Long: `Run a command in a running VM
-Examples:
-
+	Long:  `Run a command in a running VM`,
+	Example: `
 Execute remote command:
 $ vermin exec vm_09 cat /etc/passwd
 `,

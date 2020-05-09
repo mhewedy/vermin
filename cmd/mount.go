@@ -29,12 +29,13 @@ var mountCmd = &cobra.Command{
 	Short: "Mount host path inside the VM",
 	Long: `Mount host path to /vermin directory inside the VM
 
-To mount the ~/Downloads directory to /vermin inside the VM:
-$ vermin mount vm_01 ~/Downloads
-
 Note: 
 1. You can mount as many times as you want, and each time old mounts are removed.
 2. Mounts are transient.
+`,
+	Example: `
+To mount the ~/Downloads directory to /vermin inside the VM:
+$ vermin mount vm_01 ~/Downloads
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
