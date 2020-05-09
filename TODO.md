@@ -1,4 +1,9 @@
-DONE:
+## TODO: 
+* Write more test cases
+* Work on Clone to clone a VM (export: [vboxmanage export vm_01 --ovf20 -o ~/Documents/temp.ova] then import)
+
+
+## DONE:
 *  Build CI
 *  Build Linux/mac install script 
 *  Eliminate need to command dependecies (most of them):
@@ -24,12 +29,7 @@ DONE:
     # --transient to be an option
     ```
 * Use progress (https://github.com/schollz/progressbar/issues/57)
+* Depend on *.vbox file for reading all information related to VM (MAC, etc...)    
 
-    
-TODO: 
-* Write more test cases
-* Work on Clone to clone a VM (export: [vboxmanage export vm_01 --ovf20 -o ~/Documents/temp.ova] then import)
-* Depend on *.vbox file for reading all information related to VM (MAC, etc...)
-
-POSTPONED:
+## POSTPONED:
 * consider use google drive (https://drive.google.com/uc?export=download&confirm=htAy&id=<fileid>) 
