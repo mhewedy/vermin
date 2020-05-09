@@ -4,11 +4,14 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # vermin
-### The Smart Virtual Machines manager
-
 <div>
 <span>
-Create, control and connect to VirtualBox VM instances.
+	<div>
+		<h3>The Smart Virtual Machines manager</h3>
+	</div>
+	<div>
+		Create, control and connect to VirtualBox VM instances.
+	</div>
 </span>
 <span>
   <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="30%"/>
