@@ -182,12 +182,12 @@ $ vermin rm vm_03
 #### Transfer Files:
 You can transfer files between host machine and VM.
 
-To copy remote file on VM to you local host in the current path:
+To copy a remote file on a VM to you local host in the current path:
 ```shell script
 $ vermin cp vm_01 --remote-file /path/to/file/on/vm
 ```
 
-To copy local file from your host to the VM's home directory:
+To copy a local file from your host filesystem to the VM's home directory:
 ```shell script
 $ vermin cp vm_01 --local-file /path/to/file/on/host
 ```
