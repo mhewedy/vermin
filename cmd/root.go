@@ -27,7 +27,8 @@ var rootCmd = &cobra.Command{
 	Short: "Create, control and connect to VirtualBox VM instances.",
 	Long:  `Create, control and connect to VirtualBox VM instances`,
 	Example: `
-You can start using vermin by creating a vm from an image.
+You can use vermin by creating a VM from an image.
+
 To list all images available:
 $ vermin images
 

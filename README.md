@@ -84,30 +84,36 @@ Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 $ vermin
 Create, control and connect to VirtualBox VM instances
 
-You can start using vermin by creating a vm from an image.
+Usage:
+  vermin [command]
+
+Examples:
+
+You can use vermin by creating a VM from an image.
+
 To list all images available:
 $ vermin images
 
 Then you can create a vm using:
 $ vermin create <image>
 
-Usage:
-  vermin [command]
 
 Available Commands:
-  completion  Generates completion scripts (Bash, Zsh and PowerShell)
-  cp          Copy files between host and VM
-  create      Create VM from an image
+  completion  Generates shell completion scripts
+  cp          Copy files between a VM and the local filesystem
+  create      Create a new VM
+  exec        Run a command in a running VM
   help        Help about any command
-  images      List all available images
+  images      List remote and cached images
   ip          Show IP address for a running VM
-  mount       Mount host path inside the VM
+  mount       Mount local filesystem inside the VM
   port        Forward port(s) from a VM to host
   ps          List VMs
-  rm          Remove a VM
+  restart     Restart one or more VMs
+  rm          Remove one or more VM
   ssh         ssh into a running VM
-  start       Start a VM
-  stop        Stop a VM
+  start       Start one or more stopped VMs
+  stop        Stop one or more running VMs
   tag         Tag a VM
 
 Flags:

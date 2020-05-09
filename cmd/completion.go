@@ -8,8 +8,8 @@ import (
 
 var completionCmd = &cobra.Command{
 	Use:   "completion",
-	Short: "Generates completion scripts (Bash, Zsh and PowerShell)",
-	Long:  `Generates completion scripts (Bash, Zsh and PowerShell)`,
+	Short: "Generates shell completion scripts",
+	Long:  `Generates shell completion scripts (Bash, Zsh or PowerShell)`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return errors.New("bash, zsh or powershell expected")
 	},

@@ -63,5 +63,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	tagCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
+	//tagCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
 }
