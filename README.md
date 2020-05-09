@@ -4,20 +4,13 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # vermin
-<div>
-    <div style="width: 50%; height: 50%; float:left;">
-      <div>
-    	<h3>The Smart Virtual Machines manager</h3>
-      </div>
-      <div>
-        Create, control and connect to VirtualBox VM instances.
-      </div>
-    </div>
-    <div style="width: 50%; height: 50%; float:right; text-align: right;">
-      <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="50%"/>
-    </div>
-</div>
 
+### The Smart Virtual Machines manager
+
+Create, control and connect to VirtualBox VM instances.
+<img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="30%"/>
+      
+      
 <a href="https://asciinema.org/a/327940?speed=2&autoplay=1&cols=150&rows=35&size=medium"><img src="https://asciinema.org/a/327940.png" width="836"/></a>
 
 ### Menu
