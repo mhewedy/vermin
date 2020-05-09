@@ -34,6 +34,7 @@ Create, control and connect to VirtualBox VM instances.
 	- [Transfer Files](#Transfer-Files)
 	- [Port Forward](#Port-Forward)
 - [Why not Vagrant](#Why-not-Vagrant)
+- [Contributors](#Contributors)
 ----
 ## Prerequisites
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
@@ -198,3 +199,7 @@ $ vermin port vm_01 8080-8090
 ## Why not Vagrant:
 * **Vagrant** uses a `Vagrantfile` which I think is most suited to be source-controlled inside `git`  , and for some use case it is an overhead to create and maintain such file. In such cases **Vermin** come to the rescue. 
 * **Vermin** is a single binary file that can be easily installed and removed.
+
+
+## Contributors
+Special thanks to @aseldesouky for contributing the logo
