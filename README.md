@@ -1,15 +1,18 @@
-<p style="text-align: center">
-  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="20%"/>
-</p>
 
 [![Build Status](https://github.com/mhewedy/vermin/workflows/Go/badge.svg)](https://github.com/mhewedy/vermin/actions?query=workflow%3AGo)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mhewedy/vermin)](https://goreportcard.com/report/github.com/mhewedy/vermin)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # vermin
-### The Smart Virtual Machines manager    
+### The Smart Virtual Machines manager
 
 Create, control and connect to VirtualBox VM instances.
+
+<p style="text-align: center">
+  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="30%"/>
+</p>
+
+
 <a href="https://asciinema.org/a/327940?speed=2&autoplay=1&cols=150&rows=35&size=medium"><img src="https://asciinema.org/a/327940.png" width="836"/></a>
 
 ### Menu
