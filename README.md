@@ -3,9 +3,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/mhewedy/vermin)](https://goreportcard.com/report/github.com/mhewedy/vermin)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-# vermin <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="30%"/>
+# <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="30%"/>
 
-### The Smart Virtual Machines manager
+### Vermin: The Smart Virtual Machines manager
 
 Create, control and connect to VirtualBox VM instances.
       
