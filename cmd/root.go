@@ -34,6 +34,7 @@ $ vermin images
 Then you can create a vm using:
 $ vermin create <image>
 `,
+	PersistentPreRun: preRun,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },

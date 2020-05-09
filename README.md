@@ -41,11 +41,11 @@ Create, control and connect to VirtualBox VM instances.
 
 ## Installation
 #### Automatic installation:
-To install or update for macos and linux:
+To install or **update** for macos and linux:
 ```shell script
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mhewedy/vermin/master/install.sh)"
 ```
-To install or update on windows (PowerShell):
+To install or **update** on windows (PowerShell):
 ```
 # Should run as Adminstarator
 C:\> iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/mhewedy/vermin/master/install.ps1'))
