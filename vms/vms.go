@@ -42,7 +42,7 @@ func Stop(vmName string) error {
 	return nil
 }
 
-func SecureShell(vmName string, cmd string) error {
+func SecureShell(vmName string) error {
 	if err := checkRunningVM(vmName); err != nil {
 		return err
 	}
@@ -51,11 +51,19 @@ func SecureShell(vmName string, cmd string) error {
 		return err
 	}
 
-	if len(cmd) == 0 {
-		return ssh.OpenTerminal(vmName)
-	} else {
-		return ssh.Interact(vmName, cmd)
+	return ssh.OpenTerminal(vmName)
+}
+
+func Exec(vmName string, cmd string) error {
+	if err := checkRunningVM(vmName); err != nil {
+		return err
 	}
+
+	if err := ssh.EstablishConn(vmName); err != nil {
+		return err
+	}
+
+	return ssh.ExecInteract(vmName, cmd)
 }
 
 func Remove(vmName string, force bool) error {

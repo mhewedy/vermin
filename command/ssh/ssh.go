@@ -23,8 +23,8 @@ func Execute(vmName string, cmd string) (string, error) {
 	return command.Ssh(ipAddr, "--", cmd).Call()
 }
 
-//Interact execute ssh in interactive mode
-func Interact(vmName string, cmd string) error {
+//ExecInteract execute ssh in interactive mode
+func ExecInteract(vmName string, cmd string) error {
 	ipAddr, err := ip.Find(vmName, false)
 	if err != nil {
 		return err

@@ -103,7 +103,7 @@ func provision(vmName string, script string) error {
 	if _, err := ssh.Execute(vmName, "chmod +x "+vmFile); err != nil {
 		return err
 	}
-	if err := ssh.Interact(vmName, vmFile); err != nil {
+	if err := ssh.ExecInteract(vmName, vmFile); err != nil {
 		return err
 	}
 
