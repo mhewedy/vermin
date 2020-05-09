@@ -26,11 +26,11 @@ import (
 // mountCmd represents the mount command
 var mountCmd = &cobra.Command{
 	Use:   "mount",
-	Short: "Mount host path inside the VM",
-	Long: `Mount host path to /vermin directory inside the VM
+	Short: "Mount local filesystem inside the VM",
+	Long: `Mount local filesystem to /vermin directory inside the VM
 
 Note: 
-1. You can mount as many times as you want, and each time old mounts are removed.
+1. You can mount as many times as you want, and each time overrides old mounts.
 2. Mounts are transient.
 `,
 	Example: `
