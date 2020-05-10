@@ -27,6 +27,9 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 		return "", err
 	}
 
+	if err = os.RemoveAll(db.GetVMPath(vmName)); err != nil {
+		return "", err
+	}
 	if err = os.MkdirAll(db.GetVMPath(vmName), 0755); err != nil {
 		return "", err
 	}
