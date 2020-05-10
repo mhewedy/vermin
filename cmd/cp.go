@@ -30,18 +30,21 @@ var cpCmd = &cobra.Command{
 	Long:  "Copy files/folders between a VM and the local filesystem",
 	Example: `
 Copy file.txt from host to user's home directory inside the vm
-$ vermin cp vm_01 -l file.txt
+$ vermin cp vm_01 -l ~/file.txt
 
 Copy file.txt from user's home directory inside the vm to the current directory on the host
-$ vermin cp vm_01 -r ~/project/file.txt
+$ vermin cp vm_01 -r project/file.txt
+
+Copy /etc/os-release from the inside the vm to the current directory on the host
+$ vermin cp vm_02 -r /etc/os-release
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
 
 		var err error
 
-		l, _ := cmd.Flags().GetString("local-file")
-		r, _ := cmd.Flags().GetString("remote-file")
+		l, _ := cmd.Flags().GetString("local")
+		r, _ := cmd.Flags().GetString("remote")
 
 		if len(l) > 0 {
 			err = vms.CopyFiles(vmName, l, true)
@@ -77,6 +80,6 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	cpCmd.Flags().StringP("local-file", "l", "", "Local file to copy to VM home directory")
-	cpCmd.Flags().StringP("remote-file", "r", "", "VM file to copy to host at current directory")
+	cpCmd.Flags().StringP("local", "l", "", "Local file/folder to copy to VM home directory")
+	cpCmd.Flags().StringP("remote", "r", "", "VM file/folder to copy to host at current directory")
 }
