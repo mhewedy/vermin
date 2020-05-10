@@ -12,10 +12,16 @@ func VBoxManage(args ...string) *cmd {
 	}
 }
 
-func Scp(args ...string) *cmd {
+func Scp(extraArgs ...string) *cmd {
+	args := []string{"-q",
+		"-i", db.PrivateKeyPath,
+		"-o", "StrictHostKeyChecking=no",
+		"-o", "UserKnownHostsFile=/dev/null",
+	}
+
 	return &cmd{
 		command: "scp",
-		args:    args,
+		args:    append(args, extraArgs...),
 	}
 }
 
@@ -27,18 +33,16 @@ func Arp(args ...string) *cmd {
 }
 
 func Ssh(ipAddr string, extraArgs ...string) *cmd {
-
 	args := []string{"-i", db.PrivateKeyPath,
 		"-o", "StrictHostKeyChecking=no",
 		"-o", "GlobalKnownHostsFile=/dev/null",
 		"-o", "UserKnownHostsFile=/dev/null",
 		"-o", "LogLevel=error",
 		db.Username + "@" + ipAddr}
-	args = append(args, extraArgs...)
 
 	return &cmd{
 		command: "ssh",
-		args:    args,
+		args:    append(args, extraArgs...),
 	}
 }
 
