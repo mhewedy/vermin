@@ -26,8 +26,8 @@ import (
 // cpCmd represents the cp command
 var cpCmd = &cobra.Command{
 	Use:   "cp",
-	Short: "Copy files between a VM and the local filesystem",
-	Long:  "Copy files between a VM and the local filesystem",
+	Short: "Copy files/folders between a VM and the local filesystem",
+	Long:  "Copy files/folders between a VM and the local filesystem",
 	Example: `
 Copy file.txt from host to user's home directory inside the vm
 $ vermin cp vm_01 -l file.txt

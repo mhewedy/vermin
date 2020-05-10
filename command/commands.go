@@ -13,7 +13,7 @@ func VBoxManage(args ...string) *cmd {
 }
 
 func Scp(extraArgs ...string) *cmd {
-	args := []string{"-q",
+	args := []string{"-q", "-r",
 		"-i", db.PrivateKeyPath,
 		"-o", "StrictHostKeyChecking=no",
 		"-o", "UserKnownHostsFile=/dev/null",
