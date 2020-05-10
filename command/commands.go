@@ -28,7 +28,12 @@ func Arp(args ...string) *cmd {
 
 func Ssh(ipAddr string, extraArgs ...string) *cmd {
 
-	args := []string{"-i", db.PrivateKeyPath, "-o", "StrictHostKeyChecking=no", db.Username + "@" + ipAddr}
+	args := []string{"-i", db.PrivateKeyPath,
+		"-o", "StrictHostKeyChecking=no",
+		"-o", "GlobalKnownHostsFile=/dev/null",
+		"-o", "UserKnownHostsFile=/dev/null",
+		"-o", "LogLevel=error",
+		db.Username + "@" + ipAddr}
 	args = append(args, extraArgs...)
 
 	return &cmd{
