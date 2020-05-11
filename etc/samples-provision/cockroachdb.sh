@@ -10,7 +10,7 @@ do
 	--listen-addr=localhost:$((26257+node)) \
 	--http-addr=localhost:$((8080+node)) \
 	--join=localhost:26257,localhost:26258,localhost:26259 \
-	--background
+  --background > ~/cockroach.log 2>&1
 done
 
 cockroach init --insecure
