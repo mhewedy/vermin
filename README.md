@@ -78,6 +78,9 @@ For example, if you want to have an environment to try .NET Core and you don't w
 
 Or if you want to try to install a Kafka cluster, and you need something more than just a docker container, so you can work with its different commands or want to practice setting up a cluster manually.
 
+Examples:
+* [Install CockroachDB cluster in a Virtual Machine](https://link.medium.com/bCJd6r4yp6)
+
 Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
 ## Usage:
