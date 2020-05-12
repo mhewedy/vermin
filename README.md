@@ -3,15 +3,15 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/mhewedy/vermin)](https://goreportcard.com/report/github.com/mhewedy/vermin)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-# <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="30%"/>
+<img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="30%"/>
 
-### Vermin: The smart virtual machines manager
+# Vermin: The smart virtual machines manager
 
 Create, control and connect to VirtualBox VM instances.
       
 <a href="https://asciinema.org/a/327940?speed=2&autoplay=1&cols=150&rows=35&size=medium&loop=1"><img src="https://asciinema.org/a/327940.png" width="836"/></a>
 
-### Menu
+Table of Contents:
 
 - [Prerequisites](#Prerequisites)
 - [Installation](#Installation)
@@ -36,7 +36,7 @@ Create, control and connect to VirtualBox VM instances.
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
 ## Installation
-#### Automatic installation:
+### Automatic installation:
 To install or **update** for macos and linux:
 ```shell script
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mhewedy/vermin/master/install.sh)"
@@ -47,7 +47,7 @@ To install or **update** on windows (PowerShell):
 C:\> iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/mhewedy/vermin/master/install.ps1'))
 ```
 
-#### Manual installation:
+### Manual installation:
 
 > It is recommended to use the [automatic method](#Automatic-installation) to install vermin, However If you prefer to do manual installation then you need to follow these steps:
 
@@ -61,7 +61,7 @@ $HOME/.vermin
 3. Download [vermin private key](https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa) into `$HOME/.vermin/vermin_rsa`
 4. On windows, you need to add `C:\Program Files\Oracle\VirtualBox` into you PATH.
 
-#### Build from Source:
+### Build from Source:
 Download the latest released source code archive file from [releases](https://github.com/mhewedy/vermin/releases/latest) then unzip:
 ```bash
 go build
@@ -127,7 +127,7 @@ Flags:
 Use "vermin [command] --help" for more information about a command.
 ```
 
-#### Create a new VM
+### Create a new VM
 Use the following command to create a VM
 
 ```shell script
@@ -153,7 +153,7 @@ ubuntu/focal
 
 > To get the most updated image list (along with images locations) use the -p flag `vermin images -p`. this will not affect cached images. it will only get the most updated image list (image names along with thier remote locations).
 
-#### List VMs
+### List VMs
 ```shell script
 $ vermin ps
 VM NAME        IMAGE                      CPUS      MEM       DISK         TAGS
@@ -162,28 +162,28 @@ vm_02          ubuntu/focal               1         1024      2.6GB
 vm_03          centos/8                   1         1024      2.0GB
 ```
 
-#### Start VM
+### Start VM
 ```shell script
 $ vermin start vm_01
 ```
 
-#### SSH into VM
+### SSH into VM
 ```shell script
 $ vermin ssh vm_03
 ```
 
-#### Stop VM
+### Stop VM
 ```shell script
 $ vermin stop vm_03
 ```
 
-#### Remove VM
+### Remove VM
 Will stop and remove listed VMs
 ```shell script
 $ vermin rm vm_03
 ```
 
-#### Transfer Files:
+### Transfer Files:
 You can transfer files between host machine and VM.
 
 To copy a remote file on a VM to you local host in the current path:
@@ -196,7 +196,7 @@ To copy a local file from your host filesystem to the VM's home directory:
 $ vermin cp vm_01 --local-file /path/to/file/on/host
 ```
 
-#### Port Forward:
+### Port Forward:
 forward ports from VM to local host (all ports from 8080 to 8090):
 ```shell script
 $ vermin port vm_01 8080-8090
