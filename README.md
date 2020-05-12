@@ -45,7 +45,7 @@ Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
 # Install Vermin
 
-Vermin uses [VirtualBox](https://www.virtualbox.org/wiki/Downloads) as the underlying hypervisor to create and run Virtual Machines. So you need to install it first and install extension Pack.
+Vermin uses [VirtualBox](https://www.virtualbox.org/wiki/Downloads) as the underlying hypervisor to create and run Virtual Machines. So you need to download and install it first.
 
 To install/update on **macos** and **linux**:
 ```shell script
