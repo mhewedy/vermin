@@ -54,7 +54,7 @@ $ vermin create <image> </path/to/shell/script.sh>
 			os.Exit(1)
 		}
 
-		fmt.Printf("\nTo connect to the VM use:\n$ vermin ssh %s\n", vmName)
+		fmt.Printf("\nYour VM is ready. To connect to the VM use:\n$ vermin ssh %s\n", vmName)
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
