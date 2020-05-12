@@ -20,11 +20,11 @@ Table of Contents:
 	- [Remove VM](#Remove-VM)
 	- [Transfer Files](#Transfer-Files)
 	- [Port Forward](#Port-Forward)
-- [Why not Vagrant](#Why-not-Vagrant)
 - [More installation options](#more-installation-options)
    	- [Manual installation](#Manual-installation)
    	- [Build from source](#Build-from-source)
 - [Contributors](#Contributors)
+- [Why not Vagrant](#Why-not-Vagrant)
 - [TODO](#TODO)
 ----
 # What is Vermin
@@ -174,10 +174,6 @@ forward ports from VM to local host (all ports from 8080 to 8090):
 $ vermin port vm_01 8080-8090
 ```
 
-# Why not Vagrant:
-* **Vagrant** uses a `Vagrantfile` which I think is most suited to be source-controlled inside `git`  , and for some use case it is an overhead to create and maintain such file. In such cases **Vermin** come to the rescue. 
-* **Vermin** is a single binary file that can be easily installed and removed.
-
 # More installation options:
 ## Manual installation:
 
@@ -203,6 +199,10 @@ You can build using golang docker image:
 # replace window by linux or darwin depending on your OS
 docker run -it -v $(pwd):/go -e GOPATH='' -e GOOS='windows' golang:latest go build
 ``` 
+
+# Why not Vagrant:
+* **Vagrant** uses a `Vagrantfile` which I think is most suited to be source-controlled inside `git`  , and for some use case it is an overhead to create and maintain such file. In such cases **Vermin** come to the rescue. 
+* **Vermin** is a single binary file that can be easily installed and removed.
 
 # Contributors
 Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
