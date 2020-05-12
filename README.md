@@ -4,7 +4,6 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
-
 <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="20%"/>
 
 <a href="https://asciinema.org/a/327940?speed=2&autoplay=1&cols=150&rows=35&size=medium&loop=1"><img src="https://asciinema.org/a/327940.png" width="80%"/></a>
@@ -46,7 +45,7 @@ Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
 # Install Vermin
 
-Vermin uses [VirtualBox](https://www.virtualbox.org/wiki/Downloads) as the underlying hypervisor to create and run Virtual Machines.
+Vermin uses [VirtualBox](https://www.virtualbox.org/wiki/Downloads) as the underlying hypervisor to create and run Virtual Machines. So you need to download and install it first.
 
 To install/update on **macos** and **linux**:
 ```shell script
