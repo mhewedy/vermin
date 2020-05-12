@@ -9,7 +9,7 @@ import (
 )
 
 const versionURL = "https://github.com/mhewedy/vermin/releases/latest"
-const updateURL = "https://github.com/mhewedy/vermin#Automatic-installation"
+const updateURL = "https://github.com/mhewedy/vermin#install-vermin"
 
 var client = &http.Client{
 	CheckRedirect: func(req *http.Request, via []*http.Request) error {
