@@ -205,7 +205,7 @@ docker run -it -v $(pwd):/go -e GOPATH='' -e GOOS='windows' golang:latest go bui
 
 # Why not Vagrant:
 * **Vagrant** uses a `Vagrantfile` which I think is most suited to be source-controlled inside `git`  , and for some use case it is an overhead to create and maintain such file. In such cases **Vermin** come to the rescue. 
-* **Vermin** is a single binary file that can be easily installed and removed.
+* **Vermin** is a single binary file that can be easily installed and upgraded.
 
 # Contributors
 Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
