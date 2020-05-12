@@ -3,9 +3,20 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/mhewedy/vermin)](https://goreportcard.com/report/github.com/mhewedy/vermin)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-<img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="30%"/>
+
+<p float="left">
+  <div>
+	  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="10%"/>
+	</div>
+	  <div>
+		  <a href="https://asciinema.org/a/327940?speed=2&autoplay=1&cols=150&rows=35&size=medium&loop=1"><img src="https://asciinema.org/a/327940.png" width="80%"/></a>
+	</div>
+</p>
+
+
+
       
-<a href="https://asciinema.org/a/327940?speed=2&autoplay=1&cols=150&rows=35&size=medium&loop=1"><img src="https://asciinema.org/a/327940.png" width="836"/></a>
+
 
 Table of Contents:
 
