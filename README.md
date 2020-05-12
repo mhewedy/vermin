@@ -6,16 +6,13 @@
 
 <p float="left">
   <div>
-	  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="10%"/>
+	  <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="20%"/>
 	</div>
 	  <div>
 		  <a href="https://asciinema.org/a/327940?speed=2&autoplay=1&cols=150&rows=35&size=medium&loop=1"><img src="https://asciinema.org/a/327940.png" width="80%"/></a>
 	</div>
 </p>
 
-
-
-      
 
 
 Table of Contents:
