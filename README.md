@@ -47,11 +47,11 @@ Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
 Vermin uses [VirtualBox](https://www.virtualbox.org/wiki/Downloads) as the underlying hypervisor to create and run Virtual Machines. So you need to download and install it first.
 
-To install/update on **macos** and **linux**:
+To install/update on **macos** and **linux** run:
 ```shell script
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mhewedy/vermin/master/install.sh)"
 ```
-To install/update on **windows** (PowerShell):
+To install/update on **windows** (PowerShell) run:
 ```
 # Should run as Adminstarator
 iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/mhewedy/vermin/master/install.ps1'))
