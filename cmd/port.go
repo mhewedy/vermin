@@ -31,23 +31,25 @@ var portCmd = &cobra.Command{
 	Short: "Forward port(s) from a VM to host",
 	Long: `Forward port(s) from a VM to host
 
-Usage: vermin port <vm> <vm port>[:local port] [<vm port>[:local port]]
+Usage: vermin port <vm> [local port:]<vm port> [[local port:]<vm port>...]
+
+Where local port and vm port can take a form of range like: 9090-9095 or a single port like 9090
 `,
 	Example: `
 Forward vm port 4040 to local port 4040:
 $ vermin port vm_01 4040
 
 Forward vm port 4040 to local port 40040:
-$ vermin port vm_01 4040:40040
+$ vermin port vm_01 40040:4040
 
 Forward vm port 4040 to local port 40040 and port 8080 to 8080
-$ vermin port vm_01 4040:40040 8080
+$ vermin port vm_01 40040:4040 8080
 
 Forward vm port 4040 to local port 40040 and ports in range (8080 to 8088) to range(8080 to 8088):
-$ vermin port vm_01 4040:40040 8080-8088
+$ vermin port vm_01 40040:4040 8080-8088
 
 Forward vm port 4040 to local port 40040 and ports in range (8080 to 8088) to range(9080 to 9088):
-$ vermin port vm_01 4040:40040 8080-8088:9080-9088
+$ vermin port vm_01 40040:4040 9080-9088:8080-8088
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]

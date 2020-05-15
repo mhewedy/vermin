@@ -13,7 +13,7 @@ const rangeSep = "-"
 //
 // sample input: 3000 40040:4040 9080-9088:8080-8088
 //
-// Where [<local port>:]<vm port>
+// Where [local port:]<vm port>
 //
 // output format: ["-L", "0.0.0.0:<local port>:localhost:<vm port>"]
 //
