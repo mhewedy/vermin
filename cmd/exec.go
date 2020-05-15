@@ -36,10 +36,8 @@ $ vermin exec vm_09 cat /etc/passwd
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
-		var command string
-		if len(args) > 1 {
-			command = strings.Join(args[1:], " ")
-		}
+		command := strings.Join(args[1:], " ")
+
 		err := vms.Exec(vmName, command)
 		if err != nil {
 			fmt.Println(err)
@@ -49,6 +47,9 @@ $ vermin exec vm_09 cat /etc/passwd
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
 			return errors.New("vm required")
+		}
+		if len(args) < 2 {
+			return errors.New("command required")
 		}
 		return nil
 	},
