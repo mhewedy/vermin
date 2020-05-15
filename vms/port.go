@@ -11,13 +11,12 @@ const rangeSep = "-"
 
 // mapPorts build string as param to ssh for port forward
 //
-// sample input: 3000 4040:40040 8080-8088:9080-9088
+// sample input: 3000 40040:4040 9080-9088:8080-8088
 //
-// where <vm port>[:<local port>]
+// Where [<local port>:]<vm port>
 //
-// output format: ["-L", "0.0.0.0:3000:localhost:3000"]
+// output format: ["-L", "0.0.0.0:<local port>:localhost:<vm port>"]
 //
-// remember, vm port comes first
 func getPortForwardArgs(ports string) ([]string, error) {
 	a, err := mapPorts(ports)
 	if err != nil {
@@ -45,12 +44,12 @@ func mapPorts(ports string) ([]string, error) {
 
 	for _, arg := range args {
 		mapping := strings.Split(arg, ":")
-		vmPort := mapping[0]
-		var localPort string
+		localPort := mapping[0]
+		var vmPort string
 		if len(mapping) == 1 {
-			localPort = vmPort
+			vmPort = localPort
 		} else {
-			localPort = mapping[1]
+			vmPort = mapping[1]
 		}
 
 		portMap, err := getPortMapping(vmPort, localPort)
