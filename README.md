@@ -39,6 +39,7 @@ For example:
 
 Vermin in Action:
 * [Install CockroachDB cluster in a Virtual Machine](https://link.medium.com/bCJd6r4yp6)
+* [Install Redis inside Ubuntu VM](https://medium.com/@mhewedy_46874/install-redis-inside-a-ubuntu-vm-d5022d42d8cc)
 
 Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
