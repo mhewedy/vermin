@@ -25,6 +25,10 @@ func Start(vmName string) error {
 		return err
 	}
 
+	if isRunningVM(vmName) {
+		return fmt.Errorf(`VM already running, use "vermin ssh %s" to ssh into the VM.`, vmName)
+	}
+
 	if err := start(vmName); err != nil {
 		return err
 	}
@@ -135,4 +139,21 @@ func IP(vmName string, purge bool, global bool) (string, error) {
 		}
 	}
 	return ip.Find(vmName, purge)
+}
+
+func Modify(vmName string, cpus int, mem int) error {
+	if isRunningVM(vmName) {
+		return fmt.Errorf(`Cannot Modify running VM, use "vermin stop %s" to stop the VM first.`, vmName)
+	}
+
+	var params = []string{"modifyvm", vmName}
+	if cpus > 0 {
+		params = append(params, "--cpus", fmt.Sprintf("%d", cpus))
+	}
+	if mem > 0 {
+		params = append(params, "--memory", fmt.Sprintf("%d", mem))
+	}
+
+	_, err := command.VBoxManage(params...).Call()
+	return err
 }
