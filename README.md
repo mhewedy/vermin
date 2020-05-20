@@ -59,7 +59,6 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercon
 
 # Usage:
 ```text
-$ vermin
 Create, control and connect to VirtualBox VM instances
 
 Usage:
@@ -78,12 +77,13 @@ $ vermin create <image>
 
 Available Commands:
   completion  Generates shell completion scripts
-  cp          Copy files between a VM and the local filesystem
+  cp          Copy files/folders between a VM and the local filesystem or between two VMs
   create      Create a new VM
   exec        Run a command in a running VM
   help        Help about any command
   images      List remote and cached images
   ip          Show IP address for a running VM
+  modify      Modify a VM HW specs (cpus, memory)
   mount       Mount local filesystem inside the VM
   port        Forward port(s) from a VM to host
   ps          List VMs
@@ -162,12 +162,17 @@ You can transfer files between host machine and VM.
 
 To copy a remote file on a VM to you local host in the current path:
 ```shell script
-$ vermin cp vm_01 --r /path/to/file/on/vm
+$ vermin cp vm_01:/path/to/file/on/vm .
 ```
 
 To copy a local file from your host filesystem to the VM's home directory:
 ```shell script
-$ vermin cp vm_01 -l /path/to/file/on/host
+$ vermin cp /path/to/file/on/host vm_01:~
+```
+
+Copy file.txt from vm_01 home dir to the vm_02 /tmp dir
+```shell script
+$ vermin cp vm_01:~/file.txt vm_02:/tmp
 ```
 
 ## Port Forward:

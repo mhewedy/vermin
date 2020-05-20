@@ -26,8 +26,8 @@ import (
 // modifyCmd represents the modify command
 var modifyCmd = &cobra.Command{
 	Use:   "modify",
-	Short: "Modify a VM HW specs (cpu, memory)",
-	Long:  "Modify a VM HW specs (cpu, memory)",
+	Short: "Modify a VM HW specs (cpus, memory)",
+	Long:  "Modify a VM HW specs (cpus, memory)",
 	Example: `
 
 To change the VM to use 2 cores and 512MB memory
