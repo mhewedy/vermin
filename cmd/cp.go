@@ -18,52 +18,62 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"github.com/mhewedy/vermin/command/scp"
 	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
 	"os"
+	"strings"
 )
 
 // cpCmd represents the cp command
 var cpCmd = &cobra.Command{
 	Use:   "cp",
-	Short: "Copy files/folders between a VM and the local filesystem",
-	Long:  "Copy files/folders between a VM and the local filesystem",
+	Short: "Copy files/folders between a VM and the local filesystem or between two VMs",
+	Long: `Copy files/folders between a VM and the local filesystem or between two VMs
+
+vermin cp <source> <destination>
+
+where: <source> and <destination> take the form of <vm_name>:/path/to/file/or/directory
+In case of the <source> or <destination> is the local host, then the "<vm_name>:" part is removed.
+
+Note: You need to have appropriate permissions on the files you need to copy.
+`,
 	Example: `
 Copy file.txt from host to user's home directory inside the vm
-$ vermin cp vm_01 -l ~/file.txt
+$ vermin cp ~/file.txt vm_01:~ 
 
 Copy file.txt from user's home directory inside the vm to the current directory on the host
-$ vermin cp vm_01 -r project/file.txt
+$ vermin cp vm_01:project/file.txt . 
 
-Copy /etc/os-release from the inside the vm to the current directory on the host
-$ vermin cp vm_02 -r /etc/os-release
+Copy /etc/os-release from the inside the vm to ~/temp on the host
+$ vermin cp vm_02:/etc/os-release ~/temp
+
+Copy file.txt from vm_01 home dir to the vm_02 /tmp dir
+$ vermin cp vm_01:~/file.txt vm_02:/tmp 
+
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
+		source := args[0]
+		destination := args[1]
 
-		var err error
-
-		l, _ := cmd.Flags().GetString("local")
-		r, _ := cmd.Flags().GetString("remote")
-
-		if len(l) > 0 {
-			err = vms.CopyFiles(vmName, l, true)
-		} else if len(r) > 0 {
-			err = vms.CopyFiles(vmName, r, false)
-		} else {
-			fmt.Println("missing file parameter, use -h for help.")
-			os.Exit(1)
-		}
-
-		if err != nil {
+		if err := vms.CopyFiles(source, destination); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
-			return errors.New("vm required")
+			return errors.New("source required")
 		}
+		if len(args) < 2 {
+			return errors.New("destination required")
+		}
+
+		if !strings.Contains(args[0], scp.CopySeparator) &&
+			!strings.Contains(args[1], scp.CopySeparator) {
+			return errors.New(`either source or destination should be a VM path in the form of "vm_name:/path/to/copy"`)
+		}
+
 		return nil
 	},
 	ValidArgsFunction: listRunningVms,
@@ -80,6 +90,6 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	cpCmd.Flags().StringP("local", "l", "", "Local file/folder to copy to VM home directory")
-	cpCmd.Flags().StringP("remote", "r", "", "VM file/folder to copy to host at current directory")
+	//cpCmd.Flags().StringP("local", "l", "", "Local file/folder to copy to VM home directory")
+	//cpCmd.Flags().StringP("remote", "r", "", "VM file/folder to copy to host at current directory")
 }

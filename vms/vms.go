@@ -10,6 +10,7 @@ import (
 	"github.com/mhewedy/vermin/ip"
 	"github.com/mhewedy/vermin/progress"
 	"os"
+	"strings"
 )
 
 func Tag(vmName string, tag string) error {
@@ -105,16 +106,26 @@ func PortForward(vmName string, ports string) error {
 	return nil
 }
 
-func CopyFiles(vmName string, file string, toVM bool) error {
-	if err := checkRunningVM(vmName); err != nil {
+func CopyFiles(src string, dest string) error {
+
+	if err := checkRunningVMForCopy(src); err != nil {
+		return err
+	}
+	if err := checkRunningVMForCopy(dest); err != nil {
 		return err
 	}
 
-	if toVM {
-		return scp.CopyToVMHomeDir(vmName, file)
-	} else {
-		return scp.CopyToLocalCWD(vmName, file)
+	return scp.Copy(src, dest)
+}
+
+func checkRunningVMForCopy(srcDest string) error {
+	if strings.Contains(srcDest, scp.CopySeparator) {
+		vmName := strings.Split(srcDest, scp.CopySeparator)[0]
+		if err := checkRunningVM(vmName); err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 func IP(vmName string, purge bool, global bool) (string, error) {
