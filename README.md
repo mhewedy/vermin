@@ -22,6 +22,7 @@ Table of Contents:
 	- [Remove VM](#Remove-VM)
 	- [Transfer Files](#Transfer-Files)
 	- [Port Forward](#Port-Forward)
+	- [And more](#Usage)
 - [More installation options](#more-installation-options)
    	- [Manual installation](#Manual-installation)
    	- [Build from source](#Build-from-source)
