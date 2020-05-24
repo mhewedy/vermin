@@ -7,6 +7,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"sync"
 )
 
 var (
@@ -81,34 +82,22 @@ func List(all bool) ([]string, error) {
 
 func getVMInfoList(vms []string) string {
 
-	if len(vms) == 0 {
+	numVms := len(vms)
+	if numVms == 0 {
 		return header
 	}
 
-	ch := make(chan *vmInfo, len(vms))
+	infoList := make(vmInfoList, numVms)
+	var wg sync.WaitGroup
+	wg.Add(numVms)
 
-	for _, vmName := range vms {
-		go func(vm string) {
-			ch <- getVMInfo(vm)
-		}(vmName)
+	for i, vmName := range vms {
+		go func(vm string, i int) {
+			infoList[i] = getVMInfo(vm)
+			wg.Done()
+		}(vmName, i)
 	}
-
-	// collect from channel
-	var i int
-	infoList := make(vmInfoList, 0)
-
-	for {
-		select {
-		case vmInfo := <-ch:
-			if vmInfo != nil {
-				infoList = append(infoList, vmInfo)
-			}
-			i++
-		}
-		if i == len(vms) {
-			break
-		}
-	}
+	wg.Wait()
 
 	return infoList.String()
 }
