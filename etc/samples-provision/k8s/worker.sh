@@ -1,7 +1,7 @@
 # HW requirements: 1 CPUS 2 RAM
 # OS: Ubuntu focal
 
-#should change to $(lsb_release -cs) but it appears it is not working on focal yet
+#should be $(lsb_release -cs) but it appears it is not working on focal yet
 docker_ubuntu_release=bionic
 k8s_version=1.18.0
 
