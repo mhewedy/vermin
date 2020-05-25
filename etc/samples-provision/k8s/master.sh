@@ -1,5 +1,6 @@
 # HW requirements: 2 CPUS 2 RAM
 # OS: Ubuntu focal
+set -x
 
 #should be $(lsb_release -cs) but it appears it is not working on focal yet
 docker_ubuntu_release=bionic
@@ -7,6 +8,8 @@ k8s_version=1.18.0
 
 # Set hostname and disable swap
 sudo hostnamectl set-hostname "$(hostname -I | awk '{print $1}')"
+echo "export PS1=\"\[\e[1;35m\]\u\[\033[m\]@\[\e[1;92m\]$(hostname -I | awk '{print $1}')\[\033[m\]:\w \$ \"" >>~/.bashrc
+
 sudo swapoff -a && sudo sed -i '/ swap / s/^/#/' /etc/fstab
 
 ## Fix IP Addr
@@ -20,9 +23,10 @@ sudo yq w -i /etc/netplan/00-installer-config.yaml network.ethernets.enp0s3.gate
 sudo yq w -i /etc/netplan/00-installer-config.yaml network.ethernets.enp0s3.nameservers.addresses[+] 8.8.8.8
 sudo yq w -i /etc/netplan/00-installer-config.yaml network.ethernets.enp0s3.nameservers.addresses[+] 8.8.4.4
 sudo netplan apply
+sleep 1
+############# install docker & k8s
 
-############# start k8s installation
-
+## install docker, kubelet, kubeadm and kubectl
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository \
   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
@@ -44,7 +48,25 @@ sudo apt-mark hold docker-ce kubelet kubeadm kubectl
 echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 
-####### configure kubeadm
+## configure docker
+
+cat <<EOF | sudo tee /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+
+sudo mkdir -p /etc/systemd/system/docker.service.d
+
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+############# configure kubeadm (master only)
 
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16 | tee ~/kubeadm.log
 
@@ -53,4 +75,4 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown "$(id -u):$(id -g)" $HOME/.kube/config
 
 ## install flannel network
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/485649719be5a21b0fe7e44f699f7acbb66137fa/Documentation/kube-flannel.yml
