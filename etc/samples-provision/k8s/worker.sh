@@ -10,7 +10,7 @@ k8s_version=1.18.0
 sudo hostnamectl set-hostname "$(hostname -I | awk '{print $1}')"
 echo "export PS1=\"\[\e[1;35m\]\u\[\033[m\]@\[\e[1;92m\]$(hostname -I | awk '{print $1}')\[\033[m\]:\w \$ \"" >>~/.bashrc
 
-sudo swapoff -a && sudo sed -i '/ swap / s/^/#/' /etc/fstab
+sudo swapoff -a && sudo sed -i 's/\/swap/#\/swap/g' /etc/fstab
 
 ## Fix IP Addr
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
