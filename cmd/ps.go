@@ -29,12 +29,14 @@ var psCmd = &cobra.Command{
 	Short: "List VMs",
 	Long: `List VMs
 Use the -a|--all flag to list all VMs
+Use the -f|--filter flag to filter VMs based on the name, image and tags (contains and AND filter)
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		all, _ := cmd.Flags().GetBool("all")
+		filters, _ := cmd.Flags().GetStringArray("filter")
 
-		ps, err := vms.Ps(all)
+		ps, err := vms.Ps(all, filters)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -55,4 +57,5 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	psCmd.Flags().BoolP("all", "a", false, "List all VMs")
+	psCmd.Flags().StringArrayP("filter", "f", []string{}, "Filter VMs")
 }
