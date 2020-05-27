@@ -1,6 +1,6 @@
 # HW requirements: 2 CPUS 2 RAM
 # OS: Ubuntu focal
-set -x
+set -ex
 
 #should be $(lsb_release -cs) but it appears it is not working on focal yet
 docker_ubuntu_release=bionic
