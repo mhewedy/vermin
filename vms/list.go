@@ -107,7 +107,7 @@ func parseFilters(filters []string) ([]filter, error) {
 	for i, f := range filters {
 		parts := strings.Split(f, "=")
 		if len(parts) != 2 || len(parts[1]) == 0 {
-			return nil, fmt.Errorf("Failed to parse fitler: %s.\n", f)
+			return nil, fmt.Errorf("Failed to parse fitler: %s\n", f)
 		}
 		out[i] = filter{name: parts[0], value: parts[1]}
 	}
