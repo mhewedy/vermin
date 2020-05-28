@@ -39,8 +39,9 @@ For example:
 * Or if you want to try to install a Kafka cluster, and you need something more than just a docker container.
 
 Vermin in Action:
-* [Install CockroachDB cluster in a Virtual Machine](https://link.medium.com/bCJd6r4yp6)
-* [Install Redis inside Ubuntu VM](https://medium.com/@mhewedy_46874/install-redis-inside-a-ubuntu-vm-d5022d42d8cc)
+* [Install CockroachDB cluster in a Virtual Machine](https://medium.com/swlh/install-cockroachdb-on-a-virtual-machine-2f25878fd70?source=friends_link&sk=52b4c1c16794f8d15943c8c48a7103b5)
+* [Install Redis inside Ubuntu VM](https://medium.com/swlh/install-redis-inside-a-ubuntu-vm-d5022d42d8cc?source=friends_link&sk=b7073861f8050c5318683d1ebfcd800a)
+* [Install Kubernetes cluster in Virtual Machines the easy way](https://medium.com/@mhewedy_46874/install-kubernetes-cluster-in-virtual-machines-the-easy-way-337ef0c4e37f?source=friends_link&sk=dbb40739c54c864d1bd2f779032b2de2)
 
 Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
