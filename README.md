@@ -111,7 +111,7 @@ $ vermin create <image name>
 # example
 $ vermin create ubuntu/focal
 ```
-Or in case you want to create and provision the VM: (see [sample provision script](https://github.com/mhewedy/vermin/blob/master/etc/samples-provision))
+Or in case you want to create and provision the VM: (example [Sample provision scripts](https://github.com/mhewedy/vermin/blob/master/etc/samples-provision))
 ```shell script
 $ vermin create <image name> /path/to/provison.sh 
 # example
