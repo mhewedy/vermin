@@ -94,7 +94,7 @@ Available Commands:
   ssh         ssh into a running VM
   start       Start one or more stopped VMs
   stop        Stop one or more running VMs
-  tag         Tag a VM
+  tag         Add or remove tag to a VM
 
 Flags:
   -h, --help      help for vermin
