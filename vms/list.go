@@ -173,15 +173,14 @@ func getVMInfo(vm string) vmInfo {
 
 	box, _ := db.GetBoxInfo(vm)
 	disk := getDiskSizeInGB(vm, box.HDLocation)
-	image, _ := db.ReadImageData(vm)
-	tags, _ := db.ReadTags(vm)
+	vmdb, _ := db.Load(vm)
 
 	return vmInfo{
 		name:  vm,
-		image: image,
+		image: vmdb.Image,
 		box:   *box,
 		disk:  disk,
-		tags:  tags,
+		tags:  strings.Join(vmdb.Tags, ", "),
 	}
 }
 

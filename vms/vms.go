@@ -13,11 +13,15 @@ import (
 	"strings"
 )
 
-func Tag(vmName string, tag string) error {
+func Tag(vmName string, tag string, remove bool) error {
 	if err := checkVM(vmName); err != nil {
 		return err
 	}
-	return db.WriteTag(vmName, tag)
+	if remove {
+		return db.RemoveTag(vmName, tag)
+	} else {
+		return db.AddTag(vmName, tag)
+	}
 }
 
 func Start(vmName string) error {

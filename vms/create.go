@@ -34,7 +34,7 @@ func Create(imageName string, script string, cpus int, mem int) (string, error) 
 		return "", err
 	}
 
-	if err = db.WriteImageData(vmName, imageName); err != nil {
+	if err = db.SetImage(vmName, imageName); err != nil {
 		return "", err
 	}
 

@@ -15,12 +15,12 @@ func Mount(vmName string, hostPath string) error {
 		return err
 	}
 
-	image, err := db.ReadImageData(vmName)
+	vmdb, err := db.Load(vmName)
 	if err != nil {
 		return err
 	}
 
-	if err = images.CheckCanMount(image); err != nil {
+	if err = images.CheckCanMount(vmdb.Image); err != nil {
 		return err
 	}
 

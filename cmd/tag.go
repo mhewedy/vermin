@@ -26,15 +26,17 @@ import (
 // tagCmd represents the tag command
 var tagCmd = &cobra.Command{
 	Use:   "tag",
-	Short: "Tag a VM",
-	Long: `Tag a VM
+	Short: "Add or remove tag to a VM",
+	Long: `Add or remove tag to a VM
 You can tag a VM as many times as you want
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
 		tag := args[1]
 
-		err := vms.Tag(vmName, tag)
+		remove, _ := cmd.Flags().GetBool("remove")
+
+		err := vms.Tag(vmName, tag, remove)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -63,5 +65,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	//tagCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
+	tagCmd.Flags().BoolP("remove", "r", false, "remove tag")
 }
