@@ -62,7 +62,7 @@ func (f filter) apply(list vmInfoList) vmInfoList {
 		rv := reflect.ValueOf(e)
 
 		for _, field := range fields {
-			if f.name == field && strings.Contains(rv.FieldByName(field).String(), f.value) {
+			if f.name == field && strings.Contains(strings.ToLower(rv.FieldByName(field).String()), f.value) {
 				filtered = append(filtered, e)
 			}
 		}
@@ -109,7 +109,7 @@ func parseFilters(filters []string) ([]filter, error) {
 		if len(parts) != 2 || len(parts[1]) == 0 {
 			return nil, fmt.Errorf("Failed to parse fitler: %s\n", f)
 		}
-		out[i] = filter{name: parts[0], value: parts[1]}
+		out[i] = filter{name: strings.ToLower(parts[0]), value: strings.ToLower(parts[1])}
 	}
 	return out, nil
 }
