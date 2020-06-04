@@ -4,9 +4,13 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
+<img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="20%"/>
+
+## The smart virtual machines manager (star the project if you find it useful)
+
 <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin2x.gif"/>
 
-<img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="20%"/>
+
 
 
 Table of Contents:
