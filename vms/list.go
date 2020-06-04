@@ -22,12 +22,11 @@ type vmInfo struct {
 	name  string
 	image string
 	box   db.Box
-	disk  string
 	tags  string
 }
 
 func (v vmInfo) String() string {
-	return fmt.Sprintf(format, v.name, v.image, v.box.CPU, v.box.Mem, v.disk, v.tags)
+	return fmt.Sprintf(format, v.name, v.image, v.box.CPU, v.box.Mem, v.box.DiskSize, v.tags)
 }
 
 type vmInfoList []vmInfo
@@ -172,22 +171,12 @@ func getVMInfo(vm string) vmInfo {
 	}
 
 	box, _ := db.GetBoxInfo(vm)
-	disk := getDiskSizeInGB(vm, box.HDLocation)
 	vmdb, _ := db.Load(vm)
 
 	return vmInfo{
 		name:  vm,
 		image: vmdb.Image,
 		box:   *box,
-		disk:  disk,
 		tags:  strings.Join(vmdb.Tags, ", "),
 	}
-}
-
-func getDiskSizeInGB(vm string, hdLocation string) string {
-	stat, err := os.Stat(db.GetVMPath(vm) + string(os.PathSeparator) + hdLocation)
-	if err != nil {
-		return ""
-	}
-	return fmt.Sprintf("%.1fGB", float64(stat.Size())/(1042*1024*1024.0))
 }

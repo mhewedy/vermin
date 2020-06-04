@@ -2,14 +2,16 @@ package db
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io/ioutil"
+	"os"
 )
 
 type Box struct {
-	CPU        string
-	Mem        string
-	HDLocation string
-	MACAddr    string
+	CPU      string
+	Mem      string
+	DiskSize string
+	MACAddr  string
 }
 
 type vbox struct {
@@ -52,9 +54,17 @@ func GetBoxInfo(vm string) (*Box, error) {
 		cpuCount = "1"
 	}
 	return &Box{
-		CPU:        cpuCount,
-		Mem:        vb.Machine.Hardware.Memory.RAMSize,
-		HDLocation: vb.Machine.MediaRegistry.HardDisks.HardDisk.Location,
-		MACAddr:    vb.Machine.Hardware.Network.Adapter.MACAddress,
+		CPU:      cpuCount,
+		Mem:      vb.Machine.Hardware.Memory.RAMSize,
+		DiskSize: getDiskSizeInGB(vm, vb.Machine.MediaRegistry.HardDisks.HardDisk.Location),
+		MACAddr:  vb.Machine.Hardware.Network.Adapter.MACAddress,
 	}, nil
+}
+
+func getDiskSizeInGB(vm string, hdLocation string) string {
+	stat, err := os.Stat(GetVMPath(vm) + string(os.PathSeparator) + hdLocation)
+	if err != nil {
+		return ""
+	}
+	return fmt.Sprintf("%.1fGB", float64(stat.Size())/(1042*1024*1024.0))
 }
