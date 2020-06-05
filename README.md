@@ -46,6 +46,7 @@ Vermin in Action:
 * [Install CockroachDB cluster in a Virtual Machine](https://medium.com/swlh/install-cockroachdb-on-a-virtual-machine-2f25878fd70?source=friends_link&sk=52b4c1c16794f8d15943c8c48a7103b5)
 * [Install Redis inside Ubuntu VM](https://medium.com/swlh/install-redis-inside-a-ubuntu-vm-d5022d42d8cc?source=friends_link&sk=b7073861f8050c5318683d1ebfcd800a)
 * [Install Kubernetes cluster in Virtual Machines the easy way](https://medium.com/@mhewedy_46874/install-kubernetes-cluster-in-virtual-machines-the-easy-way-337ef0c4e37f?source=friends_link&sk=dbb40739c54c864d1bd2f779032b2de2)
+* [Install Desktop environment on Ubuntu Server](https://medium.com/@mhewedy_46874/ubuntu-20-04-desktop-vm-using-vermin-764d20f43c4d?source=friends_link&sk=d78dd1b863aaa0ea8bd05dc3e681c7ec)
 
 Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
@@ -86,6 +87,7 @@ Available Commands:
   cp          Copy files/folders between a VM and the local filesystem or between two VMs
   create      Create a new VM
   exec        Run a command in a running VM
+  gui         open the GUI for the VM
   help        Help about any command
   images      List remote and cached images
   ip          Show IP address for a running VM

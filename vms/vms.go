@@ -161,3 +161,15 @@ func Modify(vmName string, cpus int, mem int) error {
 	_, err := command.VBoxManage(params...).Call()
 	return err
 }
+
+func GUI(vmName string) error {
+	if err := checkRunningVM(vmName); err != nil {
+		return err
+	}
+
+	if err := ssh.EstablishConn(vmName); err != nil {
+		return err
+	}
+
+	return command.VBoxManage("startvm", "--type", "separate", vmName).Run()
+}
