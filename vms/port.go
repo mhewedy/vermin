@@ -17,8 +17,8 @@ const rangeSep = "-"
 //
 // output format: ["-L", "0.0.0.0:<local port>:localhost:<vm port>"]
 //
-func getPortForwardArgs(ports string) ([]string, error) {
-	a, err := mapPorts(ports)
+func getPortForwardArgs(vmName, ports string) ([]string, error) {
+	a, err := mapPorts(vmName, ports)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func getPortForwardArgs(ports string) ([]string, error) {
 	return args, nil
 }
 
-func mapPorts(ports string) ([]string, error) {
+func mapPorts(vmName, ports string) ([]string, error) {
 
 	args := strings.Fields(ports)
 	var result []string
@@ -58,6 +58,7 @@ func mapPorts(ports string) ([]string, error) {
 		}
 
 		for vm, local := range portMap {
+			fmt.Printf("Forwarding from %s:%s -> localhost:%s\n", vmName, vm, local)
 			result = append(result, "0.0.0.0:"+local+":localhost:"+vm)
 		}
 	}

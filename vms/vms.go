@@ -97,7 +97,7 @@ func PortForward(vmName string, ports string) error {
 		return err
 	}
 
-	a, err := getPortForwardArgs(ports)
+	a, err := getPortForwardArgs(vmName, ports)
 	if err != nil {
 		return err
 	}
