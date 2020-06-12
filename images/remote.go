@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 const imagesCSVURL = "https://raw.githubusercontent.com/mhewedy/vermin/master/images/images.csv"
@@ -77,8 +76,9 @@ func validate(vms []dbImage) error {
 
 	for i := range vms {
 		// check name
-		if len(strings.Split(vms[i].Name, "/")) != 2 {
-			return errors.New("Name doesn't follow pattern <distro>/<version>")
+
+		if err := validateName(vms[i].Name); err != nil {
+			return err
 		}
 		// check duplicate
 		_, found := names[vms[i].Name]

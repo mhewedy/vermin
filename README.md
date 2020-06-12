@@ -83,6 +83,7 @@ $ vermin create <image>
 
 
 Available Commands:
+  commit      Commit a VM into a new Image
   completion  Generates shell completion scripts
   cp          Copy files/folders between a VM and the local filesystem or between two VMs
   create      Create a new VM

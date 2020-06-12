@@ -7,6 +7,7 @@ import (
 	"github.com/mhewedy/vermin/command/scp"
 	"github.com/mhewedy/vermin/command/ssh"
 	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/images"
 	"github.com/mhewedy/vermin/ip"
 	"github.com/mhewedy/vermin/progress"
 	"os"
@@ -172,4 +173,16 @@ func GUI(vmName string) error {
 	}
 
 	return command.VBoxManage("startvm", "--type", "separate", vmName).Run()
+}
+
+func Commit(vmName, imageName string, override bool) error {
+	if err := checkVM(vmName); err != nil {
+		return err
+	}
+
+	if isRunningVM(vmName) {
+		return fmt.Errorf(`VM is running, use "vermin stop %s" to stop the VM before commiting image from it.`, vmName)
+	}
+
+	return images.Commit(vmName, imageName, override)
 }
