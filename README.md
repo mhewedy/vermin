@@ -201,7 +201,7 @@ Then you can create as many VMs as you want from the committed image:
 $ vermin create elk/elastic
 ```
 
-To remove an image at any time later use:
+To remove an image at any time later use (removing an image doesn't remove VMs created from it):
 ```shell script
 $ vermin image rm elk/elastic
 ```
