@@ -1,5 +1,16 @@
 package images
 
+import (
+	"fmt"
+	"github.com/mhewedy/vermin/db"
+	"os"
+)
+
+var (
+	format = "%-25s%-20s%-10s\n"
+	header = fmt.Sprintf(format, "IMAGE NAME", "CACHED", "DISK")
+)
+
 func List() ([]string, error) {
 	list, err := list(false)
 	if err != nil {
@@ -19,12 +30,15 @@ func Display(purgeCache bool) (string, error) {
 		return "", err
 	}
 
-	var result string
+	result := header
+
 	for i := range list {
 		if list[i].cached {
-			result += list[i].name + "\t\t(cached)\n"
+			stat, _ := os.Stat(db.GetImageFilePath(list[i].name))
+			result += fmt.Sprintf(format, list[i].name, "true",
+				fmt.Sprintf("%.1fGB", float64(stat.Size())/(1042*1024*1024.0)))
 		} else {
-			result += list[i].name + "\n"
+			result += fmt.Sprintf(format, list[i].name, "", "")
 		}
 	}
 	return result, nil

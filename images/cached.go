@@ -17,7 +17,7 @@ func Remove(imageName string) error {
 		return errors.New("Image not found")
 	}
 
-	if err := os.RemoveAll(db.ImagesDir + string(os.PathSeparator) + imageName + ova); err != nil {
+	if err := os.RemoveAll(db.GetImageFilePath(imageName)); err != nil {
 		return err
 	}
 

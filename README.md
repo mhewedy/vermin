@@ -129,9 +129,10 @@ $ vermin create ubuntu/focal ~/sample.sh -cpus 1 -mem 512
 To get list of all available images use:
 ```shell script
 $ vermin images
-alpine/3.11		    (cached)
-centos/8		    (cached)
-ubuntu/focal
+IMAGE NAME               CACHED              DISK
+centos/8                 true                0.8GB
+ubuntu/focal             true                1.1GB
+alpine/3.11
 ```
 > The *cached* flag means, the image has been already downloaded and cached before.
 
