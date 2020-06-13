@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/mhewedy/vermin/images"
 	"os"
@@ -25,8 +26,9 @@ import (
 
 // imagesCmd represents the images command
 var imagesCmd = &cobra.Command{
-	Use:   "images",
-	Short: "List remote and cached images",
+	Use:     "images",
+	Aliases: []string{"image"},
+	Short:   "List remote and cached images",
 	Long: `List remote and cached images
 	
 Images are cached after the first time it is downloaded. Cached images are marked as (cached).
@@ -47,8 +49,25 @@ $ vermin create <image>
 	},
 }
 
+var imageRmCmd = &cobra.Command{
+	Use:   "rm",
+	Short: "Remove cached/committed images",
+	Long:  "Remove cached/committed images",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return images.Remove(args[0])
+	},
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 1 {
+			return errors.New("image required")
+		}
+		return nil
+	},
+	ValidArgsFunction: listImages,
+}
+
 func init() {
 	rootCmd.AddCommand(imagesCmd)
+	imagesCmd.AddCommand(imageRmCmd)
 
 	// Here you will define your flags and configuration settings.
 

@@ -26,6 +26,7 @@ Table of Contents:
 	- [Remove VM](#Remove-VM)
 	- [Transfer Files](#Transfer-Files)
 	- [Port Forward](#Port-Forward)
+	- [Commit VM](#Commit-VM)
 	- [And more](#Usage)
 - [More installation options](#more-installation-options)
    	- [Manual installation](#Manual-installation)
@@ -188,6 +189,21 @@ $ vermin cp vm_01:~/file.txt vm_02:/tmp
 forward ports from VM to local host (all ports from 8080 to 8090):
 ```shell script
 $ vermin port vm_01 8080-8090
+```
+
+## Commit VM:
+You can commit a stopped VM into an image, so later you can create VMs from that image:
+```shell script
+$ vermin commit vm_01 elk/elastic
+```
+Then you can create as many VMs as you want from the committed image:
+```shell script
+$ vermin create elk/elastic
+```
+
+To remove an image at any time later use:
+```shell script
+$ vermin image rm elk/elastic
 ```
 
 # More installation options:
