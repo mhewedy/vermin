@@ -26,7 +26,7 @@ Table of Contents:
 	- [Remove VM](#Remove-VM)
 	- [Transfer Files](#Transfer-Files)
 	- [Port Forward](#Port-Forward)
-	- [Commit VM](#Commit-VM)
+	- [Commit VM](#Commit-VM) (Create your own images)
 	- [And more](#Usage)
 - [More installation options](#more-installation-options)
    	- [Manual installation](#Manual-installation)
