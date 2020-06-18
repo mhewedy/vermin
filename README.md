@@ -93,7 +93,6 @@ Available Commands:
   help        Help about any command
   images      List remote and cached images
   ip          Show IP address for a running VM
-  modify      Modify a VM HW specs (cpus, memory)
   mount       Mount local filesystem inside the VM
   port        Forward port(s) from a VM to host
   ps          List VMs
@@ -103,6 +102,7 @@ Available Commands:
   start       Start one or more stopped VMs
   stop        Stop one or more running VMs
   tag         Add or remove tag to a VM
+  update      Update configuration of a VM
 
 Flags:
   -h, --help      help for vermin

@@ -23,15 +23,16 @@ import (
 	"os"
 )
 
-// modifyCmd represents the modify command
-var modifyCmd = &cobra.Command{
-	Use:   "modify",
-	Short: "Modify a VM HW specs (cpus, memory)",
-	Long:  "Modify a VM HW specs (cpus, memory)",
+// updateCmd represents the update command
+var updateCmd = &cobra.Command{
+	Use:     "update",
+	Aliases: []string{"modify"},
+	Short:   "Update configuration of a VM",
+	Long:    "Update configuration of a VM",
 	Example: `
 
 To change the VM to use 2 cores and 512MB memory
-$ vermin modify vm_01 --cpus 2 --mem 512
+$ vermin update vm_01 --cpus 2 --mem 512
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
@@ -65,16 +66,16 @@ $ vermin modify vm_01 --cpus 2 --mem 512
 }
 
 func init() {
-	rootCmd.AddCommand(modifyCmd)
+	rootCmd.AddCommand(updateCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// modifyCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// updateCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	modifyCmd.Flags().IntP("cpus", "c", 0, "Number of cpu cores")
-	modifyCmd.Flags().IntP("mem", "m", 0, "Memory size in mega bytes")
+	updateCmd.Flags().IntP("cpus", "c", 0, "Number of cpu cores")
+	updateCmd.Flags().IntP("mem", "m", 0, "Memory size in mega bytes")
 }
