@@ -210,7 +210,7 @@ $ vermin image rm elk/elastic
 # More installation options:
 ## Manual installation:
 
-> It is recommended to use the [automatic method](#Automatic-installation) to install vermin, However If you prefer to do manual installation then you need to follow these steps:
+> It is recommended to use the [automatic method](#install-vermin-) to install vermin, However If you prefer to do manual installation then you need to follow these steps:
 
 1. Download the binary matching your OS from [releases](https://github.com/mhewedy/vermin/releases/latest) unzip it and preferably put it in your PATH 
 2. create the following directory structure in your home dir:
