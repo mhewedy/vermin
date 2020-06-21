@@ -8,7 +8,7 @@
 
 ## The smart virtual machines manager (star the project if you find it useful)
 
-<img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin2x.gif"/>
+<img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin2x.v2.gif" width="100%"/>
 
 
 
