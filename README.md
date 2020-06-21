@@ -16,7 +16,7 @@
 Table of Contents:
 
 - [What is Vermin](#what-is-vermin)
-- [Install Vermin](#install-vermin)
+- [Install Vermin](#install-vermin-)
 - [Usage](#Usage)
 	- [Create a new VM](#Create-a-new-VM)
 	- [List VMs](#List-VMs)
