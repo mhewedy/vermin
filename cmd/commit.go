@@ -28,6 +28,10 @@ var commitCmd = &cobra.Command{
 	Use:   "commit",
 	Short: "Commit a VM into a new Image",
 	Long:  `Commit a VM into a new Image to be used later as a template to create VMs from.`,
+	Example: `
+Commit vm_01 that have installed elastic inside as an image so to be used later to obtain a VM that contains elastic installed.
+$ vermin commit vm_01 elk/elastic
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		vmName := args[0]
