@@ -36,12 +36,12 @@ Table of Contents:
 - [TODO](#TODO)
 ----
 # What is Vermin
-Vermin is a smart, simple and powerful command line tool for Linux, Windows and macOS. It's designed for developers who want a fresh VM environment with a single command. It uses VirtualBox to run the VM. Vermin will fetch images in your behave.
+Vermin is a smart, simple and powerful command line tool for Linux, Windows and macOS. It's designed for developers who want a fresh VM environment with a single command. It uses VirtualBox to run the VM. Vermin will fetch images on your behalf.
 
-Vermin can be used when you need an easy way to obtain a Linux up and running in minutes.
+Vermin can be used when you need an easy way to obtain a Linux environment up and running in minutes.
 For example:
 * If you want to have an environment to try .NET Core and you don't want to mess with your local own WSL installation.
-* Or if you want to try to install a Kafka cluster, and you need something more than just a docker container.
+* If you want to try to install a Kafka cluster, and you need something more than just a docker container.
 
 Vermin in Action:
 * [Install CockroachDB cluster in a Virtual Machine](https://medium.com/swlh/install-cockroachdb-on-a-virtual-machine-2f25878fd70?source=friends_link&sk=52b4c1c16794f8d15943c8c48a7103b5)
