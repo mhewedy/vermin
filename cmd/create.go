@@ -21,7 +21,11 @@ import (
 	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
 	"os"
+	"strings"
 )
+
+const paramShell = "shell"
+const paramAnsible = "ansible"
 
 // createCmd represents the create command
 var createCmd = &cobra.Command{
@@ -40,15 +44,27 @@ $ vermin create <image> </path/to/shell/script.sh>
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		imageName := args[0]
-		var script string
+
+		var ps vms.ProvisionScript
+
 		if len(args) > 1 {
-			script = args[1]
-			checkFilePath(script)
+			ps.Script = args[1]
+			checkFilePath(ps.Script)
+
+			typeStr, _ := cmd.Flags().GetString("type")
+			switch typeStr {
+			case paramShell:
+				ps.Type = vms.ProvisionShell
+			case paramAnsible:
+				ps.Type = vms.ProvisionAnsible
+			}
+
 		}
 		cpus, _ := cmd.Flags().GetInt("cpus")
 		mem, _ := cmd.Flags().GetInt("mem")
 
-		vmName, err := vms.Create(imageName, script, cpus, mem)
+		fmt.Println(ps)
+		vmName, err := vms.Create(imageName, ps, cpus, mem)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -60,6 +76,12 @@ $ vermin create <image> </path/to/shell/script.sh>
 		if len(args) < 1 {
 			return errors.New("Image required\nUse the command 'vermin images' to list all images available")
 		}
+
+		typeStr, _ := cmd.Flags().GetString("type")
+		if !(strings.EqualFold(typeStr, paramShell) || strings.EqualFold(typeStr, paramAnsible)) {
+			return errors.New("provision script type should be either shell or ansible")
+		}
+
 		return nil
 	},
 	ValidArgsFunction: listImages,
@@ -78,4 +100,5 @@ func init() {
 	// is called directly, e.g.:
 	createCmd.Flags().IntP("cpus", "c", 1, "Number of cpu cores")
 	createCmd.Flags().IntP("mem", "m", 1024, "Memory size in mega bytes")
+	createCmd.Flags().StringP("type", "t", "shell", "the type of provision script, can be shell or ansible")
 }
