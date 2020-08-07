@@ -51,19 +51,18 @@ $ vermin create <image> </path/to/shell/script.sh>
 			ps.Script = args[1]
 			checkFilePath(ps.Script)
 
-			typeStr, _ := cmd.Flags().GetString("type")
-			switch typeStr {
+			t, _ := cmd.Flags().GetString("type")
+			switch t {
 			case paramShell:
-				ps.Type = vms.ProvisionShell
+				ps.Func = vms.ProvisionShell
 			case paramAnsible:
-				ps.Type = vms.ProvisionAnsible
+				ps.Func = vms.ProvisionAnsible
 			}
 
 		}
 		cpus, _ := cmd.Flags().GetInt("cpus")
 		mem, _ := cmd.Flags().GetInt("mem")
 
-		fmt.Println(ps)
 		vmName, err := vms.Create(imageName, ps, cpus, mem)
 		if err != nil {
 			fmt.Println(err)

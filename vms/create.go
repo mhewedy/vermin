@@ -4,29 +4,20 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/mhewedy/vermin/command"
-	"github.com/mhewedy/vermin/command/scp"
 	"github.com/mhewedy/vermin/command/ssh"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/images"
 	"github.com/mhewedy/vermin/progress"
 	"os"
-	"path/filepath"
 	"runtime"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-const (
-	ProvisionShell = iota
-	ProvisionAnsible
-)
-
-type Provision int
-
 type ProvisionScript struct {
 	Script string
-	Type   Provision
+	Func   func(vmName string, script string) error
 }
 
 func Create(imageName string, ps ProvisionScript, cpus int, mem int) (string, error) {
@@ -72,15 +63,8 @@ func Create(imageName string, ps ProvisionScript, cpus int, mem int) (string, er
 	}
 
 	if len(ps.Script) > 0 {
-		switch ps.Type {
-		case ProvisionShell:
-			if err := provision(vmName, ps.Script); err != nil {
-				return "", err
-			}
-		case ProvisionAnsible:
-			if err := ansible(vmName, ps.Script); err != nil {
-				return "", err
-			}
+		if err := ps.Func(vmName, ps.Script); err != nil {
+			return "", err
 		}
 	}
 
@@ -111,30 +95,6 @@ func setNetworkAdapter(vmName string) error {
 	if _, err := command.VBoxManage("modifyvm", vmName, "--bridgeadapter1", adapter).Call(); err != nil {
 		return nil
 	}
-
-	return nil
-}
-
-func provision(vmName string, script string) error {
-	fmt.Println("Provisioning", vmName)
-
-	vmFile := "/tmp/" + filepath.Base(script)
-	if err := scp.CopyToVM(vmName, script, vmFile); err != nil {
-		return err
-	}
-	if _, err := ssh.Execute(vmName, "chmod +x "+vmFile); err != nil {
-		return err
-	}
-	if err := ssh.ExecInteract(vmName, vmFile); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func ansible(vmName string, script string) error {
-
-	// TODO add ansbile provision processing
 
 	return nil
 }
