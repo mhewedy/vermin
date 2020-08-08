@@ -1,0 +1,5 @@
+- hosts: all
+  tasks:
+    - copy:
+        content: "Hello Vermin"
+        dest: ~/hello_vermin.txt

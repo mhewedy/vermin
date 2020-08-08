@@ -145,12 +145,20 @@ $ vermin create <image name>
 # example
 $ vermin create ubuntu/focal
 ```
-Or in case you want to create and provision the VM: (example [Sample provision scripts](https://github.com/mhewedy/vermin/blob/master/etc/samples-provision))
+Or in case you want to create and provision the VM:
 ```shell script
 $ vermin create <image name> /path/to/provison.sh 
 # example
 $ vermin create ubuntu/focal ~/sample.sh -cpus 1 -mem 512
 ```
+Alternatively, you can provision the VM using an ansible playbook (`hosts` should set to _all_):
+```shell script
+$ vermin create <image name> -t ansible /path/to/playbook.yaml 
+# example
+$ vermin create ubuntu/focal -t ansible ~/install-nginx.yaml -cpus 1 -mem 512
+```
+
+>> see [Sample provision scripts](https://github.com/mhewedy/vermin/blob/master/etc/samples-provision)) for sample shell scripts and ansible playbooks. 
 
 To get list of all available images use:
 ```shell script
