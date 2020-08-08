@@ -63,6 +63,7 @@ func Create(imageName string, ps ProvisionScript, cpus int, mem int) (string, er
 	}
 
 	if len(ps.Script) > 0 {
+		fmt.Println("Provisioning", vmName)
 		if err := ps.Func(vmName, ps.Script); err != nil {
 			return "", err
 		}

@@ -1,14 +1,14 @@
 package vms
 
 import (
-	"fmt"
+	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/command/scp"
 	"github.com/mhewedy/vermin/command/ssh"
+	"github.com/mhewedy/vermin/ip"
 	"path/filepath"
 )
 
 func ProvisionShell(vmName string, script string) error {
-	fmt.Println("Provisioning", vmName)
 
 	vmFile := "/tmp/" + filepath.Base(script)
 	if err := scp.CopyToVM(vmName, script, vmFile); err != nil {
@@ -26,7 +26,10 @@ func ProvisionShell(vmName string, script string) error {
 
 func ProvisionAnsible(vmName string, script string) error {
 
-	// TODO add ansbile provisionShell processing
+	ipAddr, err := ip.Find(vmName, false)
+	if err != nil {
+		return err
+	}
 
-	return nil
+	return command.AnsiblePlaybook(ipAddr, script).Interact()
 }

@@ -59,3 +59,16 @@ func Ping(ip string) *cmd {
 		}
 	}
 }
+
+func AnsiblePlaybook(ip string, playbook string) *cmd {
+	return &cmd{
+		command: "ansible-playbook",
+		args: []string{
+			"-i", ip + ",",
+			"-e", "ansible_user=" + db.Username,
+			"-e", "ansible_private_key_file=" + db.PrivateKeyPath,
+			"--ssh-common-args", "-o StrictHostKeyChecking=no -o GlobalKnownHostsFile=/dev/null -o UserKnownHostsFile=/dev/null",
+			playbook,
+		},
+	}
+}
