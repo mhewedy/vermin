@@ -149,13 +149,13 @@ Or in case you want to create and provision the VM:
 ```shell script
 $ vermin create <image name> /path/to/provison.sh 
 # example
-$ vermin create ubuntu/focal ~/sample.sh -cpus 1 -mem 512
+$ vermin create ubuntu/focal ~/sample.sh --cpus 1 --mem 512
 ```
 Alternatively, you can provision the VM using an ansible playbook (`hosts` should set to _all_):
 ```shell script
 $ vermin create <image name> -t ansible /path/to/playbook.yaml 
 # example
-$ vermin create ubuntu/focal -t ansible ~/install-nginx.yaml -cpus 1 -mem 512
+$ vermin create ubuntu/focal -t ansible ~/install-nginx.yaml --cpus 1 --mem 512
 ```
 
 > See [sample provision scripts](https://github.com/mhewedy/vermin/blob/master/etc/samples-provision) for sample shell scripts and ansible playbooks. 
