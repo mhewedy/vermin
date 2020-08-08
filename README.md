@@ -155,7 +155,7 @@ Alternatively, you can provision the VM using an ansible playbook (`hosts` shoul
 ```shell script
 $ vermin create <image name> -t ansible /path/to/playbook.yaml 
 # example
-$ vermin create ubuntu/focal -t ansible ~/install-nginx.yaml --cpus 1 --mem 512
+$ vermin create ubuntu/focal -t ansible ~/install-nginx.yaml
 ```
 
 > See [sample provision scripts](https://github.com/mhewedy/vermin/blob/master/etc/samples-provision) for sample shell scripts and ansible playbooks. 
