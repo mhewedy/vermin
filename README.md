@@ -158,7 +158,7 @@ $ vermin create <image name> -t ansible /path/to/playbook.yaml
 $ vermin create ubuntu/focal -t ansible ~/install-nginx.yaml -cpus 1 -mem 512
 ```
 
->> see [Sample provision scripts](https://github.com/mhewedy/vermin/blob/master/etc/samples-provision)) for sample shell scripts and ansible playbooks. 
+> see [Sample provision scripts](https://github.com/mhewedy/vermin/blob/master/etc/samples-provision) for sample shell scripts and ansible playbooks. 
 
 To get list of all available images use:
 ```shell script
