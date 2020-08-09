@@ -21,7 +21,7 @@ Table of Contents:
     - [Manual installation](#Manual-installation)
    	- [Build from source](#Build-from-source)
 - [Usage](#Usage)
-	- [Create a new VM](#Create-a-new-VM)
+	- [Create new VM](#Create-new-VM)
 	- [List VMs](#List-VMs)
 	- [Start VM](#Start-VM)
 	- [SSH into VM](#SSH-into-VM)
@@ -137,7 +137,7 @@ Flags:
 Use "vermin [command] --help" for more information about a command.
 ```
 
-## Create a new VM
+## Create new VM
 Use the following command to create a VM
 
 ```shell script
