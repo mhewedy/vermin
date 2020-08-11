@@ -51,15 +51,20 @@ func Find(vmName string, purge bool) (string, error) {
 }
 
 func ping() {
-	var wg sync.WaitGroup
-	wg.Add(max)
 
-	for i := range [max]int{} {
-		go func(i int) {
-			ip := getIPPrefix() + strconv.Itoa(i)
-			_ = command.Ping(ip).Run()
-			wg.Done()
-		}(i)
+	prefixes := getIPPrefixes()
+
+	var wg sync.WaitGroup
+	wg.Add(max * len(prefixes))
+
+	for _, prefix := range prefixes {
+		for i := range [max]int{} {
+			go func(i int) {
+				ip := prefix + strconv.Itoa(i)
+				_ = command.Ping(ip).Run()
+				wg.Done()
+			}(i)
+		}
 	}
 
 	wg.Wait()
