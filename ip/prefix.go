@@ -21,6 +21,11 @@ func getIP() string {
 	strs := make([]string, 0)
 
 	for _, iface := range ifaces {
+
+		if strings.Contains(iface.Name, "VirtualBox") {
+			continue
+		}
+
 		addrs, err := iface.Addrs()
 		if err != nil {
 			fmt.Println(err)
