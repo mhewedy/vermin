@@ -1,1 +1,162 @@
-<h3>Hello Vermin!</h3>
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <style>
+    .code {
+      font-family: "Ubuntu Mono", "monospace", "Roboto", "Oxygen", "Monaco", "Droid Sans";
+      font-size: 16px;
+    }
+    .borderless {
+
+    }
+  </style>
+
+  <title>Vermin</title>
+</head>
+<body>
+
+  <div id="wrapper" style="padding-left: 10%; padding-right: 10%; padding-bottom: 50px">
+
+
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand" href="https://github.com/mhewedy/vermin">
+        <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png" width="70" height="70" class="d-inline-block align-top" alt="" loading="lazy">
+        <span style="font-size: 50px">Vermin</span>
+        <span class="text-muted">The smart virtual machines manager</span>
+      </a>
+    </nav>
+
+    <div style="padding-top: 50px; padding-bottom: 10px">
+      <h2>Documentations</h2>
+      <hr >
+
+      <div>
+        <p>Vermin is a smart, simple and powerful command line tool for Linux, Windows and macOS. It's designed for developers who want a fresh VM environment with a single command.</p>
+        <p>
+        It uses <b>VirtualBox</b> to run the VM. Vermin will fetch images on your behalf.
+        Vermin can be used when you need an easy way to obtain a Linux environment up and running in minutes.
+        </p>
+        <p>
+          For example:
+          <ul>
+            <li>If you want to have an environment to try .NET Core and you don't want to mess with your local own WSL installation.</li>
+            <li>If you want to try to install a Kafka cluster, and you need something more than just a docker container.</li>
+          </ul>
+        </p>
+
+      </div>
+
+    </div>
+
+    <div id="docs">
+
+      <hr >
+      <div style="padding-bottom: 20px; font-size: larger">Command-line reference</div>
+
+      <div class="row">
+        <div class="col-2">
+          <div class="list-group" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action list-group-item-light borderless active" id="list-create-list" data-toggle="list" href="#list-create" role="tab" aria-controls="create"><div class="code">create</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-ssh-list" data-toggle="list" href="#list-ssh" role="tab" aria-controls="ssh"><div class="code">ssh</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-start-list" data-toggle="list" href="#list-start" role="tab" aria-controls="start"><div class="code">start</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-stop-list" data-toggle="list" href="#list-stop" role="tab" aria-controls="stop"><div class="code">stop</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-restart-list" data-toggle="list" href="#list-restart" role="tab" aria-controls="restart"><div class="code">restart</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-rm-list" data-toggle="list" href="#list-rm" role="tab" aria-controls="rm"><div class="code">rm</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-ps-list" data-toggle="list" href="#list-ps" role="tab" aria-controls="ps"><div class="code">ps</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-exec-list" data-toggle="list" href="#list-exec" role="tab" aria-controls="exec"><div class="code">exec</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-images-list" data-toggle="list" href="#list-images" role="tab" aria-controls="images"><div class="code">images</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-commit-list" data-toggle="list" href="#list-commit" role="tab" aria-controls="commit"><div class="code">commit</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-cp-list" data-toggle="list" href="#list-cp" role="tab" aria-controls="cp"><div class="code">cp</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-gui-list" data-toggle="list" href="#list-gui" role="tab" aria-controls="gui"><div class="code">gui</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-ip-list" data-toggle="list" href="#list-ip" role="tab" aria-controls="ip"><div class="code">ip</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-mount-list" data-toggle="list" href="#list-mount" role="tab" aria-controls="mount"><div class="code">mount</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-port-list" data-toggle="list" href="#list-port" role="tab" aria-controls="port"><div class="code">port</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-tag-list" data-toggle="list" href="#list-tag" role="tab" aria-controls="tag"><div class="code">tag</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-update-list" data-toggle="list" href="#list-update" role="tab" aria-controls="update"><div class="code">update</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-completion-list" data-toggle="list" href="#list-completion" role="tab" aria-controls="completion"><div class="code">completion</div></a>
+
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane show active" id="list-create" role="tabpanel" aria-labelledby="list-create-list">
+              Create
+            </div>
+            <div class="tab-pane fade" id="list-ssh" role="tabpanel" aria-labelledby="list-ssh-list">
+              ssh
+            </div>
+            <div class="tab-pane fade" id="list-start" role="tabpanel" aria-labelledby="list-start-list">
+              start
+            </div>
+            <div class="tab-pane fade" id="list-stop" role="tabpanel" aria-labelledby="list-stop-list">
+              stop
+            </div>
+            <div class="tab-pane fade" id="list-restart" role="tabpanel" aria-labelledby="list-stop-list">
+              restart
+            </div>
+            <div class="tab-pane fade" id="list-rm" role="tabpanel" aria-labelledby="list-stop-list">
+              rm
+            </div>
+            <div class="tab-pane fade" id="list-ps" role="tabpanel" aria-labelledby="list-stop-list">
+              ps
+            </div>
+            <div class="tab-pane fade" id="list-exec" role="tabpanel" aria-labelledby="list-stop-list">
+              exec
+            </div>
+            <div class="tab-pane fade" id="list-images" role="tabpanel" aria-labelledby="list-stop-list">
+              images
+            </div>
+            <div class="tab-pane fade" id="list-commit" role="tabpanel" aria-labelledby="list-stop-list">
+              commit
+            </div>
+            <div class="tab-pane fade" id="list-cp" role="tabpanel" aria-labelledby="list-stop-list">
+              cp
+            </div>
+            <div class="tab-pane fade" id="list-gui" role="tabpanel" aria-labelledby="list-stop-list">
+              gui
+            </div>
+            <div class="tab-pane fade" id="list-ip" role="tabpanel" aria-labelledby="list-stop-list">
+              ip
+            </div>
+            <div class="tab-pane fade" id="list-mount" role="tabpanel" aria-labelledby="list-stop-list">
+              mount
+            </div>
+            <div class="tab-pane fade" id="list-port" role="tabpanel" aria-labelledby="list-stop-list">
+              port
+            </div>
+            <div class="tab-pane fade" id="list-tag" role="tabpanel" aria-labelledby="list-stop-list">
+              tag
+            </div>
+            <div class="tab-pane fade" id="list-update" role="tabpanel" aria-labelledby="list-stop-list">
+              update
+            </div>
+            <div class="tab-pane fade" id="list-completion" role="tabpanel" aria-labelledby="list-stop-list">
+              completion
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <hr />
+
+  </div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>
