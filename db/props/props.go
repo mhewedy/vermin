@@ -1,5 +1,5 @@
-// This package modeled around showvminfo subcommand which yield a bad performance.
-// Consider using db package whenever possible.
+// This package modeled around `showvminfo` subcommand which yield a bad performance.
+// Consider using db package functions whenever possible.
 package props
 
 import (
@@ -7,17 +7,9 @@ import (
 	"strings"
 )
 
-func List(vmName string) ([]string, error) {
-	out, err := command.VBoxManage("showvminfo", vmName, "--machinereadable").Call()
-	if err != nil {
-		return nil, err
-	}
-	return strings.Fields(out), nil
-}
-
 func FindByPrefix(vmName string, prefix string) ([]string, error) {
 
-	entries, err := List(vmName)
+	entries, err := list(vmName)
 	if err != nil {
 		return nil, err
 	}
@@ -47,4 +39,12 @@ func FindFirstByPrefix(vmName string, prefix string) (string, bool, error) {
 	}
 
 	return byPrefix[0], true, nil
+}
+
+func list(vmName string) ([]string, error) {
+	out, err := command.VBoxManage("showvminfo", vmName, "--machinereadable").Call()
+	if err != nil {
+		return nil, err
+	}
+	return strings.Fields(out), nil
 }
