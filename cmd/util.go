@@ -17,3 +17,10 @@ func checkFilePath(path string) {
 func preRun(cmd *cobra.Command, args []string) {
 	config.CheckForUpdates(version)
 }
+
+func exitOnError(err error) {
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}

@@ -1,14 +1,18 @@
-package vms
+package provisioners
 
 import (
-	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/command/scp"
 	"github.com/mhewedy/vermin/command/ssh"
-	"github.com/mhewedy/vermin/ip"
 	"path/filepath"
 )
 
-func ProvisionShell(vmName string, script string) error {
+type Shell struct{}
+
+func (Shell) Accept(ptype string) bool {
+	return "shell" == ptype
+}
+
+func (Shell) Exec(vmName string, script string) error {
 
 	vmFile := "/tmp/" + filepath.Base(script)
 	if err := scp.CopyToVM(vmName, script, vmFile); err != nil {
@@ -22,14 +26,4 @@ func ProvisionShell(vmName string, script string) error {
 	}
 
 	return nil
-}
-
-func ProvisionAnsible(vmName string, script string) error {
-
-	ipAddr, err := ip.Find(vmName, false)
-	if err != nil {
-		return err
-	}
-
-	return command.AnsiblePlaybook(ipAddr, script).Interact()
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/images"
 	"github.com/mhewedy/vermin/progress"
+	"github.com/mhewedy/vermin/provisioners"
 	"os"
 	"runtime"
 	"sort"
@@ -17,7 +18,7 @@ import (
 
 type ProvisionScript struct {
 	Script string
-	Func   func(vmName string, script string) error
+	Func   provisioners.Func
 }
 
 func Create(imageName string, ps ProvisionScript, cpus int, mem int) (string, error) {

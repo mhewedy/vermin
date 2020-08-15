@@ -17,10 +17,8 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 // commitCmd represents the commit command
@@ -39,10 +37,7 @@ $ vermin commit vm_01 elk/elastic
 		override, _ := cmd.Flags().GetBool("override")
 
 		err := vms.Commit(vmName, imageName, override)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
+		exitOnError(err)
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {

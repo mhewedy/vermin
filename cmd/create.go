@@ -18,14 +18,10 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"github.com/mhewedy/vermin/provisioners"
 	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
-	"os"
-	"strings"
 )
-
-const paramShell = "shell"
-const paramAnsible = "ansible"
 
 // createCmd represents the create command
 var createCmd = &cobra.Command{
@@ -48,37 +44,26 @@ $ vermin create <image> </path/to/shell/script.sh>
 		var ps vms.ProvisionScript
 
 		if len(args) > 1 {
-			ps.Script = args[1]
-			checkFilePath(ps.Script)
 
 			t, _ := cmd.Flags().GetString("type")
-			switch t {
-			case paramShell:
-				ps.Func = vms.ProvisionShell
-			case paramAnsible:
-				ps.Func = vms.ProvisionAnsible
-			}
+			pf, err := provisioners.Load(t)
+			exitOnError(err)
 
+			ps.Func = pf
+			ps.Script = args[1]
+			checkFilePath(ps.Script)
 		}
 		cpus, _ := cmd.Flags().GetInt("cpus")
 		mem, _ := cmd.Flags().GetInt("mem")
 
 		vmName, err := vms.Create(imageName, ps, cpus, mem)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
+		exitOnError(err)
 
 		fmt.Printf("\nVM is ready, to connect to it use:\n$ vermin ssh %s\n", vmName)
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
 			return errors.New("Image required\nUse the command 'vermin images' to list all images available")
-		}
-
-		typeStr, _ := cmd.Flags().GetString("type")
-		if !(strings.EqualFold(typeStr, paramShell) || strings.EqualFold(typeStr, paramAnsible)) {
-			return errors.New("provision script type should be either shell or ansible")
 		}
 
 		return nil
