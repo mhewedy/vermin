@@ -8,49 +8,7 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
-  <style>
-    @media screen and (min-width: 768px) {
-      .custom-collapse .collapse{
-        display:block;
-      }
-    }
-    .code-font {
-      font-family: "Ubuntu Mono", "monospace", "Roboto", "Oxygen", "Monaco", "Droid Sans";
-      font-size: 17px;
-    }
-    .borderless {
-      padding: .4rem 1.5rem;
-    }
-
-    pre {
-      background-color: #f7f7f7;
-      border: 1px solid #cdcdcd;
-      border-radius: .125rem;
-      color: #111;
-      display: block;
-      margin-bottom: 1.5rem;
-      margin-top: 0;
-      overflow: auto;
-      padding: calc(0.45rem - 1px) 1rem calc(0.45rem - 1px);
-      text-align: left;
-      text-shadow: none;
-      white-space: pre;
-    }
-
-    code {
-      color: black;
-      background-color: #e5e5e5;
-      box-shadow: 0px -1px 0 0.25rem #e5e5e5;
-      font-family: "Ubuntu Mono", "monospace", "Roboto", "Oxygen", "Monaco", "Droid Sans";
-      font-weight: 300;
-      margin-left: 0.25rem;
-      margin-right: 0.25rem;
-      text-align: left;
-    }
-    #command {
-      font-size: 17px;
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 
   <title>Vermin</title>
 </head>
@@ -117,16 +75,8 @@
       <div style="padding-bottom: 20px; font-size: larger">Command-line reference</div>
 
       <div class="row custom-collapse">
-
-        <button class="collapse-toggle visible-xs " type="button" data-toggle="collapse" data-parent="custom-collapse" data-target="#list-tab">
-          <span class="">Command Menu</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-
         <div class="col-2">
-          <div class="list-group collapse" id="list-tab" role="tablist">
+          <div class="list-group" id="list-tab" role="tablist">
             <a class="list-group-item list-group-item-action list-group-item-light borderless active" id="list-create-list" data-toggle="list" href="#list-create" role="tab" aria-controls="create"><div class="code-font">create</div></a>
             <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-ssh-list" data-toggle="list" href="#list-ssh" role="tab" aria-controls="ssh"><div class="code-font">ssh</div></a>
             <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-start-list" data-toggle="list" href="#list-start" role="tab" aria-controls="start"><div class="code-font">start</div></a>
