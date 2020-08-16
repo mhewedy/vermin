@@ -9,12 +9,38 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
   <style>
-    .code {
+    .codyfont {
       font-family: "Ubuntu Mono", "monospace", "Roboto", "Oxygen", "Monaco", "Droid Sans";
       font-size: 16px;
     }
     .borderless {
       padding: .4rem 1.5rem;
+    }
+
+    pre {
+      background-color: #f7f7f7;
+      border: 1px solid #cdcdcd;
+      border-radius: .125rem;
+      color: #111;
+      display: block;
+      margin-bottom: 1.5rem;
+      margin-top: 0;
+      overflow: auto;
+      padding: calc(0.45rem - 1px) 1rem calc(0.45rem - 1px);
+      text-align: left;
+      text-shadow: none;
+      white-space: pre;
+    }
+
+    code {
+      color: black;
+      background-color: #e5e5e5;
+      box-shadow: 0px -1px 0 0.25rem #e5e5e5;
+      font-family: "Ubuntu Mono", Consolas, Monaco, Courier, monospace;
+      font-weight: 300;
+      margin-left: 0.25rem;
+      margin-right: 0.25rem;
+      text-align: left;
     }
   </style>
 
@@ -85,24 +111,24 @@
       <div class="row">
         <div class="col-2">
           <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action list-group-item-light borderless active" id="list-create-list" data-toggle="list" href="#list-create" role="tab" aria-controls="create"><div class="code">create</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-ssh-list" data-toggle="list" href="#list-ssh" role="tab" aria-controls="ssh"><div class="code">ssh</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-start-list" data-toggle="list" href="#list-start" role="tab" aria-controls="start"><div class="code">start</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-stop-list" data-toggle="list" href="#list-stop" role="tab" aria-controls="stop"><div class="code">stop</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-restart-list" data-toggle="list" href="#list-restart" role="tab" aria-controls="restart"><div class="code">restart</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-rm-list" data-toggle="list" href="#list-rm" role="tab" aria-controls="rm"><div class="code">rm</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-ps-list" data-toggle="list" href="#list-ps" role="tab" aria-controls="ps"><div class="code">ps</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-exec-list" data-toggle="list" href="#list-exec" role="tab" aria-controls="exec"><div class="code">exec</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-images-list" data-toggle="list" href="#list-images" role="tab" aria-controls="images"><div class="code">images</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-commit-list" data-toggle="list" href="#list-commit" role="tab" aria-controls="commit"><div class="code">commit</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-cp-list" data-toggle="list" href="#list-cp" role="tab" aria-controls="cp"><div class="code">cp</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-gui-list" data-toggle="list" href="#list-gui" role="tab" aria-controls="gui"><div class="code">gui</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-ip-list" data-toggle="list" href="#list-ip" role="tab" aria-controls="ip"><div class="code">ip</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-mount-list" data-toggle="list" href="#list-mount" role="tab" aria-controls="mount"><div class="code">mount</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-port-list" data-toggle="list" href="#list-port" role="tab" aria-controls="port"><div class="code">port</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-tag-list" data-toggle="list" href="#list-tag" role="tab" aria-controls="tag"><div class="code">tag</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-update-list" data-toggle="list" href="#list-update" role="tab" aria-controls="update"><div class="code">update</div></a>
-            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-completion-list" data-toggle="list" href="#list-completion" role="tab" aria-controls="completion"><div class="code">completion</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless active" id="list-create-list" data-toggle="list" href="#list-create" role="tab" aria-controls="create"><div class="codyfont">create</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-ssh-list" data-toggle="list" href="#list-ssh" role="tab" aria-controls="ssh"><div class="codyfont">ssh</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-start-list" data-toggle="list" href="#list-start" role="tab" aria-controls="start"><div class="codyfont">start</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-stop-list" data-toggle="list" href="#list-stop" role="tab" aria-controls="stop"><div class="codyfont">stop</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-restart-list" data-toggle="list" href="#list-restart" role="tab" aria-controls="restart"><div class="codyfont">restart</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-rm-list" data-toggle="list" href="#list-rm" role="tab" aria-controls="rm"><div class="codyfont">rm</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-ps-list" data-toggle="list" href="#list-ps" role="tab" aria-controls="ps"><div class="codyfont">ps</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-exec-list" data-toggle="list" href="#list-exec" role="tab" aria-controls="exec"><div class="codyfont">exec</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-images-list" data-toggle="list" href="#list-images" role="tab" aria-controls="images"><div class="codyfont">images</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-commit-list" data-toggle="list" href="#list-commit" role="tab" aria-controls="commit"><div class="codyfont">commit</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-cp-list" data-toggle="list" href="#list-cp" role="tab" aria-controls="cp"><div class="codyfont">cp</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-gui-list" data-toggle="list" href="#list-gui" role="tab" aria-controls="gui"><div class="codyfont">gui</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-ip-list" data-toggle="list" href="#list-ip" role="tab" aria-controls="ip"><div class="codyfont">ip</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-mount-list" data-toggle="list" href="#list-mount" role="tab" aria-controls="mount"><div class="codyfont">mount</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-port-list" data-toggle="list" href="#list-port" role="tab" aria-controls="port"><div class="codyfont">port</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-tag-list" data-toggle="list" href="#list-tag" role="tab" aria-controls="tag"><div class="codyfont">tag</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-update-list" data-toggle="list" href="#list-update" role="tab" aria-controls="update"><div class="codyfont">update</div></a>
+            <a class="list-group-item list-group-item-action list-group-item-light borderless" id="list-completion-list" data-toggle="list" href="#list-completion" role="tab" aria-controls="completion"><div class="codyfont">completion</div></a>
 
           </div>
         </div>
