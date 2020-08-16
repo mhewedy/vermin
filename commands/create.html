@@ -7,16 +7,130 @@
 
   <div class="content">
     <p>
-      Hello <code>Test</code> it.
+      <code>create</code> subcommand used to create a new VM from an <a href="#"
+                                                                        onclick="$('#list-images-list').click()">image</a>.
+    </p>
+    <p>
+      This is usually your start command to use in vermin. You need to have a VM up and running so you can use it.
     </p>
 
-
+    <p>
+      To create a new VM, you need to pass a required parameter of the image name,
+      <code>vermin create &lt;image name &gt;</code> e.g.:
     <pre>
-Long code
-snippet
+$ vermin create ubuntu/focal
+✔ Creating vm_01 from image ubuntu/focal
+✔ Setting bridged network adapter
+✔ Starting vm_01
+✔ Establishing connection
+
+VM is ready, to connect to it use:
+$ vermin ssh vm_01
     </pre>
 
-  </div>
+    </p>
 
+    <p>
+      Once you have a VM created from the chosen image, you can now start use it by <a href="#"
+                                                                                       onclick="$('#list-ssh-list').click()">ssh</a>
+      into it.
+    </p>
+
+    <hr/>
+    <h4>Provisioners</h4>
+    <p>Vermin adapts the concept of provisioners where you can provision the VM as part of the creation process.</p>
+    <p>
+      Vermin supports two type of prisioners:
+    <ul>
+      <li>Shell</li>
+      <li>Ansible</li>
+    </ul>
+    </p>
+
+    <h5>Shell provisioner</h5>
+    <p>
+      vermin support shell provisioning by providing a shell script that is run using a regular user <code>vermin</code>.
+      However you can use the <code>sudo</code> command.
+
+    </p>
+    <div>
+      Sample provision script:
+      <pre>
+# install redis
+sudo apt update -y
+sudo apt install redis-server -y
+sudo sed -i 's/^supervised no/supervised systemd/' /etc/redis/redis.conf
+sudo systemctl restart redis.service
+sudo systemctl status redis
+      </pre>
+
+      You need to save the provision script into a file and pass the file path to the create subcommand:
+      <pre>
+$ vermin create ubuntu/focal redis.sh
+✔ Creating vm_01 from image ubuntu/focal
+✔ Setting bridged network adapter
+✔ Starting vm_01
+✔ Establishing connection
+Provisioning vm_01
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:1 http://sa.archive.ubuntu.com/ubuntu focal InRelease
+...
+...
+Aug 16 21:04:06 verminbox systemd[1]: Started Advanced key-value store.
+
+VM is ready, to connect to it use:
+$ vermin ssh vm_01
+    </pre>
+
+    </div>
+
+
+    <h5>Ansible provisioner</h5>
+    <p>
+      Ansible is a well-known configuration management tool. vermin support ansible playbooks to provision VMs as part
+      of the creation process.
+
+    </p>
+    <div class="alert alert-light">
+      Note: You need to set the <code>hosts</code> property to <code>all</code> in the playbook.
+    </div>
+
+    Here's a sample playbook:
+    <pre>
+- hosts: all
+  become: yes
+  tasks:
+  - package:
+      name: apache2
+      state: present
+    </pre>
+    And here's an example:
+    <pre>
+$ vermin create ubuntu/focal -t ansible apache2.yaml
+✔ Creating vm_01 from image ubuntu/focal
+✔ Setting bridged network adapter
+✔ Starting vm_01
+✔ Establishing connection
+Provisioning vm_01
+
+PLAY [all] *********************************************************************
+...
+...
+PLAY RECAP *********************************************************************
+192.168.100.155            : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+
+VM is ready, to connect to it use:
+$ vermin ssh vm_01
+  </pre>
+
+    <div class="alert alert-light">
+      Note: we need to pass the flag <code>-t ansible</code> when using ansible. in case of shell,
+      you can pass <code>-t shell</code> which is the default behaviour.
+    </div>
+
+  </div>
 
 </div>
