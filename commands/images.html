@@ -23,18 +23,16 @@ centos/8
 alpine/3.11
       </pre>
       <p>
-        the <code>images</code> subcommand shows all the images you can use to create a new VM from.
+        the <code>images</code> subcommand <b>list</b> all the images you can use to create a new VM from.
       </p>
       <p>
-        It shows <b>three</b>columns; the image name, cached which means whether this image is saved on the local disk
-        or not.
-        The last column is size on disk of the image.
+        It shows <b>three</b> columns; the image name, cached which means whether this image is saved on the local disk
+        or not. The last column is size on disk of the image.
       </p>
 
       <p>
-        the images used in the <a href="#"
-                                  onclick="$('#list-create-list').click()"><code>create</code></a> subcommand to create
-        a new VM.
+        The images are used in the <a href="#" onclick="$('#list-create-list').click()"><code>create</code></a>
+        subcommand to create a new VM.
       </p>
 
       <div class="alert alert-light">
@@ -66,7 +64,8 @@ centos/8
 alpine/3.11
       </pre>
       <p>
-        This command will purge the database and re-download it (it is usually in Kilobytes) and list the available images in the new database.
+        This command will purge the database and re-download it (it is usually in Kilobytes) and list the available
+        images in the new database.
       </p>
 
       <div class="alert alert-light">
@@ -84,16 +83,17 @@ alpine/3.11
       </p>
 
       <div class="alert alert-light">
-        You need to beware about this feature, as you might remove a local committed image that you cannot recover.
+        Note: You need to beware about this feature, as you might remove a local committed image that you cannot recover.
       </div>
       <pre>
 $ vermin images rm ubuntu/focal
 ✔ Deleting image ubuntu/focal
       </pre>
       <p>
-      In case you removed an image that is downloaded as part of vermin repository,
-      you can got it downloaded automatically again when you execute the <a href="#"
-                                                                            onclick="$('#list-create-list').click()">create</a> command. e.g.:
+        In case you removed an image that is downloaded as part of vermin repository,
+        you can got it downloaded automatically again when you execute the <a href="#"
+                                                                              onclick="$('#list-create-list').click()">create</a>
+        command. e.g.:
       </p>
       <pre>
 $ vermin create ubuntu/focal
