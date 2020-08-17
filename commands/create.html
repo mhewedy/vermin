@@ -53,7 +53,7 @@ $ vermin ssh vm_01
 
     </p>
     <div>
-      Sample provision script:
+      <p>Sample provision script:</p>
       <pre>
 # install redis
 sudo apt update -y
@@ -63,7 +63,7 @@ sudo systemctl restart redis.service
 sudo systemctl status redis
       </pre>
 
-      You need to save the provision script into a file and pass the file path to the create subcommand:
+      <p>You need to save the provision script into a file and pass the file path to the create subcommand:</p>
       <pre>
 $ vermin create ubuntu/focal redis.sh
 ✔ Creating vm_01 from image ubuntu/focal
@@ -96,7 +96,7 @@ $ vermin ssh vm_01
       Note: You need to set the <code>hosts</code> property to <code>all</code> in the playbook.
     </div>
 
-    Here's a sample playbook:
+    <p>Here's a sample playbook:</p>
     <pre>
 - hosts: all
   become: yes
@@ -105,7 +105,7 @@ $ vermin ssh vm_01
       name: apache2
       state: present
     </pre>
-    And here's an example:
+    <p>And here's an example:</p>
     <pre>
 $ vermin create ubuntu/focal -t ansible apache2.yaml
 ✔ Creating vm_01 from image ubuntu/focal
