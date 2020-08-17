@@ -1,0 +1,53 @@
+<div id="command">
+  <div class="code-font">
+    <h1>stop</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p><code>stop</code> subcommand used to stop one or more VMs.</p>
+
+    <pre>
+$ vermin stop vm_01
+<graycode>✔ Stopping vm_01</graycode>
+    </pre>
+
+    <p>
+      Once a VM stopped, you cannot use the
+      <link-ssh></link-ssh>
+      command to ssh into the VM.
+    </p>
+
+    <p>
+      To stop more than one VM, pass them space separated on the command line:
+    </p>
+    <pre>
+$ vermin stop vm_01 vm_02
+    </pre>
+
+    <p>
+      If you tried to stop an already started VM, you will got a message indicating that, as follows:
+    </p>
+    <pre>
+$ vermin start vm_01
+<graycode>VM already running, use "vermin ssh vm_01" to ssh into the VM.</graycode>
+    </pre>
+
+    <p>
+      You can also
+      <link-restart></link-restart>
+      or
+      <link-stop></link-stop>
+      a running VM.
+    </p>
+
+    <hr/>
+    <h5>Listing started VMs</h5>
+    We will cover this topic in greater details in the
+    <link-ps></link-ps>
+    section. but for now you need to know that
+    the <code>ps</code> command by default lists the started and already running VMs.
+
+  </div>
+</div>

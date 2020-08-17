@@ -1,0 +1,40 @@
+<div id="command">
+  <div class="code-font">
+    <h1>restart</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p><code>restart</code> subcommand used to restart one or more VMs.</p>
+
+    <pre>
+$ vermin restart vm_01
+<graycode>✔ Stopping vm_01
+✔ Starting vm_01
+✔ Establishing connection</graycode>
+    </pre>
+
+    <p>
+      Then you can use the
+      <link-ssh></link-ssh>
+      command to ssh into the VM.
+    </p>
+
+    <p>
+      To restart more than one VM, pass them space separated on the command line:
+    </p>
+    <pre>
+$ vermin restart vm_01 vm_02
+    </pre>
+
+    <p>
+      You can also
+      <link-start></link-start>
+      a stopped VM or
+      <link-stop></link-stop>
+      a running VM.
+    </p>
+
+  </div>
+</div>
