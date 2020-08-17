@@ -27,27 +27,31 @@ $ vermin stop vm_01 vm_02
     </pre>
 
     <p>
-      If you tried to stop an already started VM, you will got a message indicating that, as follows:
+      If you tried to stop an already stopped VM, you will got a message indicating that, as follows:
     </p>
     <pre>
-$ vermin start vm_01
-<graycode>VM already running, use "vermin ssh vm_01" to ssh into the VM.</graycode>
+$ vermin stop vm_01
+<graycode>VM already stopped, use "vermin start vm_01" to start the VM.</graycode>
     </pre>
 
     <p>
-      You can also
-      <link-restart></link-restart>
-      or
-      <link-stop></link-stop>
-      a running VM.
+      You can make sure the VM is stopped by using the
+      <link-ps></link-ps>
+      command.
+    </p>
+
+    <p>
+      You can always
+      <link-start></link-start>
+      a stopped VM.
     </p>
 
     <hr/>
-    <h5>Listing started VMs</h5>
+    <h5>Listing stopped VMs</h5>
     We will cover this topic in greater details in the
     <link-ps></link-ps>
     section. but for now you need to know that
-    the <code>ps</code> command by default lists the started and already running VMs.
+    the <code>ps</code> command can list all VMs either running or stopped.
 
   </div>
 </div>
