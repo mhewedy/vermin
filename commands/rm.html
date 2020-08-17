@@ -1,0 +1,43 @@
+<div id="command">
+  <div class="code-font">
+    <h1>rm</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    When you are done with your VM, you can use the <p><code>rm</code> subcommand to remove one or more VMs.</p>
+
+    <div class="alert alert-light">
+      Note: You need to be very careful before execute the <code>rm</code> command, as you cannot undo it.
+    </div>
+
+    <pre>
+$ vermin rm vm_01
+<graycode>✔ Removing vm_01</graycode>
+    </pre>
+
+    <p>Once you removed a VM, it is completely deleted and consequencly will be removed from the result of
+      <link-ps></link-ps>
+      command.
+    </p>
+
+    <hr/>
+    <h5>Force removing VM</h5>
+    <p>By default, you cannot remove a running VM.</p>
+
+    <pre>
+$ vermin rm vm_01
+<graycode>Cannot stop running VM, use -f flag to force remove</graycode>
+    </pre>
+
+    <p>To remove a running VM you need to pass <code>-f|--force</code> parameter:</p>
+
+    <pre>
+$ vermin rm -f vm_01
+<graycode>✔ Stopping vm_01
+✔ Removing vm_01</graycode>
+    </pre>
+
+  </div>
+</div>
