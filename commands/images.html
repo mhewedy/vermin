@@ -17,10 +17,10 @@
 
       <pre>
 $ vermin images
-IMAGE NAME               CACHED              DISK
+<graycode>IMAGE NAME               CACHED              DISK
 ubuntu/focal             true                1.1GB
 centos/8
-alpine/3.11
+alpine/3.11</graycode>
       </pre>
       <p>
         the <code>images</code> subcommand <b>list</b> all the images you can use to create a new VM from.
@@ -58,10 +58,10 @@ alpine/3.11
 
       <pre>
 $ vermin images -p
-IMAGE NAME               CACHED              DISK
+<graycode>IMAGE NAME               CACHED              DISK
 ubuntu/focal             true                1.1GB
 centos/8
-alpine/3.11
+alpine/3.11</graycode>
       </pre>
       <p>
         This command will purge the database and re-download it (it is usually in Kilobytes) and list the available
@@ -83,11 +83,12 @@ alpine/3.11
       </p>
 
       <div class="alert alert-light">
-        Note: You need to beware about this feature, as you might remove a local committed image that you cannot recover.
+        Note: You need to beware about this feature, as you might remove a local committed image that you cannot
+        recover.
       </div>
       <pre>
 $ vermin images rm ubuntu/focal
-✔ Deleting image ubuntu/focal
+<graycode>✔ Deleting image ubuntu/focal</graycode>
       </pre>
       <p>
         In case you removed an image that is downloaded as part of vermin repository,
@@ -97,12 +98,12 @@ $ vermin images rm ubuntu/focal
       </p>
       <pre>
 $ vermin create ubuntu/focal
-Image 'ubuntu/focal' could not be found. Attempting to find and install
+<graycode>Image 'ubuntu/focal' could not be found. Attempting to find and install
 Downloading   6% [######...............................................] (72/1.2 GB, 7.516 MB/s) [9s:2m18s]
 ...
 ...
 VM is ready, to connect to it use:
-$ vermin ssh vm_01
+$ vermin ssh vm_01</graycode>
       </pre>
 
     </div>

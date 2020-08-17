@@ -20,13 +20,13 @@
     </p>
     <pre>
 $ vermin create ubuntu/focal
-✔ Creating vm_01 from image ubuntu/focal
+<graycode>✔ Creating vm_01 from image ubuntu/focal
 ✔ Setting bridged network adapter
 ✔ Starting vm_01
 ✔ Establishing connection
 
 VM is ready, to connect to it use:
-$ vermin ssh vm_01
+$ vermin ssh vm_01</graycode>
     </pre>
 
 
@@ -66,7 +66,7 @@ sudo systemctl status redis
       <p>You need to save the provision script into a file and pass the file path to the create subcommand:</p>
       <pre>
 $ vermin create ubuntu/focal redis.sh
-✔ Creating vm_01 from image ubuntu/focal
+<graycode>✔ Creating vm_01 from image ubuntu/focal
 ✔ Setting bridged network adapter
 ✔ Starting vm_01
 ✔ Establishing connection
@@ -80,7 +80,7 @@ Hit:1 http://sa.archive.ubuntu.com/ubuntu focal InRelease
 Aug 16 21:04:06 verminbox systemd[1]: Started Advanced key-value store.
 
 VM is ready, to connect to it use:
-$ vermin ssh vm_01
+  $ vermin ssh vm_01</graycode>
     </pre>
 
     </div>
@@ -108,7 +108,7 @@ $ vermin ssh vm_01
     <p>And here's an example:</p>
     <pre>
 $ vermin create ubuntu/focal -t ansible apache2.yaml
-✔ Creating vm_01 from image ubuntu/focal
+<graycode>✔ Creating vm_01 from image ubuntu/focal
 ✔ Setting bridged network adapter
 ✔ Starting vm_01
 ✔ Establishing connection
@@ -122,7 +122,7 @@ PLAY RECAP *********************************************************************
 
 
 VM is ready, to connect to it use:
-$ vermin ssh vm_01
+$ vermin ssh vm_01</graycode>
   </pre>
 
     <div class="alert alert-light">
