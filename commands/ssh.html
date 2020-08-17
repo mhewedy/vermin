@@ -1,1 +1,37 @@
-<h3>SSH File</h3>
+<div id="command">
+  <div class="code-font">
+    <h1>ssh</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p><code>ssh</code> subcommand used to ssh into the VM.</p>
+    <p>You don't need to provide username or IP address, just provide the VM name</p>
+
+    <pre>
+$ vermin ssh vm_01
+Welcome to Ubuntu 20.04 LTS (GNU/Linux 5.4.0-26-generic x86_64)
+...
+...
+Last login: Mon Aug 17 00:00:18 2020 from 192.168.100.4
+vermin@verminbox:~$
+    </pre>
+
+    <p>
+      You can exit the VM at any time to return back to the host machine by pressing the <code>CTRL</code> +
+      <code>D</code>.
+    </p>
+
+    <pre>
+vermin@verminbox:~$ logout
+Connection to 192.168.100.156 closed.
+    </pre>
+
+    <hr/>
+    <h5>Sudoers</h5>
+    Inside the VM, user <code>vermin</code> is being used and the password is <code>vermin</code>. but mostly you will
+    never been asked about the password, as the user <code>vermin</code> is an sudoer user.
+
+  </div>
+</div>
