@@ -6,7 +6,7 @@
   <hr/>
 
   <div class="content">
-    When you are done with your VM, you can use the <p><code>rm</code> subcommand to remove one or more VMs.</p>
+    <p>When you are done with a VM, you can use the <code>rm</code> subcommand to remove it.</p>
 
     <div class="alert alert-light">
       Note: You need to be very careful before execute the <code>rm</code> command, as you cannot undo it.
@@ -21,6 +21,13 @@ $ vermin rm vm_01
       <link-ps></link-ps>
       command.
     </p>
+
+    <p>
+      You can remove one or move VMs at once by passing them on the command line:
+    </p>
+    <pre>
+$ vermin rm vm_01 vm_02
+    </pre>
 
     <hr/>
     <h5>Force removing VM</h5>
