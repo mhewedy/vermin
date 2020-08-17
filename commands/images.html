@@ -31,7 +31,8 @@ alpine/3.11</graycode>
       </p>
 
       <p>
-        The images are used in the <a href="#" onclick="$('#list-create-list').click()"><code>create</code></a>
+        The images are used in the
+        <link-create></link-create>
         subcommand to create a new VM.
       </p>
 
@@ -40,8 +41,8 @@ alpine/3.11</graycode>
       </div>
 
       <p>
-        You can create your own image by submitting an existing VM using the <a href="#"
-                                                                                onclick="$('#list-commit-list').click()">commit</a>
+        You can create your own image by submitting an existing VM using the
+        <link-commit></link-commit>
         subcommand.
       </p>
 
@@ -77,9 +78,9 @@ alpine/3.11</graycode>
       <h5>Removing an image</h5>
 
       <p>
-        You can remove a downloaded or <a href="#"
-                                          onclick="$('#list-commit-list').click()">committed</a> image by using the
-        <code>rm</code> command.
+        You can remove a downloaded or
+        <link-commit>committed</link-commit>
+        image by using the <code>rm</code> command.
       </p>
 
       <div class="alert alert-light">
@@ -92,8 +93,8 @@ $ vermin images rm ubuntu/focal
       </pre>
       <p>
         In case you removed an image that is downloaded as part of vermin repository,
-        you can got it downloaded automatically again when you execute the <a href="#"
-                                                                              onclick="$('#list-create-list').click()">create</a>
+        you can got it downloaded automatically again when you execute the
+        <link-create></link-create>
         command. e.g.:
       </p>
       <pre>
