@@ -45,6 +45,10 @@ func Stop(vmName string) error {
 		return err
 	}
 
+	if !isRunningVM(vmName) {
+		return fmt.Errorf(`VM already stopped, use "vermin start %s" to start the VM.`, vmName)
+	}
+
 	progress.Immediate("Stopping", vmName)
 	if _, err := command.VBoxManage("controlvm", vmName, "poweroff").Call(); err != nil {
 		return err
