@@ -1,16 +1,24 @@
-getCommandPage("create");
+var landingPage = window.location.href.split("-")[1] || "create";
+getCommandPage(landingPage);
 
 $('#list-tab a').on('click', function (e) {
+
     e.preventDefault();
     $(this).tab('show');
     var idArr = $(this).attr('id').split("-");
 
+    window.location.href = '#' + idArr[0] + '-' + idArr[1];
     getCommandPage(idArr[1]);
 });
 
 function getCommandPage(command) {
     $.get("commands/" + command + ".html", function (data) {
-        $('#list-' + command).html(data);
+        var ele = $('#list-' + command);
+        ele.html(data);
+        ele.tab('show');
+
+        $('#list-' + command + '-list').addClass('active');
+
         processLinks();
     });
 }
