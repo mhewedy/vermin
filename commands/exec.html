@@ -1,0 +1,44 @@
+<div id="command">
+  <div class="code-font">
+    <h1>exec</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p>To execute remote commands against the VM without logging into it, use the <code>exec</code> subcommand.</p>
+
+    <p>
+      For example, you might need to run a quick command and show the result, e.g. showing the result of a specific
+      configuration file.
+    </p>
+
+    <p>
+      The following example using the cat command to show the network configurations in an ubuntu/focal image:
+    </p>
+
+    <pre>
+$ vermin exec vm_01 cat /etc/netplan/00-installer-config.yaml
+<graycode># This is the network config written by 'subiquity'
+network:
+  ethernets:
+    enp0s3:
+      dhcp4: true
+  version: 2</graycode>
+    </pre>
+
+    <p>Another example shows how to download a package (nginx) wihtout logging into the VM:</p>
+    <pre>
+$ vermin exec vm_01 -- sudo apt install nginx -y
+<graycode>
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+...
+...</graycode>
+    </pre>
+
+  </div>
+</div>
