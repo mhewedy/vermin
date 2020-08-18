@@ -40,6 +40,33 @@ $ vermin ssh vm_01</graycode>
     </p>
 
     <hr/>
+    <h4>Customizing Resources</h4>
+    <p>
+      By default, every VM created assigned <b>1 vcpu</b> and <b>1024 megabyte</b> memory. This can be changed at the
+      time of the creation of the VM or later using the
+      <link-update></link-update>
+      command.
+    </p>
+    <p>
+      To override the defaults at the creation time, you need to pass one of two parameters or both;
+      <code>-c|--cpus</code> for cpu
+      and <code>-m|--mem</code> for memory.
+    </p>
+    <p>
+      The following code snipped will create a VM from centos/8 image with 2 cpus and 512 megabyte memory:
+    </p>
+    <pre>
+$ vermin create centos/8 -c 2 -m 512
+<graycode>✔ Creating vm_03 from image centos/8
+✔ Setting bridged network adapter
+✔ Starting vm_03
+✔ Establishing connection
+
+VM is ready, to connect to it use:
+$ vermin ssh vm_03</graycode>
+    </pre>
+
+    <hr/>
     <h4>Provisioners</h4>
     <p>Vermin adapts the concept of provisioners where you can provision the VM as part of the creation process.</p>
     <p>
@@ -68,7 +95,7 @@ sudo systemctl status redis
 
       <p>You need to save the provision script into a file and pass the file path to the create subcommand:</p>
       <pre>
-$ vermin create ubuntu/focal redis.sh
+$ vermin create ubuntu/focal -m 2048 redis.sh
 <graycode>✔ Creating vm_01 from image ubuntu/focal
 ✔ Setting bridged network adapter
 ✔ Starting vm_01
@@ -85,6 +112,9 @@ Aug 16 21:04:06 verminbox systemd[1]: Started Advanced key-value store.
 VM is ready, to connect to it use:
   $ vermin ssh vm_01</graycode>
     </pre>
+
+      <p>We created a VM of image ubuntu/focal with 1 cpu (the default) and 2048 megabytes memory and installed redis on
+        it</p>
 
     </div>
 
@@ -132,6 +162,16 @@ $ vermin ssh vm_01</graycode>
       Note: we need to pass the flag the <code>-t|--type</code> flag. In case of ansible use <code>-t ansible</code>.
       in case of shell, you can pass <code>-t shell</code> which is the default behaviour.
     </div>
+
+    <hr/>
+    <h4>Network</h4>
+    <p>
+      vermin uses the bridge network of VirtualBox by default, and it will not function properly if you choose to change
+      this settings.
+
+      In fact being uses the bridge network it will allow the VMs to access other devices on the network of the host
+      directly including other VMs.
+    </p>
 
   </div>
 

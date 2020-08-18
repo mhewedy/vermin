@@ -1,0 +1,87 @@
+<div id="command">
+  <div class="code-font">
+    <h1>ps</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p>To list the VMs you have, either running or stopped you need to use the <code>ps</code> subcommand.</p>
+
+    <p>To list the running VMs, execute the <code>ps</code> subcommand without passing any arguments:</p>
+
+    <pre>
+$ vermin ps
+<graycode>VM NAME        IMAGE                      CPUS      MEM       DISK         TAGS
+vm_01          ubuntu/focal               1         1024      2.7GB        elasticsearch
+vm_02          centos/8                   1         1024      2.0GB</graycode>
+    </pre>
+
+    <p>
+      the <code>ps</code> subcommand <b>list</b> all the running VMs by default.
+    </p>
+    <p>
+      It shows <b>six columns</b>; the VM name, the
+      <link-images>image</link-images>
+      used to create the VM, the number
+      of assigned cpus, the amount of assigned memory in megabytes, then the current occupied disk space in gigabytes
+      and last column is the tags assigned to the VM.
+    </p>
+
+    <div class="alert alert-light">
+      <p> You can update the assigned cpus and memory at any point later after the VM created using the
+        <link-update></link-update>
+        command.
+      </p>
+
+      <p>You can learn more about how to assign and remove tag from a VM using the
+        <link-tag></link-tag>
+        command.
+      </p>
+    </div>
+
+    <p>
+      To list all VMs, running and stopped, you need to pass the <code>-a|--all</code> flag:
+    </p>
+    <pre>
+$ vermin ps -a
+<graycode>VM NAME        IMAGE                      CPUS      MEM       DISK         TAGS
+vm_01          ubuntu/focal               1         1024      2.7GB        elasticsearch
+vm_02          centos/8                   1         1024      2.0GB
+vm_03          centos/8                   2         512       2.0GB</graycode>
+    </pre>
+
+    <hr/>
+    <h4>Filters</h4>
+    <p>You can filter the output of the <code>ps</code> command using a syntax similar to <b>docker</b> syntax.</p>
+
+    <p>
+      You can filter using <b>name</b>, <b>image</b> and <b>tags</b> fields, using the <code>-f|--filter</code> flag
+      and the syntax <code>field=value</code>, and you can provide multiple filters and the result will be the
+      intersection (ANDed).
+    </p>
+
+    <div class="alert alert-light">
+      Note: the filter is compared with the supplied value using the contains operator, meaning that when you search
+      for <code>tags=k8s</code>, then VMs with tags <i>contains</i> the term <b>k8s</b> will be returned.
+    </div>
+
+    <p>Examples:</p>
+
+    <p>1 - List all VMs that using <b>image</b> centos:</p>
+    <pre>
+$ vermin ps -a -f image=centos
+    </pre>
+
+    <p>2 - List all VMs that using <b>image</b> ubuntu and the <b>tags</b> contains the world elastic:</p>
+    <pre>
+$ vermin ps -f image=ubuntu -f tags=elastic
+    </pre>
+
+    <p>3 - List the vm that holds the <b>name</b> vm_03</p>
+    <pre>
+$ vermin ps -a -f name=vm_03
+    </pre>
+
+  </div>
+</div>
