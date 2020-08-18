@@ -1,0 +1,29 @@
+- name: Ansbile Playbook to prepare any machine to be used as a vermin image
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ensure group "vermin" exists
+      group:
+        name: vermin
+        state: present
+    - name: Ensure user "vermin" exists
+      user:
+        name: vermin
+        password: "{{ 'vermin' | password_hash('sha512') }}"
+        state: present
+    - name: install ssh server
+      package:
+        name: openssh-server
+        state: present
+    - name: Allow user "vermin" to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^vermin'
+        line: 'vermin ALL=(ALL) NOPASSWD:ALL'
+        validate: visudo -cf %s
+    - name: Set vermin authorized keys taken from url
+      authorized_key:
+        user: vermin
+        state: present
+        key: https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa.pub
