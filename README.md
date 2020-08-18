@@ -36,7 +36,7 @@ Table of Contents:
 - [TODO](#TODO)
 ----
 # What is Vermin
-Vermin is a smart, simple and powerful command line tool for Linux, Windows and macOS. It's designed for developers who want a fresh VM environment with a single command. It uses VirtualBox to run the VM. Vermin will fetch images on your behalf.
+Vermin is a smart, simple and powerful command line tool for Linux, Windows and macOS. It's designed for developers/tester and others working in IT who want a fresh VM environment with a single command. It uses VirtualBox to run the VM. Vermin will fetch images on your behalf.
 
 Vermin can be used when you need an easy way to obtain a Linux environment up and running in minutes.
 For example:
