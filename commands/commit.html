@@ -1,0 +1,119 @@
+<div id="command">
+  <div class="code-font">
+    <h1>commit</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p><code>commit</code> is one of the most advanced subcommand that enabled you to take vermin to the next level.
+
+      It allows you to build you own images and store them locally so to use them later to create your
+      own VMs.
+    </p>
+
+    <p>
+      You will need to start with one of the provided images by vermin and configure the VM as needed then commit this
+      VM into an image.
+    </p>
+
+    <p>
+      Let's take scenario where you already created a VM using one of the provided image by vermin (e.g. ubuntu/focal)
+      the normal way using <code>vermin create ubuntu/focal</code>, and installed <b>ELK stack</b> or did any other
+      configuration you
+      need.
+    </p>
+
+    <p>
+      Now you can commit your VM into an image as follows:
+    </p>
+    <pre>
+$ vermin commit vm_01 elk/elastic
+<graycode>✔ Committing vm_01 into image elk/elastic
+
+Image is ready, to create a VM from it use:
+$ vermin create elk/elastic</graycode>
+    </pre>
+
+    <p>
+      Once this command completes, you now have a new image stored locally at <code>~/.vermin/images</code>.
+      You can list the images using the
+      <link-images></link-images>
+      command, as follows:
+    </p>
+
+    <pre>
+$ vermin images
+<graycode>IMAGE NAME               CACHED              DISK
+centos/8                 true                0.8GB
+elk/elastic              true                1.2GB
+ubuntu/focal             true                1.1GB
+alpine/3.11</graycode>
+    </pre>
+
+    <div class="alert alert-light">
+      You need to make sure you stop the VM before creating an image from it, otherwise you will got a message
+      indicating that.
+    </div>
+
+    <p>You can start creating VMs from that image as follows:</p>
+    <pre>
+$ vermin create elk/elastic
+<graycode>⢿ Creating vm_04 from image elk/elastic
+...
+...</graycode>
+    </pre>
+
+    <p>listing the VMs shows the complete information about the VM:</p>
+    <pre>
+$ vermin ps -f image=elk
+<graycode>VM NAME        IMAGE                      CPUS      MEM       DISK         TAGS
+vm_04          elk/elastic                1         1024      2.8GB</graycode>
+    </pre>
+
+    <div class="alert alert-light">
+      You need to be careful and not to remove the committed image as long as you need it. check the
+      <link-images></link-images>
+      command to know more about images cache.
+    </div>
+
+    <h5>Override images</h5>
+    <p>
+      By default, you cannot commit an image with the same name already exists, however you can override such setting
+      using <code>--override</code> flag.
+    </p>
+
+    <div class="alert alert-light">
+      You can work with a VM created from an image, and remove the image itself. there's no strong relation between the
+      images and the VMs created from.
+    </div>
+
+    <hr/>
+    <h4>Build your image from scratch</h4>
+    <p>
+      You can build your own image without basing on an image from vermin, but this is more advanced topic that we will
+      scratch its surface here.
+    </p>
+    <p>
+      To do so, you will need to use VirtualBox to install your desired Linux distribution, and then do the following
+      steps:
+    </p>
+    <ol>
+      <li>You need to have a user with name <code>vermin</code></li>
+      <li>Install <code>openssh-server</code></li>
+      <li>Add the <code>vermin</code> user to <code>sudoers</code></li>
+      <li>Download vermin <a href="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa.pub">public
+        key</a> and add it to authorized_keys of vermin user and set the file permissions correctly
+      </li>
+      <li>(optional) You might need to install <code>virtualbox-guest-utils</code> package</li>
+      <li>Last step is to export the VM as <code>ova</code> file and save it manually under <code>~/.vermin/images/DISTRO_NAME/VERSION.ova</code>
+      </li>
+    </ol>
+    <p>
+      You might find this <a href="https://github.com/mhewedy/vermin/blob/master/etc/add/post_add.sh">sample script</a>
+      useful.
+    </p>
+
+
+  </div>
+</div>
