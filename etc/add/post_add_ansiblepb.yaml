@@ -11,10 +11,6 @@
         name: vermin
         password: "{{ 'vermin' | password_hash('sha512') }}"
         state: present
-    - name: install ssh server
-      package:
-        name: openssh-server
-        state: present
     - name: Allow user "vermin" to have passwordless sudo
       lineinfile:
         dest: /etc/sudoers
