@@ -1,0 +1,29 @@
+<div id="command">
+  <div class="code-font">
+    <h1>update</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p><code>update</code> subcommand used to update resource configuration of a VM.</p>
+
+    <pre>
+$ vermin update vm_01 -c 3
+    </pre>
+
+    <p>
+      You can update the resource configuration specified at
+      <link-create>creation</link-create>
+      time using the update command.
+      you need to pass one of two parameters or both;
+      <code>-c|--cpus</code> for cpu
+      and <code>-m|--mem</code> for memory.
+    </p>
+
+    <p>
+      You need to stop the VM before changing the resource configurations.
+    </p>
+
+  </div>
+</div>
