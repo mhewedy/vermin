@@ -1,0 +1,44 @@
+<div id="command">
+  <div class="code-font">
+    <h1>completion</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p><code>stop</code> subcommand used to generates shell completion scripts for Bash, Zsh or PowerShell.</p>
+
+    <p>
+      To generate completion script for bash:
+    </p>
+    <pre>
+$ vermin completion bash
+    </pre>
+
+    <p>and to source it use:</p>
+    <pre>
+$ source <(vermin completion bash)
+    </pre>
+
+    <p>
+      To generate completion script for zsh:
+    </p>
+    <pre>
+$ vermin completion zsh
+    </pre>
+
+    <p>and to source it use:</p>
+    <pre>
+$ vermin completion zsh > ~/.zsh/completion/_vermin
+    </pre>
+
+
+    <p>
+      To generate completion script for PowerShell:
+    </p>
+    <pre>
+$ vermin completion powershell
+    </pre>
+
+  </div>
+</div>
