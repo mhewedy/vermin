@@ -1,0 +1,84 @@
+<div id="command">
+  <div class="code-font">
+    <h1>port</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p><code>port</code> subcommand used to forward one or more ports to the VM from the local host.</p>
+
+    <p>
+      To forward the requests on the localhost on port <code>9200</code>
+      to vm_01 on port <code>9200</code>:
+    </p>
+    <pre>
+$ vermin port vm_01 9200
+<graycode>Forwarding from vm_01:9200 -> localhost:9200
+✔ Establishing connection
+Connected. Press CTRL+C anytime to stop</graycode>
+    </pre>
+
+
+    <div class="alert alert-light">
+      vermin uses the same pattern of docker in port mapping, however it doesn't require a local port and in such case
+      the local port will be the same as vm port.
+    </div>
+
+    <hr/>
+
+    <h5>Syntax</h5>
+
+    <pre>
+vermin cp <graycode>&lt;vm&gt; [local port:]&lt;vm port&gt; [[local port:]&lt;vm port&gt;...] </graycode>
+    </pre>
+    <p>
+      where: <br/>
+      <code>[local port:]</code> and <code>vm port</code> can take a form of range like: <code>9090-9095</code> or a
+      single port like <code>9090</code>.
+    </p>
+    <p>
+      <code>[local port:]</code> is optional, and when omitted, it takes the same value of the <code>&lt;vm
+      port&gt;</code>.
+    </p>
+
+    <hr/>
+
+    <h5>Examples</h5>
+    <p>
+      1 - Forward to vm port 4040 from local port 4040:
+    </p>
+    <pre>
+$ vermin port vm_01 <code>4040</code>
+    </pre>
+
+    <p>
+      2 - Forward to vm port 4040 from local port 40040:
+    </p>
+    <pre>
+$ vermin port vm_01 40040:4040
+    </pre>
+
+    <p>
+      3 - Forward to vm port 4040 from local port 40040 and to port 8080 from 8080:
+    </p>
+    <pre>
+$ vermin port vm_01 40040:4040 8080
+    </pre>
+
+    <p>
+      4 - Forward to vm port 4040 from local port 40040 and to ports in range (8080 to 8088) from range(8080 to 8088):
+    </p>
+    <pre>
+$ vermin port vm_01 40040:4040 8080-8088
+    </pre>
+
+    <p>
+      5 - Forward to vm port 4040 from local port 40040 and to ports in range (8080 to 8088) from range(9080 to 9088):
+    </p>
+    <pre>
+$ vermin port vm_01 40040:4040 9080-9088:8080-8088
+    </pre>
+
+  </div>
+</div>
