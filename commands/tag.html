@@ -1,0 +1,49 @@
+<div id="command">
+  <div class="code-font">
+    <h1>tag</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p>
+      <code>tag</code> subcommand used to add or remove tag to a VM.
+      You can tag a VM as many times as you want.
+    </p>
+
+    <p>
+      Tags are one of the fields that can be used in filters of the
+      <link-ps></link-ps>
+      command.
+    </p>
+
+    To add a tag to a VM:
+    <pre>
+$ vermin tag vm_01 elk
+    </pre>
+
+    You can add another tag to the same VM:
+    <pre>
+$ vermin tag vm_01 elasticsearch
+    </pre>
+
+    <p>
+      Both tags will be listed in the
+      <link-ps></link-ps>
+      :
+    </p>
+    <pre>
+$ vermin ps
+<graycode>VM NAME      IMAGE          CPUS      MEM       DISK         TAGS
+vm_01        ubuntu/focal   1         1024      2.7GB        elasticsearch, elk</graycode>
+    </pre>
+
+    <p>
+      Ta remove a tag from a VM:
+    </p>
+    <pre>
+$ vermin tag -r vm_01 elk
+    </pre>
+
+  </div>
+</div>
