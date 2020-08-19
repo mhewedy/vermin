@@ -21,16 +21,6 @@ Table of Contents:
     - [Manual installation](#Manual-installation)
    	- [Build from source](#Build-from-source)
 - [Usage](#Usage)
-	- [Create new VM](#Create-new-VM)
-	- [List VMs](#List-VMs)
-	- [Start VM](#Start-VM)
-	- [SSH into VM](#SSH-into-VM)
-	- [Stop VM](#Stop-VM)
-	- [Remove VM](#Remove-VM)
-	- [Transfer Files](#Transfer-Files)
-	- [Port Forward](#Port-Forward)
-	- [Commit VM](#Commit-VM) (Create your own images)
-	- [And more](#Usage)
 - [Contributors](#Contributors)
 - [Why not Vagrant](#Why-not-Vagrant)
 - [TODO](#TODO)
@@ -137,110 +127,15 @@ Flags:
 Use "vermin [command] --help" for more information about a command.
 ```
 
-## Create new VM
-Use the following command to create a VM
+You can start using vermin after installation using:
 
 ```shell script
 $ vermin create <image name>
 # example
 $ vermin create ubuntu/focal
 ```
-Or in case you want to create and provision the VM:
-```shell script
-$ vermin create <image name> /path/to/provison.sh 
-# example
-$ vermin create ubuntu/focal ~/sample.sh --cpus 1 --mem 512
-```
-Alternatively, you can provision the VM using an ansible playbook (`hosts` should set to _all_):
-```shell script
-$ vermin create <image name> -t ansible /path/to/playbook.yaml 
-# example
-$ vermin create ubuntu/focal -t ansible ~/install-nginx.yaml
-```
 
-> See [sample provision scripts](https://github.com/mhewedy/vermin/blob/master/etc/samples-provision) for sample shell scripts and ansible playbooks. 
-
-To get list of all available images use:
-```shell script
-$ vermin images
-IMAGE NAME               CACHED              DISK
-centos/8                 true                0.8GB
-ubuntu/focal             true                1.1GB
-alpine/3.11
-```
-> The *cached* flag means, the image has been already downloaded and cached before.
-
-> To get the most updated image list (along with images locations) use the -p flag `vermin images -p`. this will not affect cached images. it will only get the most updated image list (image names along with thier remote locations).
-
-## List VMs
-```shell script
-$ vermin ps
-VM NAME        IMAGE                      CPUS      MEM       DISK         TAGS
-vm_01          alpine/3.11                1         1024      0.8GB
-vm_02          ubuntu/focal               1         1024      2.6GB
-vm_03          centos/8                   1         1024      2.0GB
-```
-
-## Start VM
-```shell script
-$ vermin start vm_01
-```
-
-## SSH into VM
-```shell script
-$ vermin ssh vm_03
-```
-
-## Stop VM
-```shell script
-$ vermin stop vm_03
-```
-
-## Remove VM
-Will stop and remove listed VMs
-```shell script
-$ vermin rm vm_03
-```
-
-## Transfer Files:
-You can transfer files between host machine and VM.
-
-To copy a remote file on a VM to you local host in the current path:
-```shell script
-$ vermin cp vm_01:/path/to/file/on/vm .
-```
-
-To copy a local file from your host filesystem to the VM's home directory:
-```shell script
-$ vermin cp /path/to/file/on/host vm_01:~
-```
-
-Copy file.txt from vm_01 home dir to the vm_02 /tmp dir
-```shell script
-$ vermin cp vm_01:~/file.txt vm_02:/tmp
-```
-
-## Port Forward:
-forward ports from VM to local host (all ports from 8080 to 8090):
-```shell script
-$ vermin port vm_01 8080-8090
-```
-
-## Commit VM:
-You can commit a stopped VM into an image, so later you can create VMs from that image:
-```shell script
-$ vermin commit vm_01 elk/elastic
-```
-Then you can create as many VMs as you want from the committed image:
-```shell script
-$ vermin create elk/elastic
-```
-
-To remove an image at any time later use: (removing an image doesn't remove VMs created from it)
-```shell script
-$ vermin image rm elk/elastic
-```
-
+For more information, see the vermin [documentations](https://mhewedy.github.io/vermin/).
 
 
 # Why not Vagrant:
