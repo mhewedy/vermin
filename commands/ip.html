@@ -1,0 +1,67 @@
+<div id="command">
+  <div class="code-font">
+    <h1>ip</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p><code>ip</code> subcommand used to find the IP address of a VM</p>
+
+    <pre>
+$ vermin ip vm_01
+<graycode>192.168.100.160</graycode>
+    </pre>
+
+    <div class="alert alert-light">
+      The <code>ip</code> command depends on the <code>bridge adapter</code> of the VM,
+      in case you manually change the setting in the <code>VirtualBox</code> to other settings
+      like <code>NAT</code> or <code>host-only</code>, most of the vermin functions will not work.
+    </div>
+
+
+    <div class="alert alert-light">
+      Many other vermin commands that interact with the VM remotely such as
+      <link-ssh></link-ssh>
+      ,
+      <link-exec></link-exec>
+      ,
+      <link-cp></link-cp>
+      and others depend on the <code>ip</code> function to get the IP of the VM
+      under the hood before connecting to the VM.
+    </div>
+
+    <p>
+      Most of the time you will not need to use the <code>ip</code> command directly.
+
+      However, in some cases for example when you try to
+      <link-ssh></link-ssh>
+      to a VM, it will shows an error like: <code>Cannot establish connection</code>,
+      in such case you will need to purge the IP cache using <code>-p|--purge</code> flag:
+    </p>
+    <pre>
+$ vermin ip vm_03 -p
+<graycode>192.168.100.63</graycode>
+    </pre>
+
+    <p>
+      You can use the <code>ip</code> command inside scripts,
+      for example if your VM running nginx, you use <code>curl</code> as follows:
+      <code>curl $(vermin ip vm_01)</code>
+    </p>
+
+
+    <hr/>
+    <h5>Global discovery</h5>
+
+    <p>
+      vermin can find the IP address of VMs not managed by itself, to do so you need
+      to pass the <code>-g|--global</code> flag:
+    </p>
+    <pre>
+$ vermin ip -g MyUbuntuLinuxVM
+    </pre>
+
+
+  </div>
+</div>
