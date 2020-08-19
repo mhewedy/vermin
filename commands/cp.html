@@ -1,0 +1,73 @@
+<div id="command">
+  <div class="code-font">
+    <h1>cp</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p>
+      <code>cp</code> subcommand allows you to copy files and folders between a VM and the local filesystem or between two
+      VMs.
+    </p>
+
+    <p>
+      You can copy files and folders from a local filesystem to a VM and vise versa. and you can copy files between two
+      VMs in both
+      directions.
+    </p>
+
+    <div class="alert alert-light">
+      If you want to mount files from local filesystem inside a VM use
+      <link-mount></link-mount>
+      instead.
+    </div>
+
+
+    <p>To copy <code>/etc/os-release</code> from the inside the vm to <code>~/temp</code> on the host:</p>
+    <pre>
+$ vermin cp vm_02:/etc/os-release ~/temp
+    </pre>
+
+    <hr/>
+
+    <h5>Syntax</h5>
+
+    <pre>
+vermin cp <graycode>&lt;source&gt;</graycode> <graycode>&lt;destination&gt;</graycode>
+    </pre>
+    <p>
+      where: <br/>
+      <code>&lt;source&gt;</code> and <code>&lt;destination&gt;</code>
+      takes the form of <code>&lt;vm_name&gt;:/path/to/file/or/directory</code>
+      <br/>
+      In case of the <code>&lt;source&gt;</code> or <code>&lt;destination&gt;</code>
+      is the local host, then the <code>"&lt;vm_name&gt;:"</code> part is removed.
+    </p>
+
+    <hr/>
+
+    <h5>Examples</h5>
+    <p>
+      Copy file.txt from the host to user's home directory inside the VM:
+    </p>
+    <pre>
+$ vermin cp ~/file.txt vm_01:~
+    </pre>
+
+    <p>
+      Copy file.txt from user's home directory inside the VM to the current directory on the host:
+    </p>
+    <pre>
+$ vermin cp vm_01:project/file.txt .
+    </pre>
+
+    <p>
+      Copy file.txt from vm_01 home dir to the vm_02 <code>/tmp</code> dir:
+    </p>
+    <pre>
+$ vermin cp vm_01:~/file.txt vm_02:/tmp
+    </pre>
+
+  </div>
+</div>
