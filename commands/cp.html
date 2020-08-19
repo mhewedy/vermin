@@ -51,21 +51,21 @@ vermin cp <graycode>&lt;source&gt;</graycode> <graycode>&lt;destination&gt;</gra
 
     <h5>Examples</h5>
     <p>
-      Copy file.txt from the host to user's home directory inside the VM:
+      1 - Copy file.txt from the host to user's home directory inside the VM:
     </p>
     <pre>
 $ vermin cp ~/file.txt vm_01:~
     </pre>
 
     <p>
-      Copy file.txt from user's home directory inside the VM to the current directory on the host:
+      2 - Copy file.txt from user's home directory inside the VM to the current directory on the host:
     </p>
     <pre>
 $ vermin cp vm_01:project/file.txt .
     </pre>
 
     <p>
-      Copy file.txt from vm_01 home dir to the vm_02 <code>/tmp</code> dir:
+      3 - Copy file.txt from vm_01 home dir to the vm_02 <code>/tmp</code> dir:
     </p>
     <pre>
 $ vermin cp vm_01:~/file.txt vm_02:/tmp

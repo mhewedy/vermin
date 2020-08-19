@@ -1,0 +1,42 @@
+<div id="command">
+  <div class="code-font">
+    <h1>mount</h1>
+  </div>
+
+  <hr/>
+
+  <div class="content">
+    <p>
+      <code>mount</code> subcommand used to mount local filesystem to <code>/vermin</code> directory inside the VM.
+    </p>
+    <p>
+      It depends on <code>virtualbox-guest-utils</code> being install inside the VM to work.
+      currently <code>ubuntu/focal</code>
+      <link-images>image</link-images>
+      is only supporting this function.
+    </p>
+
+
+    <div class="alert alert-light">
+      You can use the <code>mount</code> command against a single VM as many times as you want
+      and each time will override the mount directly of previous times.
+    </div>
+    <div class="alert alert-light">
+      Mounts are transient, which means it will to not persist VM restarts.
+    </div>
+
+    <p>
+      To mount the <code>~/Downloads</code> directory to <code>/vermin</code> inside the VM:
+    </p>
+    <pre>
+$ vermin mount vm_01 ~/Downloads
+    </pre>
+
+    <p>
+      Then you can change the mounted directory to <code>~/Desktop</code> using the command:
+    </p>
+    <pre>
+$ vermin mount vm_01 ~/Desktop
+    </pre>
+  </div>
+</div>
