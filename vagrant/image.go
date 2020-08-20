@@ -13,9 +13,7 @@ func ProcessImage(imagePath string) error {
 
 	imageDir := path.Dir(imagePath)
 
-	// gunzip the downloaded file
-	// TODO change from using tar command to golang code
-	if err := command.Tar("xzf", imagePath, "-C", imageDir).Run(); err != nil {
+	if err := gunzipVagrantBox(imagePath, imageDir); err != nil {
 		return err
 	}
 
@@ -24,6 +22,30 @@ func ProcessImage(imagePath string) error {
 		return err
 	}
 
+	if err := createOVAFile(imagePath, imageDir); err != nil {
+		return err
+	}
+
+	// remove all files except ova
+	return filepath.Walk(imageDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && !strings.HasSuffix(info.Name(), ".ova") {
+			if err := os.Remove(path); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+}
+
+func gunzipVagrantBox(imagePath, imageDir string) error {
+	// TODO change from using tar command to golang code
+	return command.Tar("xzf", imagePath, "-C", imageDir).Run()
+}
+
+func createOVAFile(imagePath, imageDir string) error {
 	// get ovf, vmdk FileInfo
 	infos, err := ioutil.ReadDir(imageDir)
 	if err != nil {
@@ -46,20 +68,5 @@ func ProcessImage(imagePath string) error {
 	}
 	defer file.Close()
 
-	if err := tarFiles(file, imageDir, []os.FileInfo{ovaFileInfo, vmdkFileInfo}); err != nil {
-		return err
-	}
-
-	// remove all files except ova
-	return filepath.Walk(imageDir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if !info.IsDir() && !strings.HasSuffix(info.Name(), ".ova") {
-			if err := os.Remove(path); err != nil {
-				return err
-			}
-		}
-		return nil
-	})
+	return tarFiles(file, imageDir, []os.FileInfo{ovaFileInfo, vmdkFileInfo})
 }
