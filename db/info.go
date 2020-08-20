@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 )
 
 type Box struct {
@@ -62,7 +63,7 @@ func GetBoxInfo(vm string) (*Box, error) {
 }
 
 func getDiskSizeInGB(vm string, hdLocation string) string {
-	stat, err := os.Stat(GetVMPath(vm) + string(os.PathSeparator) + hdLocation)
+	stat, err := os.Stat(filepath.Join(GetVMPath(vm), hdLocation))
 	if err != nil {
 		return ""
 	}

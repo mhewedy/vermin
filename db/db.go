@@ -13,16 +13,16 @@ const (
 )
 
 var (
-	ImagesDir  = getVerminDir() + string(os.PathSeparator) + "images"
-	VMsBaseDir = getVerminDir() + string(os.PathSeparator) + "vms"
+	ImagesDir  = filepath.Join(getVerminDir(), "images")
+	VMsBaseDir = filepath.Join(getVerminDir(), "vms")
 )
 
 func GetImageFilePath(imageName string) string {
-	return ImagesDir + string(os.PathSeparator) + imageName + ".ova"
+	return filepath.Join(ImagesDir, imageName+".ova")
 }
 
 func GetVMPath(vm string) string {
-	return VMsBaseDir + string(os.PathSeparator) + vm
+	return filepath.Join(VMsBaseDir, vm)
 }
 
 func getVerminDir() string {
@@ -30,7 +30,7 @@ func getVerminDir() string {
 	if err != nil {
 		log.Fatal("cannot obtain user home dir")
 	}
-	return dir + string(os.PathSeparator) + ".vermin"
+	return filepath.Join(dir, ".vermin")
 }
 
 func GetUsername(vmName string) string {
