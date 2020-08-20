@@ -2,6 +2,7 @@ package images
 
 import (
 	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/vagrant"
 	"io"
 	"os"
 	"strings"
@@ -9,12 +10,20 @@ import (
 
 func writeNewImage(tmpFile *os.File, imageName string) error {
 	// copy the downloaded file to images directory
-	if err := os.MkdirAll(db.ImagesDir+"/"+strings.Split(imageName, "/")[0], 0755); err != nil {
+	parts := strings.Split(imageName, "/")
+	if err := os.MkdirAll(db.ImagesDir+"/"+strings.Join(parts[0:len(parts)-1], "/"), 0755); err != nil {
 		return err
 	}
 
-	if err := copyFile(tmpFile.Name(), db.ImagesDir+"/"+imageName+ova); err != nil {
+	imagePath := db.ImagesDir + "/" + imageName + ova
+	if err := copyFile(tmpFile.Name(), imagePath); err != nil {
 		return err
+	}
+
+	if vagrant.IsValidImage(imageName) {
+		if err := vagrant.ProcessImage(imagePath); err != nil {
+			return err
+		}
 	}
 
 	return nil

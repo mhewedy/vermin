@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	format = "%-25s%-20s%-10s\n"
+	format = "%-40s%-20s%-10s\n"
 	header = fmt.Sprintf(format, "IMAGE NAME", "CACHED", "DISK")
 )
 

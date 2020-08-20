@@ -72,3 +72,12 @@ func AnsiblePlaybook(ip string, playbook string) *cmd {
 		},
 	}
 }
+
+// Tar flags are (cxzf)
+// Temporary, use go code instead
+func Tar(args ...string) *cmd {
+	return &cmd{
+		command: "tar",
+		args:    args,
+	}
+}

@@ -2,6 +2,7 @@ package images
 
 import (
 	"fmt"
+	"github.com/mhewedy/vermin/vagrant"
 	"github.com/schollz/progressbar/v3"
 	"io"
 	"io/ioutil"
@@ -21,17 +22,27 @@ func Download(image string) error {
 		return nil
 	}
 
-	remote, err := listRemoteImages(false)
-	if err != nil {
-		return err
+	var dbImg *dbImage
+
+	if vagrant.IsValidImage(image) {
+		url, err := vagrant.GetImageURL(image)
+		if err != nil {
+			return err
+		}
+		dbImg = &dbImage{Name: image, URL: url}
+	} else { // Not vagrant image
+		remote, err := listRemoteImages(false)
+		if err != nil {
+			return err
+		}
+
+		dbImg, err = remote.findByName(image)
+		if err != nil {
+			return err
+		}
 	}
 
-	dbImage, err := remote.findByName(image)
-	if err != nil {
-		return err
-	}
-
-	return download(dbImage)
+	return download(dbImg)
 }
 
 func download(r *dbImage) error {

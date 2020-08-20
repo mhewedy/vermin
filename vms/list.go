@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	format = "%-15s%-27s%-10s%-10s%-13s%s\n"
+	format = "%-15s%-40s%-10s%-10s%-13s%s\n"
 	header = fmt.Sprintf(format, "VM NAME", "IMAGE", "CPUS", "MEM", "DISK", "TAGS")
 )
 
