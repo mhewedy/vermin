@@ -1,7 +1,6 @@
 package vagrant
 
 import (
-	"github.com/mhewedy/vermin/command"
 	"io/ioutil"
 	"os"
 	"path"
@@ -41,8 +40,14 @@ func ProcessImage(imagePath string) error {
 }
 
 func gunzipVagrantBox(imagePath, imageDir string) error {
-	// TODO change from using tar command to golang code
-	return command.Tar("xzf", imagePath, "-C", imageDir).Run()
+
+	gzipFile, err := os.Open(imagePath)
+	if err != nil {
+		return err
+	}
+	defer gzipFile.Close()
+
+	return gunzip(imageDir, gzipFile)
 }
 
 func createOVAFile(imagePath, imageDir string) error {

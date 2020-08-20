@@ -2,6 +2,8 @@ package vagrant
 
 import (
 	"archive/tar"
+	"compress/gzip"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -32,6 +34,50 @@ func tarFiles(w io.Writer, base string, files []os.FileInfo) error {
 	}
 	if err := tw.Close(); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func gunzip(baseDir string, gzipStream io.Reader) error {
+
+	uncompressedStream, err := gzip.NewReader(gzipStream)
+	if err != nil {
+		return err
+	}
+
+	tarReader := tar.NewReader(uncompressedStream)
+
+	for true {
+		header, err := tarReader.Next()
+
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			return err
+		}
+
+		switch header.Typeflag {
+		case tar.TypeDir:
+			if err := os.Mkdir(filepath.Join(baseDir, header.Name), 0755); err != nil {
+				return err
+			}
+		case tar.TypeReg:
+			outFile, err := os.Create(filepath.Join(baseDir, header.Name))
+			if err != nil {
+				return err
+			}
+			defer outFile.Close()
+			if _, err := io.Copy(outFile, tarReader); err != nil {
+				return err
+			}
+
+		default:
+			return fmt.Errorf("ExtractTarGz: uknown type: %s in %s", header.Typeflag, header.Name)
+		}
+
 	}
 
 	return nil
