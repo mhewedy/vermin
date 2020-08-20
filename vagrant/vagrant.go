@@ -9,13 +9,6 @@ import (
 	"strings"
 )
 
-// IsValidImage check the image name format to be "vagrant/<base>/<image>[:version]",
-// example vagrant/hashicorp/bionic64
-func IsValidImage(image string) bool {
-	s := strings.Split(image, "/")
-	return len(s) == 3 && s[0] == "vagrant"
-}
-
 func GetImageURL(image string) (string, error) {
 	// TODO
 	// get json and parse it to return download URL

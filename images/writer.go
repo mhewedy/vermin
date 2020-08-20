@@ -20,7 +20,7 @@ func writeNewImage(tmpFile *os.File, imageName string) error {
 		return err
 	}
 
-	if vagrant.IsValidImage(imageName) {
+	if db.IsVagrantImage(imageName) {
 		if err := vagrant.ProcessImage(imagePath); err != nil {
 			return err
 		}

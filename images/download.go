@@ -2,6 +2,7 @@ package images
 
 import (
 	"fmt"
+	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/vagrant"
 	"github.com/schollz/progressbar/v3"
 	"io"
@@ -24,7 +25,7 @@ func Download(image string) error {
 
 	var dbImg *dbImage
 
-	if vagrant.IsValidImage(image) {
+	if db.IsVagrantImage(image) {
 		url, err := vagrant.GetImageURL(image)
 		if err != nil {
 			return err
