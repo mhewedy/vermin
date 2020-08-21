@@ -43,7 +43,7 @@ func gunzip(baseDir string, gzipStream io.Reader) error {
 
 	uncompressedStream, err := gzip.NewReader(gzipStream)
 	if err != nil {
-		return err
+		return errImageIsNotGzipped
 	}
 
 	tarReader := tar.NewReader(uncompressedStream)

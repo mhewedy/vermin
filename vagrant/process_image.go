@@ -1,12 +1,19 @@
 package vagrant
 
 import (
+	"errors"
 	"github.com/mhewedy/vermin/progress"
 	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
+)
+
+var (
+	// errImageIsNotGzipped return when unable to gunzip an image,
+	// mostly it is only tarred and could be used directly and no need to gunzip and tar
+	errImageIsNotGzipped = errors.New("image is not gzipped, may be tarred only")
 )
 
 func ProcessImage(imagePath string) error {
@@ -17,6 +24,9 @@ func ProcessImage(imagePath string) error {
 	imageDir := path.Dir(imagePath)
 
 	if err := gunzipVagrantBox(imagePath, imageDir); err != nil {
+		if err == errImageIsNotGzipped {
+			return nil
+		}
 		return err
 	}
 
