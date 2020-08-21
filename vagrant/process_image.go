@@ -16,6 +16,7 @@ var (
 	errImageIsNotGzipped = errors.New("image is not gzipped, may be tarred only")
 )
 
+// ProcessImage process vagrant image after downloaded
 func ProcessImage(imagePath string) error {
 
 	stop := progress.Show("Convert Vagrant image into Vermin format", false)
