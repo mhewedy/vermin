@@ -25,7 +25,8 @@ func (dbImages dbImages) findByName(name string) (*dbImage, error) {
 	}
 
 	if dbImage == nil {
-		return nil, fmt.Errorf("Invalid image name: '%s', valid images are:\n%s", name, strings.Join(dbImages.names(), "\n"))
+		return nil, fmt.Errorf("Invalid image name: '%s', valid images are:\n\n%s\n\n"+
+			"If you targeting a vagrant image, prefix the image name with 'vagrant/'", name, strings.Join(dbImages.names(), "\n"))
 	}
 
 	return dbImage, nil
