@@ -75,7 +75,7 @@ func gunzip(baseDir string, gzipStream io.Reader) error {
 			}
 
 		default:
-			return fmt.Errorf("ExtractTarGz: uknown type: %s in %s", header.Typeflag, header.Name)
+			return fmt.Errorf("ExtractTarGz: uknown type: %b in %s", header.Typeflag, header.Name)
 		}
 
 	}
