@@ -17,9 +17,6 @@ Table of Contents:
 
 - [What is Vermin](#what-is-vermin)
 - [Install Vermin](#install-vermin)
-  - [More installation options](#more-installation-options)
-    - [Manual installation](#Manual-installation)
-   	- [Build from source](#Build-from-source)
 - [Usage](#Usage)
 - [Contributors](#Contributors)
 - [Why not Vagrant](#Why-not-Vagrant)
@@ -54,32 +51,6 @@ To install/update on **windows** (PowerShell) run:
 # Should run as Adminstarator
 iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/mhewedy/vermin/master/install.ps1'))
 ```
-
-## More installation options:
-### Manual installation:
-
-> It is recommended to use the [automatic method](#install-vermin) to install vermin, However If you prefer to do manual installation then you need to follow these steps:
-
-1. Download the binary matching your OS from [releases](https://github.com/mhewedy/vermin/releases/latest) unzip it and preferably put it in your PATH 
-2. create the following directory structure in your home dir:
-```
-$HOME/.vermin
-         ├── images
-         └── vms
-```
-3. Download [vermin private key](https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa) into `$HOME/.vermin/vermin_rsa`
-4. On windows, you need to add `C:\Program Files\Oracle\VirtualBox` into you PATH.
-
-### Build from Source:
-Download the latest released source code archive file from [releases](https://github.com/mhewedy/vermin/releases/latest) then unzip:
-```bash
-go build
-```
-You can build using golang docker image:
-```bash
-# replace window by linux or darwin depending on your OS
-docker run -it -v $(pwd):/go -e GOPATH='' -e GOOS='windows' golang:latest go build
-``` 
 
 # Usage:
 ```text
@@ -130,17 +101,18 @@ Use "vermin [command] --help" for more information about a command.
 You can start using vermin after installation using:
 
 ```shell script
-$ vermin create <image name>
-# example
-$ vermin create ubuntu/focal
+$ vermin create <image name> | vagrant/<vagrant image>
+# example using vagrant image
+$ vermin create vagrant/hashicorp/bionic64
 ```
 
-### For more information, see the vermin [documentations](https://mhewedy.github.io/vermin/).
+### For more info on the usage options see [vermin documentations website](https://mhewedy.github.io/vermin/).
 
 
 # Why not Vagrant:
 * **Vagrant** uses a `Vagrantfile` which I think is most suited to be source-controlled inside `git`  , and for some use case it is an overhead to create and maintain such file. In such cases **Vermin** come to the rescue. 
 * **Vermin** is a single binary file that can be easily installed and upgraded.
+* It is important to note that, starting from version `v0.94.0` `**Vermin* can smoothly uses Vagrant Cloud images.
 
 # Contributors
 Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
