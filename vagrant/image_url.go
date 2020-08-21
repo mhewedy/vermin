@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/mhewedy/vermin/progress"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -23,6 +24,9 @@ type version struct {
 }
 
 func GetImageURL(image string) (string, error) {
+
+	stop := progress.Show("Getting Image information from Vagrant Cloud", false)
+	defer stop()
 
 	user, imageName, imageVersion := getImageParts(image)
 
