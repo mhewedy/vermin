@@ -1,6 +1,7 @@
 package vagrant
 
 import (
+	"github.com/mhewedy/vermin/progress"
 	"io/ioutil"
 	"os"
 	"path"
@@ -9,6 +10,9 @@ import (
 )
 
 func ProcessImage(imagePath string) error {
+
+	stop := progress.Show("Convert Vagrant image into Vermin format", false)
+	defer stop()
 
 	imageDir := path.Dir(imagePath)
 
