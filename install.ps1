@@ -46,9 +46,9 @@ Function Get-Archive($channel, $version) {
 
     if(!$version -Or $version -eq "latest") {
         $version=(Get-RedirectedUrl "https://github.com/mhewedy/vermin/releases/latest").Split("/")[7]
-    } 
+    }
 
-    $vermin_url="$packagesRootUrl/${version}/vermin-${version}-windows.zip" 
+    $vermin_url="$packagesRootUrl/${version}/vermin-${version}-windows.zip"
     $sha_url="$vermin_url.sha256sum"
     $hab_dest = (Join-Path ($workdir) "vermin.zip")
     $sha_dest = (Join-Path ($workdir) "vermin.zip.shasum256")
@@ -100,7 +100,7 @@ Function Assert-Shasum($archive) {
 }
 
 Function Install-Vermin {
-    $habPath = Join-Path $env:ProgramData Vermin 
+    $habPath = Join-Path $env:ProgramData Vermin
     if(Test-Path $habPath) { Remove-Item $habPath -Recurse -Force }
     New-Item $habPath -ItemType Directory | Out-Null
     $folder = (Get-ChildItem (Join-Path ($workdir) "vermin.exe"))
@@ -166,6 +166,7 @@ Function Configure-Vermin() {
     if(! (Test-Path "$HOME/.vermin/images")) { New-Item "$HOME/.vermin/images" -ItemType Directory | Out-Null}
 
     wget https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa -o "$HOME/.vermin/vermin_rsa"
+    wget https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant -o "$HOME/.vermin/vagrant_insecure_private_key"
 }
 
 Function Configure-Virtualbox() {
@@ -226,7 +227,7 @@ function Get-RedirectedUrl() {
       } else {
         throw $_
       }
-    }  
+    }
   } while($retry)
 
   return $result

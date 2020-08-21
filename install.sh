@@ -234,6 +234,8 @@ configure_vermin() {
       mkdir -pv "$HOME/.vermin/images"
       curl -s https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa > "$HOME/.vermin/vermin_rsa"
       chmod 0600 "$HOME/.vermin/vermin_rsa"
+      curl -s https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant > "$HOME/.vermin/vagrant_insecure_private_key"
+      chmod 0600 "$HOME/.vermin/vagrant_insecure_private_key"
       ;;
     *)
       exit_with "Unrecognized sys when installing: ${sys}" 5
