@@ -61,7 +61,8 @@ func GetImageURL(image string) (string, error) {
 func filterByVersion(resp vagrantResp, user, imageName, imageVersion string) (provider, error) {
 
 	if len(resp.Versions) == 0 {
-		return provider{}, errors.New("vagrant response contains no versions")
+		return provider{}, fmt.Errorf("Cannot found vagrant image "+
+			"at https://app.vagrantup.com/%s/boxes/%s", user, imageName)
 	}
 
 	if imageVersion == "" {
