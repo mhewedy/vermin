@@ -23,6 +23,8 @@ func Download(image string) error {
 		return nil
 	}
 
+	fmt.Printf("Image '%s' could not be found. Attempting to find and install \n", image)
+
 	var dbImg *dbImage
 
 	if db.IsVagrantImage(image) {
@@ -47,7 +49,6 @@ func Download(image string) error {
 }
 
 func download(r *dbImage) error {
-	fmt.Printf("Image '%s' could not be found. Attempting to find and install \n", r.Name)
 
 	// download to a temp file
 	tmpFile, err := ioutil.TempFile("", strings.ReplaceAll(r.Name, "/", "_"))
