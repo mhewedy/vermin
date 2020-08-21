@@ -60,13 +60,14 @@ func createOVAFile(imagePath, imageDir string) error {
 	if err != nil {
 		return err
 	}
-	var ovaFileInfo, vmdkFileInfo os.FileInfo
+	var ovaFileInfo os.FileInfo
+	vmdkFileInfos := make([]os.FileInfo, 0)
 	for _, info := range infos {
 		if strings.HasSuffix(info.Name(), ".ovf") {
 			ovaFileInfo = info
 		}
 		if strings.HasSuffix(info.Name(), ".vmdk") {
-			vmdkFileInfo = info
+			vmdkFileInfos = append(vmdkFileInfos, info)
 		}
 	}
 
@@ -77,5 +78,5 @@ func createOVAFile(imagePath, imageDir string) error {
 	}
 	defer file.Close()
 
-	return tarFiles(file, imageDir, []os.FileInfo{ovaFileInfo, vmdkFileInfo})
+	return tarFiles(file, imageDir, append(vmdkFileInfos, ovaFileInfo))
 }
