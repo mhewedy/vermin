@@ -9,6 +9,7 @@
     <p>
       <code>create</code> subcommand used to create a new VM from an
       <link-images>image</link-images>
+      or from <a href="https://app.vagrantup.com/boxes/search" target="_blank">Vagrant Cloud images</a>
       .
     </p>
     <p>
@@ -30,6 +31,11 @@ VM is ready, to connect to it use:
 $ vermin ssh vm_01</graycode>
     </pre>
 
+    <div class="alert alert-light">
+      Starting from version v0.94.0, vermin supports Vagrant images. you need to prepend the image name
+      with <code>vagrant/</code>, see the Vagrant section below for more info.
+    </div>
+
 
     <p>
       Once you have a VM created from the chosen image, it is
@@ -38,6 +44,43 @@ $ vermin ssh vm_01</graycode>
       <link-ssh></link-ssh>
       into it.
     </p>
+
+    <hr/>
+    <h4>Vagrant Cloud images</h4>
+
+    <p>
+      Vermin working seamlessly with <a href="https://app.vagrantup.com/boxes/search" target="_blank">Vagrant Cloud
+      images</a>
+      with no need to do any extra configurations or setup.
+    </p>
+
+    <p>
+      To create a vermin image from Vagrant, you need to prepend the image name with <code>vagrant/</code> with
+      optional version at the end. so the full syntax will be: <code>vagrant/&lt;user&gt;/&lt;image&gt;[:version]</code>
+    </p>
+
+    <p>
+      For example, to create a VM from <a href="https://app.vagrantup.com/hashicorp/boxes/bionic64" target="_blank">
+      <code>hashicorp/bionic64</code> </a> image at the latest version:
+    </p>
+    <pre>
+$ vermin create vagrant/hashicorp/bionic64
+<graycode>Image 'vagrant/hashicorp/bionic64' could not be found. Attempting to find and install
+✔ Getting Image info from Vagrant Cloud
+Downloading 100% [#####################################################################] (518/518 MB, 5.253 MB/s) [1m33s:0s]
+✔ Convert Vagrant image into Vermin format
+✔ Creating vm_02 from image vagrant/hashicorp/bionic64
+✔ Setting bridged network adapter
+✔ Starting vm_02
+✔ Establishing connection
+
+VM is ready, to connect to it use:
+$ vermin ssh vm_02</graycode>
+    </pre>
+
+    <div class="alert alert-light">
+      Vagrant version support is not yet available on Windows.
+    </div>
 
     <hr/>
     <h4>Customizing Resources</h4>

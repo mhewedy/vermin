@@ -2,6 +2,7 @@
     font-family: "Ubuntu Mono", "monospace", "Roboto", "Oxygen", "Monaco", "Droid Sans";
     font-size: 17px;
 }
+
 .borderless {
     padding: .4rem 1.5rem;
 }
@@ -31,6 +32,7 @@ code {
     margin-right: 0.25rem;
     text-align: left;
 }
+
 #command {
     font-size: 17px;
 }
