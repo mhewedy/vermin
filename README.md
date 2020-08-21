@@ -113,6 +113,7 @@ $ vermin create vagrant/hashicorp/bionic64
 * **Vagrant** uses a `Vagrantfile` which I think is most suited to be source-controlled inside `git`  , and for some use case it is an overhead to create and maintain such file. In such cases **Vermin** come to the rescue. 
 * **Vermin** is a single binary file that can be easily installed and upgraded.
 * It is important to note that, starting from version `v0.94.0` **Vermin** can smoothly uses Vagrant Cloud images.
+* Myself, I look (and try to achieve) to Vermin as a modern CLI (like docker/podman) for Vagrant Boxes.
 
 # Contributors
 Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
