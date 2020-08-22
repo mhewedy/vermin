@@ -2,10 +2,16 @@ package images
 
 import (
 	"fmt"
+	"github.com/mhewedy/vermin/db"
 	"strings"
 )
 
 func CheckCanMount(image string) error {
+
+	if db.IsVagrantImage(image) {
+		return nil
+	}
+
 	remote, err := listRemoteImages(false)
 	if err != nil {
 		return err
