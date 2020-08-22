@@ -45,6 +45,7 @@ $ vermin create <image>
 			fmt.Println(err)
 			os.Exit(1)
 		}
+		i += "vagrant/*\n"
 		fmt.Print(i)
 	},
 }
