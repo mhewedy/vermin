@@ -26,8 +26,7 @@
     </p>
 
     <div class="alert alert-light">
-      You can use the <code>mount</code> command against a single VM as many times as you want
-      and each time will override the mount directly of previous times.
+      You can use the <code>mount</code> command against a single VM as many times as you want.
     </div>
     <div class="alert alert-light">
       Mounts are transient, which means it will to not persist VM restarts.
@@ -41,21 +40,27 @@ $ vermin mount vm_01 ~/Downloads
     </pre>
 
     <p>
-      To mount the <code>~/MyHTMLApp</code> directory to <code>/var/www/html</code> inside the VM:
+      To mount the <code>~/MyHTMLApp</code> directory to <code>/var/www/html</code> inside the VM, and remove all
+      previous mounted folders:
     </p>
     <pre>
-$ vermin mount vm_01 ~/MyHTMLApp:/var/www/html
+$ vermin mount vm_01 -r ~/MyHTMLApp:/var/www/html
     </pre>
 
     <p>
-      You can change the mounted directory to <code>~/Desktop</code> using the command:
+      To List all mounts on a VM use:
     </p>
     <pre>
-$ vermin mount vm_01 ~/Desktop
+$ vermin mount ls vm_01
+<graycode>
+HOST DIR                                             GUEST DIR
+/Users/mhewedy/Temp/MyHTMLApp                        /var/www/localhost/htdocs
+/Users/mhewedy                                       /path/to/home</graycode>
     </pre>
 
     <div class="alert alert-light">
-      <code>mount</code> command removes all previous mounts on the same VM and do a new mount.
+      <code>mount</code> can command remove all previous mounts on the same VM before do a new mount if you pass the
+      <code>--remove|-r</code> flag.
     </div>
 
   </div>
