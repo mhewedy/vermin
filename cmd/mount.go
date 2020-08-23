@@ -47,9 +47,12 @@ To mount the ~/MyHtmlProject directory to /var/www/html inside the VM:
 $ vermin mount vm_01 ~/MyHtmlProject:/var/www/html
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
 
-		p := strings.Split(args[1], ":")
+		vmName := args[0]
+		path := args[1]
+		remove, _ := cmd.Flags().GetBool("remove")
+
+		p := strings.Split(path, ":")
 		hostPath := p[0]
 		checkFilePath(hostPath)
 
@@ -58,7 +61,7 @@ $ vermin mount vm_01 ~/MyHtmlProject:/var/www/html
 			guestPath = p[1]
 		}
 
-		err := vms.Mount(vmName, hostPath, guestPath)
+		err := vms.Mount(vmName, hostPath, guestPath, remove)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -76,8 +79,33 @@ $ vermin mount vm_01 ~/MyHtmlProject:/var/www/html
 	ValidArgsFunction: listRunningVms,
 }
 
+var mountLsCmd = &cobra.Command{
+	Use:   "ls",
+	Short: "list mounted directories",
+	Long:  "list mounted directories",
+	Run: func(cmd *cobra.Command, args []string) {
+
+		vmName := args[0]
+
+		ps, err := vms.ListMounts(vmName)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		fmt.Print(ps)
+	},
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 1 {
+			return errors.New("image required")
+		}
+		return nil
+	},
+	ValidArgsFunction: listRunningVms,
+}
+
 func init() {
 	rootCmd.AddCommand(mountCmd)
+	mountCmd.AddCommand(mountLsCmd)
 
 	// Here you will define your flags and configuration settings.
 
@@ -87,6 +115,6 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	//mountCmd.Flags().IntP("cpus", "c", 1, "Number of cpu cores")
+	mountCmd.Flags().BoolP("remove", "r", false, "remove mounts before doing the new mount")
 	//mountCmd.Flags().IntP("mem", "m", 1024, "Memory size in mega bytes")
 }

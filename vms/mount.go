@@ -14,7 +14,12 @@ import (
 	"time"
 )
 
-func Mount(vmName, hostPath, guestPath string) error {
+var (
+	mountFormat = "%-79s%-70s\n"
+	mountHeader = fmt.Sprintf(mountFormat, "HOST DIR", "GUEST DIR")
+)
+
+func Mount(vmName, hostPath, guestPath string, remove bool) error {
 	if err := checkRunningVM(vmName); err != nil {
 		return err
 	}
@@ -28,8 +33,10 @@ func Mount(vmName, hostPath, guestPath string) error {
 		return err
 	}
 
-	if err = removeMounts(vmName); err != nil {
-		return err
+	if remove {
+		if err = removeMounts(vmName); err != nil {
+			return err
+		}
 	}
 
 	absHostPath, err := filepath.Abs(hostPath)
@@ -59,6 +66,50 @@ func Mount(vmName, hostPath, guestPath string) error {
 	}
 
 	return nil
+}
+
+func ListMounts(vmName string) (string, error) {
+
+	out := mountHeader
+
+	paths, err := listMounts(vmName)
+	if err != nil {
+		return "", err
+	}
+
+	for _, p := range paths {
+		out += fmt.Sprintf(mountFormat, p.hostPath, p.guestPath)
+	}
+
+	return out, nil
+}
+
+type mountPath struct {
+	hostPath  string
+	guestPath string
+}
+
+func listMounts(vmName string) ([]mountPath, error) {
+
+	result := make([]mountPath, 0)
+
+	hostPaths, err := props.FindByPrefix(vmName, "SharedFolderPathTransientMapping")
+	if err != nil {
+		return nil, err
+	}
+
+	transientMounts, err := props.FindByPrefix(vmName, "SharedFolderNameTransientMapping")
+	if err != nil {
+		return nil, err
+	}
+
+	for i := range transientMounts {
+		if guestPath, err := getMountGuestPath(vmName, transientMounts[i]); err == nil {
+			result = append(result, mountPath{hostPath: hostPaths[i], guestPath: guestPath})
+		}
+	}
+
+	return result, nil
 }
 
 func removeMounts(vmName string) error {
