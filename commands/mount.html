@@ -7,13 +7,16 @@
 
   <div class="content">
     <p>
-      <code>mount</code> subcommand used to mount local filesystem to <code>/vermin</code> directory inside the VM.
+      <code>mount</code> subcommand used to mount local filesystem to a directory inside the VM, by default if the guest
+      directory not specified, then it defaults to <code>/vermin</code>.
     </p>
     <p>
       It depends on <code>virtualbox-guest-utils</code> being install inside the VM to work.
-      currently <code>ubuntu/focal</code>
+      currently Many
+      <link-create>Vagrant images</link-create>
+      and <code>ubuntu/focal</code>
       <link-images>image</link-images>
-      is only supporting this function.
+      are supported.
     </p>
 
     <p>
@@ -38,10 +41,22 @@ $ vermin mount vm_01 ~/Downloads
     </pre>
 
     <p>
-      Then you can change the mounted directory to <code>~/Desktop</code> using the command:
+      To mount the <code>~/MyHTMLApp</code> directory to <code>/var/www/html</code> inside the VM:
+    </p>
+    <pre>
+$ vermin mount vm_01 ~/MyHTMLApp:/var/www/html
+    </pre>
+
+    <p>
+      You can change the mounted directory to <code>~/Desktop</code> using the command:
     </p>
     <pre>
 $ vermin mount vm_01 ~/Desktop
     </pre>
+
+    <div class="alert alert-light">
+      <code>mount</code> command removes all previous mounts on the same VM and do a new mount.
+    </div>
+
   </div>
 </div>
