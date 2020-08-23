@@ -1,6 +1,7 @@
 package vms
 
 import (
+	"errors"
 	"fmt"
 	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/command/ssh"
@@ -9,10 +10,11 @@ import (
 	"github.com/mhewedy/vermin/images"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 )
 
-func Mount(vmName string, hostPath string) error {
+func Mount(vmName, hostPath, guestPath string) error {
 	if err := checkRunningVM(vmName); err != nil {
 		return err
 	}
@@ -35,7 +37,6 @@ func Mount(vmName string, hostPath string) error {
 		return err
 	}
 
-	guestFolder := "/vermin"
 	shareName := strconv.FormatInt(time.Now().Unix(), 10)
 
 	if _, err = command.VBoxManage("sharedfolder",
@@ -46,12 +47,12 @@ func Mount(vmName string, hostPath string) error {
 		"--transient",
 		"--automount",
 		"--auto-mount-point",
-		guestFolder).Call(); err != nil {
+		guestPath).Call(); err != nil {
 		return err
 	}
 
-	mountCmd := fmt.Sprintf("sudo mkdir -p %s; ", guestFolder) +
-		fmt.Sprintf("sudo mount -t vboxsf -o uid=1000,gid=1000 %s %s", shareName, guestFolder)
+	mountCmd := fmt.Sprintf("sudo mkdir -p %s; ", guestPath) +
+		fmt.Sprintf("sudo mount -t vboxsf -o uid=1000,gid=1000 %s %s", shareName, guestPath)
 
 	if _, err = ssh.Execute(vmName, mountCmd); err != nil {
 		return err
@@ -67,11 +68,30 @@ func removeMounts(vmName string) error {
 	}
 
 	for i := range transientMounts {
-		mount := transientMounts[i]
-		if _, err = command.VBoxManage("sharedfolder", "remove", vmName, "--name", mount, "--transient").Call(); err != nil {
+		mountName := transientMounts[i]
+		if _, err = command.VBoxManage("sharedfolder", "remove", vmName, "--name", mountName, "--transient").Call(); err != nil {
 			return err
+		}
+		if guestPath, err := getMountGuestPath(vmName, mountName); err == nil {
+			_, _ = ssh.Execute(vmName, "sudo umount "+guestPath)
 		}
 	}
 
 	return nil
+}
+
+// return guestPath of mount
+func getMountGuestPath(vmName, mountName string) (string, error) {
+	mountData, _ := ssh.Execute(vmName, "sudo mount")
+	mounts := strings.Split(mountData, "\n")
+
+	for _, line := range mounts {
+		if strings.HasPrefix(line, mountName) {
+			fields := strings.Fields(line)
+			if len(fields) > 3 {
+				return fields[2], nil
+			}
+		}
+	}
+	return "", errors.New("cannot get mount path")
 }

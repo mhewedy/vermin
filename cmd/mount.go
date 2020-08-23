@@ -21,13 +21,19 @@ import (
 	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
 	"os"
+	"strings"
 )
 
 // mountCmd represents the mount command
 var mountCmd = &cobra.Command{
 	Use:   "mount",
 	Short: "Mount local filesystem inside the VM",
-	Long: `Mount local filesystem to /vermin directory inside the VM
+	Long: `Mount local filesystem to a directory inside the VM, 
+if the guest directory is not specified, then /vermin is used
+
+Usage: vermin mount <vm> local dir:[<vm dir>]
+
+default <vm dir> is /vermin
 
 Note: 
 1. You can mount as many times as you want, and each time overrides old mounts.
@@ -36,13 +42,23 @@ Note:
 	Example: `
 To mount the ~/Downloads directory to /vermin inside the VM:
 $ vermin mount vm_01 ~/Downloads
+
+To mount the ~/MyHtmlProject directory to /var/www/html inside the VM:
+$ vermin mount vm_01 ~/MyHtmlProject:/var/www/html
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
-		hostPath := args[1]
+
+		p := strings.Split(args[1], ":")
+		hostPath := p[0]
 		checkFilePath(hostPath)
 
-		err := vms.Mount(vmName, hostPath)
+		guestPath := "/vermin"
+		if len(p) > 1 {
+			guestPath = p[1]
+		}
+
+		err := vms.Mount(vmName, hostPath, guestPath)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
