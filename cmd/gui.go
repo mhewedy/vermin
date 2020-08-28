@@ -34,7 +34,8 @@ $ vermin gui vm_02
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
-		if err := vms.GUI(vmName); err != nil {
+		nocheck, _ := cmd.Flags().GetBool("nocheck")
+		if err := vms.GUI(vmName, nocheck); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -59,5 +60,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	//guiCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
+	guiCmd.Flags().BoolP("nocheck", "n", false, "open GUI without checking if the VM is running or not")
 }
