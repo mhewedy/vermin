@@ -108,6 +108,8 @@ $ vermin create <image name> | vagrant/<vagrant image>
 $ vermin create vagrant/hashicorp/bionic64
 ```
 
+vermin collect very simple usage data anonymously
+
 ### For more info on the usage options see [vermin documentations website](https://mhewedy.github.io/vermin/).
 
 
