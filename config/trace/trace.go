@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-var log = gistlog.NewLog("91d041d80687032b270d3c694ea815b8", token)
+var log = gistlog.NewLog("91d041d80687032b270d3c694ea815b8", token())
 
 func PreCreate(imageName string) {
 

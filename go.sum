@@ -58,8 +58,8 @@ github.com/mattn/go-isatty v0.0.12/go.mod h1:cbi8OIDigv2wuxKPP5vlRcQ1OAZbq2CE4Ky
 github.com/mattn/go-runewidth v0.0.9 h1:Lm995f3rfxdpd6TSmuVCHVb/QhupuXlYr8sCI/QdE+0=
 github.com/mattn/go-runewidth v0.0.9/go.mod h1:H031xJmbD/WCDINGzjvQ9THkh0rPKHF+m2gUSrubnMI=
 github.com/matttproud/golang_protobuf_extensions v1.0.1/go.mod h1:D8He9yQNgCq6Z5Ld7szi9bcBfOoFv/3dc6xSMkL2PC0=
-github.com/mhewedy/go-gistlog v0.0.3 h1:WDBGTi8FLYDuNiZL8beI+ROrcYPM39vM+d9WRT/E4cU=
-github.com/mhewedy/go-gistlog v0.0.3/go.mod h1:UIJB8TAk20Nul2NFiPPvx8sH9ghB52mueey3F8WrV5k=
+github.com/mhewedy/go-gistlog v0.0.5 h1:G6fEogV+E0d/AjhByFdTF6KoShHhpo5eWUi3+opaLKw=
+github.com/mhewedy/go-gistlog v0.0.5/go.mod h1:UIJB8TAk20Nul2NFiPPvx8sH9ghB52mueey3F8WrV5k=
 github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db h1:62I3jR2EmQ4l5rM/4FEfDWcRD+abF5XlKShorW5LRoQ=
 github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db/go.mod h1:l0dey0ia/Uv7NcFFVbCLtqEBQbrT4OCwCSKTEv6enCw=
 github.com/mitchellh/go-homedir v1.1.0/go.mod h1:SfyaCUpYCn1Vlf4IUYiD9fPX4A5wJrkLzIz1N1q0pr0=
