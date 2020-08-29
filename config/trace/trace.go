@@ -1,113 +1,29 @@
 package trace
 
 import (
-	"bytes"
 	"encoding/base64"
-	"encoding/json"
-	"fmt"
-	"io"
-	"net/http"
+	"github.com/mhewedy/go-gistlog"
 	"strings"
 	"time"
 )
 
-const (
-	gistId     = "91d041d80687032b270d3c694ea815b8"
-	gistApiUrl = "https://api.github.com/gists/" + gistId
-)
-
-// Gist represents a GitHub's gist.
-type gist struct {
-	Files map[string]gistFile `json:"files,omitempty"`
-}
-
-type gistFile struct {
-	Filename string `json:"filename,omitempty"`
-	Content  string `json:"content,omitempty"`
-}
+var log = gistlog.NewLog("91d041d80687032b270d3c694ea815b8", token)
 
 func PreCreate(imageName string) {
-	go func() {
-		updateFile("pre-create", func(filename string) gist {
 
-			content := fmt.Sprintf("%s,%s", imageName, time.Now().UTC())
-			return gist{
-				Files: map[string]gistFile{filename: {
-					Filename: filename,
-					Content:  getContent(filename) + "\n" + content,
-				}},
-			}
-		})
-	}()
-}
-
-func PostCreate(imageName string, err error) {
-	updateFile("post-create", func(filename string) gist {
-
-		content := fmt.Sprintf("%s,%s,%s", imageName, time.Now().UTC(), errorAsString(err))
-		return gist{
-			Files: map[string]gistFile{filename: {
-				Filename: filename,
-				Content:  getContent(filename) + "\n" + content,
-			}},
-		}
+	log.InsertAsync("pre-create", []string{
+		imageName,
+		time.Now().UTC().String(),
 	})
 }
 
-func updateFile(filename string, fn func(filename string) gist) {
+func PostCreate(imageName string, err error) {
 
-	var buf io.ReadWriter
-
-	buf = &bytes.Buffer{}
-	enc := json.NewEncoder(buf)
-	enc.SetEscapeHTML(false)
-	g := fn(filename)
-	err := enc.Encode(g)
-	if err != nil {
-		return
-	}
-
-	req, err := http.NewRequest(http.MethodPatch, gistApiUrl, buf)
-	if err != nil {
-		return
-	}
-
-	setHeaders(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return
-	}
-	defer resp.Body.Close()
-}
-
-func getContent(filename string) string {
-	req, err := http.NewRequest(http.MethodGet, gistApiUrl, nil)
-	if err != nil {
-		return ""
-	}
-	setHeaders(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return ""
-	}
-	defer resp.Body.Close()
-
-	decoder := json.NewDecoder(resp.Body)
-	var g gist
-	err = decoder.Decode(&g)
-	if err != nil {
-		return ""
-	}
-	return g.Files[filename].Content
-}
-
-func setHeaders(req *http.Request) {
-	req.Header.Set("Accept", "application/vnd.github.v3+json")
-	req.Header.Set("Authorization", "token "+token())
+	_ = log.Insert("post-create", []string{
+		imageName,
+		time.Now().UTC().String(),
+		errorAsString(err),
+	})
 }
 
 func errorAsString(err error) string {

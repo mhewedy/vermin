@@ -16,6 +16,11 @@ type addr struct {
 
 const max = 255
 
+//Find will try to find IP for the VM.
+//
+// If the purge flag if true, it will invalidate the cache first then start the search process.
+// Otherwise the search will start without clearing the cache, but if no result found, the cache will be cleared and the search
+// will executed again.
 func Find(vmName string, purge bool) (string, error) {
 
 	mac, err := getMACAddr(vmName)
