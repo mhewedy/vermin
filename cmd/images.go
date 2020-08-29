@@ -45,7 +45,7 @@ $ vermin create <image>
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		i += "vagrant/*\n"
+		i += "https://app.vagrantup.com/search\n"
 		fmt.Print(i)
 	},
 }
