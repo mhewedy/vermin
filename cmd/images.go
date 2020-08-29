@@ -33,6 +33,8 @@ var imagesCmd = &cobra.Command{
 	
 Images are cached after the first time it is downloaded. Cached images are marked as (cached).
 The image comes in the format <os>/<version>, for example: ubuntu/bionic and centos/8
+
+You can use images from Vagrant Boxes by prefixing the image name by vagrant/, e.g. vagrant/hashicorp/bionic64
 `,
 	Example: `
 Use the image in creating a VM:
