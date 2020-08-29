@@ -67,11 +67,12 @@ func updateFile(filename string, fn func(filename string) gist) {
 		return
 	}
 
-	req, err := http.NewRequest(http.MethodPatch, gistApiUrl+"?access_token="+token(), buf)
+	req, err := http.NewRequest(http.MethodPatch, gistApiUrl, buf)
 	if err != nil {
 		return
 	}
-	req.Header.Set("Accept", "application/vnd.github.v3+json")
+
+	setHeaders(req)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -86,8 +87,7 @@ func getContent(filename string) string {
 	if err != nil {
 		return ""
 	}
-	req.Header.Set("Accept", "application/vnd.github.v3+json")
-	req.Header.Set("Authorization", token())
+	setHeaders(req)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -103,6 +103,11 @@ func getContent(filename string) string {
 		return ""
 	}
 	return g.Files[filename].Content
+}
+
+func setHeaders(req *http.Request) {
+	req.Header.Set("Accept", "application/vnd.github.v3+json")
+	req.Header.Set("Authorization", "token "+token())
 }
 
 func errorAsString(err error) string {
