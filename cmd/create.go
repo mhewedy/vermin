@@ -18,6 +18,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"github.com/mhewedy/vermin/config/trace"
 	"github.com/mhewedy/vermin/provisioners"
 	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
@@ -56,7 +57,10 @@ $ vermin create <image> </path/to/shell/script.sh>
 		cpus, _ := cmd.Flags().GetInt("cpus")
 		mem, _ := cmd.Flags().GetInt("mem")
 
+		trace.PreCreate(imageName)
 		vmName, err := vms.Create(imageName, ps, cpus, mem)
+		trace.PostCreate(imageName, err)
+
 		exitOnError(err)
 
 		fmt.Printf("\nVM is ready, to connect to it use:\n$ vermin ssh %s\n", vmName)

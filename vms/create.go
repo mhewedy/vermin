@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/command/ssh"
-	"github.com/mhewedy/vermin/config/trace"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/images"
 	"github.com/mhewedy/vermin/progress"
@@ -23,7 +22,6 @@ type ProvisionScript struct {
 }
 
 func Create(imageName string, ps ProvisionScript, cpus int, mem int) (string, error) {
-	trace.Create(imageName)
 
 	if err := images.Download(imageName); err != nil {
 		return "", err
