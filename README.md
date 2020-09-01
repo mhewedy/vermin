@@ -6,7 +6,7 @@
 
 <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="20%"/>
 
-## The smart virtual machines manager (star the project if you find it useful)
+## The smart virtual machines manager (Put ★ for the project if you find it useful)
 
 <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin2x.gif" width="100%"/>
 
