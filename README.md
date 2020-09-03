@@ -123,5 +123,9 @@ vermin collect very simple usage data anonymously
 # Contributors
 Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
 
+# Starts Overtime
+[![Stargazers over time](https://starchart.cc/mhewedy/vermin.svg)](https://starchart.cc/mhewedy/vermin)
+
+
 # TODO
 See [TODO.md](https://github.com/mhewedy/vermin/blob/master/TODO.md)
