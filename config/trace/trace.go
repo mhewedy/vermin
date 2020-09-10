@@ -2,6 +2,7 @@ package trace
 
 import (
 	"encoding/base64"
+	"github.com/matishsiao/goInfo"
 	"github.com/mhewedy/go-gistlog"
 	"strings"
 	"time"
@@ -30,6 +31,7 @@ func errorAsString(err error) string {
 	var errStr string
 	if err != nil {
 		errStr = strings.Join(strings.Split(err.Error(), "\n"), " ")
+		errStr += goInfo.GetInfo().String()
 	}
 	return errStr
 }
