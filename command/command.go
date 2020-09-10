@@ -41,7 +41,7 @@ func (c *cmd) call(showProgress bool, msg string) (string, error) {
 	cmd.Stderr = &stderr
 
 	if err := cmd.Start(); err != nil {
-		return "", errors.New(string(stderr.Bytes()))
+		return "", errors.New(err.Error() + " " + string(stderr.Bytes()))
 	}
 
 	if showProgress {
@@ -50,7 +50,7 @@ func (c *cmd) call(showProgress bool, msg string) (string, error) {
 	}
 
 	if err := cmd.Wait(); err != nil {
-		return "", errors.New(string(stderr.Bytes()))
+		return "", errors.New(err.Error() + " " + string(stderr.Bytes()))
 	}
 
 	return string(stdout.Bytes()), nil

@@ -31,7 +31,11 @@ func Find(vmName string, purge bool) (string, error) {
 	}
 
 	for {
-		arp := getArpTable()
+		arp, err := getArpTable()
+		if err != nil {
+			return "", err
+		}
+
 		for i := len(arp) - 1; i >= 0; i-- {
 			a := arp[i]
 			if a.mac == mac {

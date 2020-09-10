@@ -5,11 +5,14 @@ import (
 	"strings"
 )
 
-func getArpTable() []addr {
+func getArpTable() ([]addr, error) {
 
 	addrs := make([]addr, 0)
 
-	s, _ := command.Arp("-a").Call()
+	s, err := command.Arp("-a").Call()
+	if err != nil {
+		return nil, err
+	}
 	ss := strings.Split(s, "\n\r")
 
 	for _, out := range ss {
@@ -25,5 +28,5 @@ func getArpTable() []addr {
 			}
 		}
 	}
-	return addrs
+	return addrs, nil
 }
