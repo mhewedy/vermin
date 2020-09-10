@@ -2,18 +2,14 @@ package ip
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
 	"strings"
-	"sync"
 )
 
 type addr struct {
 	ip  string
 	mac string
 }
-
-const max = 255
 
 //Find will try to find IP for the VM.
 //
@@ -52,27 +48,6 @@ func Find(vmName string, purge bool) (string, error) {
 	}
 
 	return "", fmt.Errorf("Cannot find ip for %s\nUse the command 'vermin ip -p %s' to purge cache", vmName, vmName)
-}
-
-func ping() {
-
-	cidrs := getCIDRs()
-
-	for _, cider := range cidrs {
-		var wg sync.WaitGroup
-		wg.Add(cider.len)
-
-		for cider.hasNext() {
-			cider = cider.next()
-
-			go func(c cidr) {
-				_ = command.Ping(c.IP()).Run()
-				wg.Done()
-			}(cider)
-		}
-
-		wg.Wait()
-	}
 }
 
 func getMACAddr(vmName string) (string, error) {
