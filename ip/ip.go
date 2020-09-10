@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
-	"strconv"
 	"strings"
 	"sync"
 )
@@ -57,22 +56,23 @@ func Find(vmName string, purge bool) (string, error) {
 
 func ping() {
 
-	prefixes := getIPPrefixes()
+	cidrs := getCIDRs()
 
-	var wg sync.WaitGroup
-	wg.Add(max * len(prefixes))
+	for _, cider := range cidrs {
+		var wg sync.WaitGroup
+		wg.Add(cider.len)
 
-	for _, prefix := range prefixes {
-		for i := range [max]int{} {
-			go func(i int) {
-				ip := prefix + strconv.Itoa(i)
-				_ = command.Ping(ip).Run()
+		for cider.hasNext() {
+			cider = cider.next()
+
+			go func(c cidr) {
+				_ = command.Ping(c.IP()).Run()
 				wg.Done()
-			}(i)
+			}(cider)
 		}
-	}
 
-	wg.Wait()
+		wg.Wait()
+	}
 }
 
 func getMACAddr(vmName string) (string, error) {
