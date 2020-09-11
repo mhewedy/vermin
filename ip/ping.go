@@ -14,7 +14,7 @@ func ping() {
 
 	for _, c := range cidrs {
 
-		if c.len > 65535 { // skipping cidrs with len > x.x.x.x/16 including 127.0.0.0/24
+		if c.len > 65535 { // skipping cidrs with len > x.x.x.x/16 including 127.0.0.0/8
 			wg.Done()
 			continue
 		}
