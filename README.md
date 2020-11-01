@@ -3,15 +3,11 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/mhewedy/vermin)](https://goreportcard.com/report/github.com/mhewedy/vermin)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-
 <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="20%"/>
 
 ## The smart virtual machines manager (Put ★ for the project if you find it useful)
 
 <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin2x.gif" width="100%"/>
-
-
-
 
 Table of Contents:
 
@@ -21,13 +17,16 @@ Table of Contents:
 - [Contributors](#Contributors)
 - [Why not Vagrant](#Why-not-Vagrant)
 - [TODO](#TODO)
-----
-# What is Vermin
-Vermin is a smart, simple and powerful command line tool for Linux, Windows and macOS. It's designed for developers/tester and others working in IT who want a fresh VM environment with a single command. It uses VirtualBox to run the VM. Vermin will fetch images on your behalf.
 
-You can look to Vermina as a modern CLI for Vagrant Boxes.
+----
+
+# What is Vermin
+Vermin is a smart, simple and powerful command line tool for Linux, Windows and macOS. It's designed for developers/testers and others working in IT who want a fresh VM environment with a single command. It uses VirtualBox to run the VM. Vermin will fetch images on your behalf.
+
+You can look to Vermin as a modern CLI for Vagrant Boxes.
 
 Vermin can be used when you need an easy way to obtain a Linux environment up and running in minutes.
+
 For example:
 * If you want to have an environment to try .NET Core and you don't want to mess with your local own WSL installation.
 * If you want to try to install a Kafka cluster, and you need something more than just a docker container.
@@ -44,17 +43,21 @@ Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
 Vermin uses [VirtualBox](https://www.virtualbox.org/wiki/Downloads) as the underlying hypervisor to create and run Virtual Machines. So you need to download and install it first.
 
-To install/update on **macos** and **linux** run:
+To install/update on **macOS** and **Linux** run:
+
 ```shell script
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mhewedy/vermin/master/install.sh)"
 ```
-To install/update on **windows** (PowerShell) run:
+
+To install/update on **Windows** (PowerShell) run:
+
 ```
-# Should run as Adminstarator
+# Should run as Administrator
 iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/mhewedy/vermin/master/install.ps1'))
 ```
 
 # Usage:
+
 ```text
 Create, control and connect to VirtualBox VM instances
 
@@ -100,7 +103,7 @@ Flags:
 Use "vermin [command] --help" for more information about a command.
 ```
 
-You can start using vermin after installation using:
+You can start using Vermin after installation using:
 
 ```shell script
 $ vermin create <image name> | vagrant/<vagrant image>
@@ -108,24 +111,22 @@ $ vermin create <image name> | vagrant/<vagrant image>
 $ vermin create vagrant/hashicorp/bionic64
 ```
 
-vermin collect very simple usage data anonymously
+Vermin collects very simple usage data anonymously.
 
-### For more info on the usage options see [vermin documentations website](https://mhewedy.github.io/vermin/).
-
+### For more info on the usage options see [Vermin documentations website](https://mhewedy.github.io/vermin/).
 
 # Why not Vagrant:
-* **Vagrant** uses a `Vagrantfile` which I think is most suited to be source-controlled inside `git`  , and for some use case it is an overhead to create and maintain such file. In such cases **Vermin** come to the rescue. 
-* In **Vagrant**, any chagne you need to make to the VM you need to reload the VM (stop/start). In **Vermin** most of the changes on the VM is done while the VM is Running.
+* **Vagrant** uses a `Vagrantfile` which I think is most suited to be source-controlled inside `git`, and for some use case it is an overhead to create and maintain such file. In such cases **Vermin** come to the rescue.
+* In **Vagrant**, any change you need to make to the VM you need to reload the VM (stop/start). In **Vermin** most of the changes on the VM is done while the VM is Running.
 * **Vermin** is a single binary file that can be easily installed and upgraded.
 * It is important to note that, starting from version `v0.94.0` **Vermin** can smoothly uses Vagrant Cloud images.
-* Myself, I look (and try to achieve) to Vermin as a modern CLI (like docker/podman) for Vagrant Boxes.
+* Myself, I look (and try to achieve) to **Vermin** as a modern CLI (like Docker/Podman) for Vagrant Boxes.
 
 # Contributors
 Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
 
 ### Stars Overtime
 [![Stargazers over time](https://starchart.cc/mhewedy/vermin.svg)](https://starchart.cc/mhewedy/vermin)
-
 
 # TODO
 See [TODO.md](https://github.com/mhewedy/vermin/blob/master/TODO.md)
