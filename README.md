@@ -106,10 +106,15 @@ Use "vermin [command] --help" for more information about a command.
 You can start using Vermin after installation using:
 
 ```shell script
-$ vermin create <image name> | vagrant/<vagrant image>
+$ vermin create <image name> | vagrant/<vagrant image from here>
+
 # example using vagrant image
 $ vermin create vagrant/hashicorp/bionic64
+
+# also you can use rhel8 using:
+$ vermin create vagrant/generic/rhel8
 ```
+You can use all [vagrant images](https://app.vagrantup.com/boxes/search) besides some images native to vermin. use `vermin images` to see list of vermin images and where to find vagrant images.
 
 Vermin collects very simple usage data anonymously.
 
