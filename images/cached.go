@@ -28,10 +28,6 @@ func Remove(imageName string) error {
 func listCachedImages() ([]string, error) {
 	baseDir := db.ImagesDir + string(os.PathSeparator)
 
-	if err := os.MkdirAll(baseDir, 0755); err != nil {
-		return nil, err
-	}
-
 	images := make([]string, 0)
 
 	err := filepath.Walk(baseDir, func(path string, info os.FileInfo, err error) error {
