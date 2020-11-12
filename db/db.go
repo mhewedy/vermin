@@ -10,11 +10,14 @@ import (
 const (
 	VMNamePrefix       = "vm_"
 	ImagesDBFilePrefix = "vermin_images.csv."
+	VagrantPrivateKey  = "vagrant_insecure_private_key"
+	VerminPrivateKey   = "vermin_rsa"
 )
 
 var (
 	ImagesDir  = filepath.Join(getVerminDir(), "images")
 	VMsBaseDir = filepath.Join(getVerminDir(), "vms")
+	BaseDir    = getVerminDir()
 )
 
 func GetImageFilePath(imageName string) string {
@@ -45,9 +48,9 @@ func GetUsername(vmName string) string {
 func GetPrivateKeyPath(vmName string) string {
 	vmdb, _ := Load(vmName)
 	if IsVagrantImage(vmdb.Image) {
-		return filepath.Join(getVerminDir(), "vagrant_insecure_private_key")
+		return filepath.Join(getVerminDir(), VagrantPrivateKey)
 	} else {
-		return filepath.Join(getVerminDir(), "vermin_rsa")
+		return filepath.Join(getVerminDir(), VerminPrivateKey)
 	}
 }
 
