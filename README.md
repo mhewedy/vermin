@@ -41,7 +41,7 @@ Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
 # Install Vermin
 
-Vermin uses [VirtualBox](https://www.virtualbox.org/wiki/Downloads) as the underlying hypervisor to create and run Virtual Machines. So you need to download and install it first.
+Vermin uses [VirtualBox v6.0 or later](https://www.virtualbox.org/wiki/Downloads) as the underlying hypervisor to create and run Virtual Machines. So you need to download and install it first.
 
 To install/update on **macOS** and **Linux** run:
 
