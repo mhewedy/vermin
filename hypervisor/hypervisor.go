@@ -2,45 +2,14 @@ package hypervisor
 
 import (
 	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/hypervisor/base"
+	"github.com/mhewedy/vermin/hypervisor/virtualbox"
 	"path/filepath"
 	"strings"
 )
 
-type Hypervisor interface {
-	Start(vmName string) error
-
-	Commit(vmName, imageName string) error
-
-	Info(vmName string) ([]string, error)
-
-	Create(imageName, vmName string, cpus int, mem int) error
-
-	List(all bool, exploder func(vmName string) bool) ([]string, error)
-
-	Stop(vmName string) error
-
-	Remove(vmName string) error
-
-	Modify(vmName string, cpus int, mem int) error
-
-	ShowGUI(vmName string) error
-
-	AddMount(vmName, hostPath, guestPath string) error
-
-	RemoveMounts(vmName string) error
-
-	ListMounts(vmName string) ([]MountPath, error)
-
-	SetNetworkAdapterAsBridge(vmName string) error
-}
-
-type MountPath struct {
-	HostPath  string
-	GuestPath string
-}
-
-func detect() (Hypervisor, error) {
-	return &Virtualbox{}, nil
+func detect() (base.Hypervisor, error) {
+	return virtualbox.Instance, nil
 }
 
 func Start(vmName string) error {
@@ -80,7 +49,6 @@ func Create(imageName, vmName string, cpus int, mem int) error {
 }
 
 func List(all bool) ([]string, error) {
-
 	h, err := detect()
 	if err != nil {
 		return nil, err
@@ -128,7 +96,6 @@ func ShowGUI(vmName string) error {
 }
 
 func AddMount(vmName, hostPath, guestPath string) error {
-
 	absHostPath, err := filepath.Abs(hostPath)
 	if err != nil {
 		return err
@@ -142,7 +109,7 @@ func AddMount(vmName, hostPath, guestPath string) error {
 	return h.AddMount(vmName, absHostPath, guestPath)
 }
 
-func ListMounts(vmName string) ([]MountPath, error) {
+func ListMounts(vmName string) ([]base.MountPath, error) {
 	h, err := detect()
 	if err != nil {
 		return nil, err

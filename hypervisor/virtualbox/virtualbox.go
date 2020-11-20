@@ -1,4 +1,4 @@
-package hypervisor
+package virtualbox
 
 import (
 	"bufio"
@@ -7,11 +7,14 @@ import (
 	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/command/ssh"
 	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/hypervisor/base"
 	"runtime"
 	"strconv"
 	"strings"
 	"time"
 )
+
+var Instance = &virtualbox{}
 
 // should be private by the end of the day
 func vboxManage(args ...string) *command.Cmd {
@@ -21,20 +24,20 @@ func vboxManage(args ...string) *command.Cmd {
 	}
 }
 
-type Virtualbox struct {
+type virtualbox struct {
 }
 
-func (*Virtualbox) Start(vmName string) error {
+func (*virtualbox) Start(vmName string) error {
 	return vboxManage("startvm", vmName, "--type", "headless").Run()
 }
 
-func (*Virtualbox) Commit(vmName, imageName string) error {
+func (*virtualbox) Commit(vmName, imageName string) error {
 	export := vboxManage("export", vmName, "--ovf20", "-o", imageName)
 	_, err := export.CallWithProgress(fmt.Sprintf("Committing %s into image %s", vmName, imageName))
 	return err
 }
 
-func (*Virtualbox) Info(vmName string) ([]string, error) {
+func (*virtualbox) Info(vmName string) ([]string, error) {
 	out, err := vboxManage("showvminfo", vmName, "--machinereadable").Call()
 	if err != nil {
 		return nil, err
@@ -42,7 +45,7 @@ func (*Virtualbox) Info(vmName string) ([]string, error) {
 	return strings.Fields(out), nil
 }
 
-func (*Virtualbox) Create(imageName, vmName string, cpus int, mem int) error {
+func (*virtualbox) Create(imageName, vmName string, cpus int, mem int) error {
 	importCmd := vboxManage(
 		"import", db.GetImageFilePath(imageName),
 		"--vsys", "0",
@@ -58,7 +61,7 @@ func (*Virtualbox) Create(imageName, vmName string, cpus int, mem int) error {
 	return nil
 }
 
-func (*Virtualbox) List(all bool, exploder func(string) bool) ([]string, error) {
+func (*virtualbox) List(all bool, exploder func(string) bool) ([]string, error) {
 	var args = [2]string{"list"}
 	if all {
 		args[1] = "vms"
@@ -86,7 +89,7 @@ func (*Virtualbox) List(all bool, exploder func(string) bool) ([]string, error) 
 	return vms, nil
 }
 
-func (*Virtualbox) Stop(vmName string) error {
+func (*virtualbox) Stop(vmName string) error {
 	if _, err := vboxManage("controlvm", vmName, "poweroff").Call(); err != nil {
 		return err
 	}
@@ -94,7 +97,7 @@ func (*Virtualbox) Stop(vmName string) error {
 	return nil
 }
 
-func (*Virtualbox) Remove(vmName string) error {
+func (*virtualbox) Remove(vmName string) error {
 	msg := fmt.Sprintf("Removing %s", vmName)
 	if _, err := vboxManage("unregistervm", vmName, "--delete").CallWithProgress(msg); err != nil {
 		return err
@@ -103,7 +106,7 @@ func (*Virtualbox) Remove(vmName string) error {
 	return nil
 }
 
-func (*Virtualbox) Modify(vmName string, cpus int, mem int) error {
+func (*virtualbox) Modify(vmName string, cpus int, mem int) error {
 	var params = []string{"modifyvm", vmName}
 	if cpus > 0 {
 		params = append(params, "--cpus", fmt.Sprintf("%d", cpus))
@@ -119,11 +122,11 @@ func (*Virtualbox) Modify(vmName string, cpus int, mem int) error {
 	return nil
 }
 
-func (*Virtualbox) ShowGUI(vmName string) error {
+func (*virtualbox) ShowGUI(vmName string) error {
 	return vboxManage("startvm", "--type", "separate", vmName).Run()
 }
 
-func (*Virtualbox) AddMount(vmName, hostPath, guestPath string) error {
+func (*virtualbox) AddMount(vmName, hostPath, guestPath string) error {
 
 	shareName := strconv.FormatInt(time.Now().Unix(), 10)
 
@@ -149,7 +152,7 @@ func (*Virtualbox) AddMount(vmName, hostPath, guestPath string) error {
 	return nil
 }
 
-func (*Virtualbox) RemoveMounts(vmName string) error {
+func (*virtualbox) RemoveMounts(vmName string) error {
 	transientMounts, err := findByPrefix(vmName, "SharedFolderNameTransientMapping")
 	if err != nil {
 		return err
@@ -168,8 +171,8 @@ func (*Virtualbox) RemoveMounts(vmName string) error {
 	return nil
 }
 
-func (*Virtualbox) ListMounts(vmName string) ([]MountPath, error) {
-	result := make([]MountPath, 0)
+func (*virtualbox) ListMounts(vmName string) ([]base.MountPath, error) {
+	result := make([]base.MountPath, 0)
 
 	hostPaths, err := findByPrefix(vmName, "SharedFolderPathTransientMapping")
 	if err != nil {
@@ -183,7 +186,7 @@ func (*Virtualbox) ListMounts(vmName string) ([]MountPath, error) {
 
 	for i := range transientMounts {
 		if guestPath, err := getMountGuestPath(vmName, transientMounts[i]); err == nil {
-			result = append(result, MountPath{
+			result = append(result, base.MountPath{
 				HostPath:  hostPaths[i],
 				GuestPath: guestPath,
 			})
@@ -209,7 +212,7 @@ func getMountGuestPath(vmName, mountName string) (string, error) {
 	return "", errors.New("cannot get mount path")
 }
 
-func (*Virtualbox) SetNetworkAdapterAsBridge(vmName string) error {
+func (*virtualbox) SetNetworkAdapterAsBridge(vmName string) error {
 	r, err := vboxManage("list", "bridgedifs").Call()
 	if err != nil {
 		return err

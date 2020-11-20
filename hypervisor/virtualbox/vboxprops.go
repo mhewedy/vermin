@@ -1,4 +1,4 @@
-package hypervisor
+package virtualbox
 
 import (
 	"strings"
@@ -6,7 +6,7 @@ import (
 
 func findByPrefix(vmName string, prefix string) ([]string, error) {
 
-	entries, err := Info(vmName)
+	entries, err := Instance.Info(vmName)
 	if err != nil {
 		return nil, err
 	}
