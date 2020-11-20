@@ -1,16 +1,14 @@
 package vms
 
 import (
-	"bufio"
 	"fmt"
-	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/command/ssh"
 	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/images"
 	"github.com/mhewedy/vermin/progress"
 	"github.com/mhewedy/vermin/provisioners"
 	"os"
-	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -43,20 +41,12 @@ func Create(imageName string, ps ProvisionScript, cpus int, mem int) (string, er
 		return "", err
 	}
 
-	// execute import cmd
-	importCmd := command.VBoxManage(
-		"import", db.GetImageFilePath(imageName),
-		"--vsys", "0",
-		"--vmname", vmName,
-		"--basefolder", db.VMsBaseDir,
-		"--cpus", fmt.Sprintf("%d", cpus),
-		"--memory", fmt.Sprintf("%d", mem),
-	)
-	if _, err = importCmd.CallWithProgress(fmt.Sprintf("Creating %s from image %s", vmName, imageName)); err != nil {
+	if err = hypervisor.Create(imageName, vmName, cpus, mem); err != nil {
 		return "", err
 	}
 
-	if err := setNetworkAdapter(vmName); err != nil {
+	progress.Immediate("Setting bridged network adapter")
+	if err := hypervisor.SetNetworkAdapterAsBridge(vmName); err != nil {
 		return "", err
 	}
 
@@ -74,37 +64,9 @@ func Create(imageName string, ps ProvisionScript, cpus int, mem int) (string, er
 	return vmName, nil
 }
 
-func setNetworkAdapter(vmName string) error {
-	progress.Immediate("Setting bridged network adapter")
-	r, err := command.VBoxManage("list", "bridgedifs").Call()
-	if err != nil {
-		return err
-	}
-
-	l, _, err := bufio.NewReader(strings.NewReader(r)).ReadLine()
-	if err != nil {
-		return err
-	}
-	adapter := strings.ReplaceAll(string(l), "Name:", "")
-	adapter = strings.TrimSpace(adapter)
-
-	if _, err = command.VBoxManage("modifyvm", vmName, "--nic1", "bridged").Call(); err != nil {
-		return nil
-	}
-
-	if runtime.GOOS == "windows" {
-		adapter = fmt.Sprintf(`"%s"`, adapter)
-	}
-	if _, err := command.VBoxManage("modifyvm", vmName, "--bridgeadapter1", adapter).Call(); err != nil {
-		return nil
-	}
-
-	return nil
-}
-
 func start(vmName string) error {
 	progress.Immediate("Starting", vmName)
-	if _, err := command.VBoxManage("startvm", vmName, "--type", "headless").Call(); err != nil {
+	if err := hypervisor.Start(vmName); err != nil {
 		return err
 	}
 
@@ -117,7 +79,7 @@ func start(vmName string) error {
 func buildVMName() (string, error) {
 	var curr int
 
-	l, err := List(true)
+	l, err := hypervisor.List(true)
 	if err != nil {
 		return "", err
 	}

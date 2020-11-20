@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/images"
-	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
 	"strings"
 )
@@ -11,7 +11,7 @@ func listRunningVms(cmd *cobra.Command, args []string, toComplete string) ([]str
 	if len(args) != 0 {
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
-	list, _ := vms.List(false)
+	list, _ := hypervisor.List(false)
 
 	var completions []string
 	for _, comp := range list {
@@ -26,7 +26,7 @@ func listAllVms(cmd *cobra.Command, args []string, toComplete string) ([]string,
 	if len(args) != 0 {
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
-	list, _ := vms.List(true)
+	list, _ := hypervisor.List(true)
 
 	var completions []string
 	for _, comp := range list {
@@ -68,8 +68,8 @@ func listImages(cmd *cobra.Command, args []string, toComplete string) ([]string,
 
 func getStoppedVms() []string {
 	stopped := make([]string, 0)
-	all, _ := vms.List(true)
-	running, _ := vms.List(false)
+	all, _ := hypervisor.List(true)
+	running, _ := hypervisor.List(false)
 
 	for i := range all {
 		vm := all[i]

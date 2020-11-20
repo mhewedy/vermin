@@ -1,9 +1,12 @@
 package vms
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/mhewedy/vermin/hypervisor"
+)
 
 func checkRunningVM(vmName string) error {
-	list, err := List(false)
+	list, err := hypervisor.List(false)
 	if err != nil {
 		return err
 	}
@@ -14,7 +17,7 @@ func checkRunningVM(vmName string) error {
 }
 
 func checkVM(vmName string) error {
-	list, err := List(true)
+	list, err := hypervisor.List(true)
 	if err != nil {
 		return err
 	}
@@ -25,7 +28,7 @@ func checkVM(vmName string) error {
 }
 
 func isRunningVM(vmName string) bool {
-	list, _ := List(false)
+	list, _ := hypervisor.List(false)
 	if contains(list, vmName) {
 		return true
 	}

@@ -5,34 +5,27 @@ import (
 	"runtime"
 )
 
-func VBoxManage(args ...string) *cmd {
-	return &cmd{
-		command: "vboxmanage",
-		args:    args,
-	}
-}
-
-func Scp(vmName string, extraArgs ...string) *cmd {
+func Scp(vmName string, extraArgs ...string) *Cmd {
 	args := []string{"-q", "-r",
 		"-i", db.GetPrivateKeyPath(vmName),
 		"-o", "StrictHostKeyChecking=no",
 		"-o", "UserKnownHostsFile=/dev/null",
 	}
 
-	return &cmd{
-		command: "scp",
-		args:    append(args, extraArgs...),
+	return &Cmd{
+		Command: "scp",
+		Args:    append(args, extraArgs...),
 	}
 }
 
-func Arp(args ...string) *cmd {
-	return &cmd{
-		command: "arp",
-		args:    args,
+func Arp(args ...string) *Cmd {
+	return &Cmd{
+		Command: "arp",
+		Args:    args,
 	}
 }
 
-func Ssh(vmName, ipAddr string, extraArgs ...string) *cmd {
+func Ssh(vmName, ipAddr string, extraArgs ...string) *Cmd {
 	args := []string{"-i", db.GetPrivateKeyPath(vmName),
 		"-o", "StrictHostKeyChecking=no",
 		"-o", "GlobalKnownHostsFile=/dev/null",
@@ -40,34 +33,34 @@ func Ssh(vmName, ipAddr string, extraArgs ...string) *cmd {
 		"-o", "LogLevel=error",
 		db.GetUsername(vmName) + "@" + ipAddr}
 
-	return &cmd{
-		command: "ssh",
-		args:    append(args, extraArgs...),
+	return &Cmd{
+		Command: "ssh",
+		Args:    append(args, extraArgs...),
 	}
 }
 
-func Ping(ip string) *cmd {
+func Ping(ip string) *Cmd {
 	if runtime.GOOS == "windows" {
-		return &cmd{
-			command: "ping",
-			args:    []string{"-n", "1", "-w", "0.1", ip},
+		return &Cmd{
+			Command: "ping",
+			Args:    []string{"-n", "1", "-w", "0.1", ip},
 		}
 	} else {
-		return &cmd{
-			command: "ping",
-			args:    []string{"-c", "1", "-W", "0.1", ip},
+		return &Cmd{
+			Command: "ping",
+			Args:    []string{"-c", "1", "-W", "0.1", ip},
 		}
 	}
 }
 
-func AnsiblePlaybook(vmName, ip string, playbook string) *cmd {
-	return &cmd{
-		command: "ansible-playbook",
-		args: []string{
+func AnsiblePlaybook(vmName, ip string, playbook string) *Cmd {
+	return &Cmd{
+		Command: "ansible-playbook",
+		Args: []string{
 			"-i", ip + ",",
 			"-e", "ansible_user=" + db.GetUsername(vmName),
 			"-e", "ansible_private_key_file=" + db.GetPrivateKeyPath(vmName),
-			"--ssh-common-args", "-o StrictHostKeyChecking=no -o GlobalKnownHostsFile=/dev/null -o UserKnownHostsFile=/dev/null",
+			"--ssh-common-Args", "-o StrictHostKeyChecking=no -o GlobalKnownHostsFile=/dev/null -o UserKnownHostsFile=/dev/null",
 			playbook,
 		},
 	}

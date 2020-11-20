@@ -10,29 +10,29 @@ import (
 	"runtime"
 )
 
-type cmd struct {
-	command string
-	args    []string
+type Cmd struct {
+	Command string
+	Args    []string
 }
 
-func (c *cmd) Call() (string, error) {
+func (c *Cmd) Call() (string, error) {
 	return c.call(false, "")
 }
 
-func (c *cmd) CallWithProgress(msg string) (string, error) {
+func (c *Cmd) CallWithProgress(msg string) (string, error) {
 	return c.call(true, msg)
 }
 
-func (c *cmd) call(showProgress bool, msg string) (string, error) {
+func (c *Cmd) call(showProgress bool, msg string) (string, error) {
 
 	if runtime.GOOS == "windows" {
-		c.args = prepend(c.args, c.command)
-		c.command = "powershell"
+		c.Args = prepend(c.Args, c.Command)
+		c.Command = "powershell"
 	}
 
 	c.log()
 
-	cmd := exec.Command(c.command, c.args...)
+	cmd := exec.Command(c.Command, c.Args...)
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
@@ -57,15 +57,15 @@ func (c *cmd) call(showProgress bool, msg string) (string, error) {
 }
 
 // Execute execute commands in interactive mode
-func (c *cmd) Interact() error {
+func (c *Cmd) Interact() error {
 	if runtime.GOOS == "windows" {
-		c.args = prepend(c.args, c.command)
-		c.command = "powershell"
+		c.Args = prepend(c.Args, c.Command)
+		c.Command = "powershell"
 	}
 
 	c.log()
 
-	cmd := exec.Command(c.command, c.args...)
+	cmd := exec.Command(c.Command, c.Args...)
 
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -80,26 +80,26 @@ func (c *cmd) Interact() error {
 	return nil
 }
 
-// Run runs command and return nothing
-func (c *cmd) Run() error {
+// Run runs Command and return nothing
+func (c *Cmd) Run() error {
 	if runtime.GOOS == "windows" {
-		c.args = prepend(c.args, c.command)
-		c.command = "powershell"
+		c.Args = prepend(c.Args, c.Command)
+		c.Command = "powershell"
 	}
 
 	c.log()
 
-	return exec.Command(c.command, c.args...).Run()
+	return exec.Command(c.Command, c.Args...).Run()
 }
 
 func prepend(x []string, y string) []string {
 	return append([]string{y}, x...)
 }
 
-func (c *cmd) log() {
+func (c *Cmd) log() {
 	if _, ok := os.LookupEnv("VERMIN_DEBUG"); ok {
-		fmt.Print("$ ", c.command, " ")
-		for _, arg := range c.args {
+		fmt.Print("$ ", c.Command, " ")
+		for _, arg := range c.Args {
 			fmt.Print(arg, " ")
 		}
 		fmt.Println()
