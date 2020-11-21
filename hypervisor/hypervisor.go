@@ -4,12 +4,27 @@ import (
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/hypervisor/base"
 	"github.com/mhewedy/vermin/hypervisor/virtualbox"
+	"github.com/mhewedy/vermin/progress"
 	"path/filepath"
+	"reflect"
 	"strings"
 )
 
 func detect() (base.Hypervisor, error) {
-	return virtualbox.Instance, nil
+	h := virtualbox.Instance
+	return h, nil
+}
+
+func GetHypervisorName(showDetectedMsg bool) (string, error) {
+	h, err := detect()
+	if err != nil {
+		return "", err
+	}
+
+	if showDetectedMsg {
+		progress.Immediate(reflect.TypeOf(h).Elem().Name(), "hypervisor detected       ")
+	}
+	return reflect.TypeOf(h).Elem().Name(), nil
 }
 
 func Start(vmName string) error {
