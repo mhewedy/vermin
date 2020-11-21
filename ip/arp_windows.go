@@ -1,6 +1,7 @@
 package ip
 
 import (
+	"github.com/mhewedy/vermin/cmd"
 	"strings"
 )
 
