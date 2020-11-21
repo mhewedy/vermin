@@ -2,7 +2,7 @@ package scp
 
 import (
 	"errors"
-	"github.com/mhewedy/vermin/command"
+	"github.com/mhewedy/vermin/cmd"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/ip"
 	"strings"
@@ -50,7 +50,7 @@ func copyFromVM(vmPath vmPath, localFile string) error {
 		return err
 	}
 
-	_, err = command.Scp(vmPath.name, db.GetUsername(vmPath.name)+"@"+ipAddr+":"+vmPath.file, localFile).Call()
+	_, err = cmd.Scp(vmPath.name, db.GetUsername(vmPath.name)+"@"+ipAddr+":"+vmPath.file, localFile).Call()
 	return err
 }
 
@@ -60,7 +60,7 @@ func copyToVM(localFile string, vmPath vmPath) error {
 		return err
 	}
 
-	_, err = command.Scp(vmPath.name, localFile, db.GetUsername(vmPath.name)+"@"+ipAddr+":"+vmPath.file).Call()
+	_, err = cmd.Scp(vmPath.name, localFile, db.GetUsername(vmPath.name)+"@"+ipAddr+":"+vmPath.file).Call()
 	return err
 }
 
@@ -76,7 +76,7 @@ func copyBetweenVMs(srcVmPath vmPath, destVmPath vmPath) error {
 		return err
 	}
 
-	_, err = command.Scp(srcVmPath.name, "-3",
+	_, err = cmd.Scp(srcVmPath.name, "-3",
 		db.GetUsername(srcVmPath.name)+"@"+srcIPAddr+":"+srcVmPath.file,
 		db.GetUsername(destVmPath.name)+"@"+destIPAddr+":"+destVmPath.file).Call()
 	return err

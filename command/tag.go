@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package command
 
 import (
 	"errors"
@@ -23,42 +23,47 @@ import (
 	"os"
 )
 
-// restartCmd represents the restart command
-var restartCmd = &cobra.Command{
-	Use:   "restart",
-	Short: "Restart one or more VMs",
-	Long:  `Restart one or more VMs`,
+// tagCmd represents the tag command
+var tagCmd = &cobra.Command{
+	Use:   "tag",
+	Short: "Add or remove tag to a VM",
+	Long: `Add or remove tag to a VM
+You can tag a VM as many times as you want
+`,
 	Run: func(cmd *cobra.Command, args []string) {
-		for _, vmName := range args {
-			if err := vms.Stop(vmName); err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
-			if err := vms.Start(vmName); err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
+		vmName := args[0]
+		tag := args[1]
+
+		remove, _ := cmd.Flags().GetBool("remove")
+
+		err := vms.Tag(vmName, tag, remove)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
 		}
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
 			return errors.New("vm required")
 		}
+		if len(args) < 2 {
+			return errors.New("tag required")
+		}
 		return nil
 	},
-	ValidArgsFunction: listStoppedVms,
+	ValidArgsFunction: listAllVms,
 }
 
 func init() {
-	rootCmd.AddCommand(restartCmd)
+	rootCmd.AddCommand(tagCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// restartCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// tagCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	//restartCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
+	tagCmd.Flags().BoolP("remove", "r", false, "remove tag")
 }

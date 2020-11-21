@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package command
 
 import (
 	"errors"
@@ -23,59 +23,42 @@ import (
 	"os"
 )
 
-// updateCmd represents the update command
-var updateCmd = &cobra.Command{
-	Use:     "update",
-	Aliases: []string{"modify"},
-	Short:   "Update configuration of a VM",
-	Long:    "Update configuration of a VM",
+// guiCmd represents the gui command
+var guiCmd = &cobra.Command{
+	Use:   "gui",
+	Short: "open the GUI for the VM",
+	Long:  `open the GUI for the VM`,
 	Example: `
 
-To change the VM to use 2 cores and 512MB memory
-$ vermin update vm_01 --cpus 2 --mem 512
+$ vermin gui vm_02
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
-		var script string
-		if len(args) > 1 {
-			script = args[1]
-			checkFilePath(script)
-		}
-		cpus, _ := cmd.Flags().GetInt("cpus")
-		mem, _ := cmd.Flags().GetInt("mem")
-
-		if err := vms.Modify(vmName, cpus, mem); err != nil {
+		nocheck, _ := cmd.Flags().GetBool("nocheck")
+		if err := vms.GUI(vmName, nocheck); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) < 1 {
+		if len(args) != 1 {
 			return errors.New("vm required")
-		}
-
-		cpus, _ := cmd.Flags().GetInt("cpus")
-		mem, _ := cmd.Flags().GetInt("mem")
-
-		if cpus == 0 && mem == 0 {
-			return errors.New("should specify cpus and/or mem specs")
 		}
 		return nil
 	},
-	ValidArgsFunction: listImages,
+	ValidArgsFunction: listRunningVms,
 }
 
 func init() {
-	rootCmd.AddCommand(updateCmd)
+	rootCmd.AddCommand(guiCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// updateCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// guiCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	updateCmd.Flags().IntP("cpus", "c", 0, "Number of cpu cores")
-	updateCmd.Flags().IntP("mem", "m", 0, "Memory size in mega bytes")
+	guiCmd.Flags().BoolP("nocheck", "n", false, "open GUI without checking if the VM is running or not")
 }

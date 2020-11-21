@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package command
 
 import (
 	"errors"
@@ -23,19 +23,18 @@ import (
 	"os"
 )
 
-// guiCmd represents the gui command
-var guiCmd = &cobra.Command{
-	Use:   "gui",
-	Short: "open the GUI for the VM",
-	Long:  `open the GUI for the VM`,
+// sshCmd represents the ssh command
+var sshCmd = &cobra.Command{
+	Use:   "ssh",
+	Short: "ssh into a running VM",
+	Long:  `ssh into a running VM`,
 	Example: `
 
-$ vermin gui vm_02
+$ vermin ssh vm_02
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := args[0]
-		nocheck, _ := cmd.Flags().GetBool("nocheck")
-		if err := vms.GUI(vmName, nocheck); err != nil {
+		if err := vms.SecureShell(vmName); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -50,15 +49,15 @@ $ vermin gui vm_02
 }
 
 func init() {
-	rootCmd.AddCommand(guiCmd)
+	rootCmd.AddCommand(sshCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// guiCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// sshCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	guiCmd.Flags().BoolP("nocheck", "n", false, "open GUI without checking if the VM is running or not")
+	//sshCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
 }

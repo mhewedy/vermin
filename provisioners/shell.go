@@ -2,8 +2,8 @@ package provisioners
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/command/scp"
-	"github.com/mhewedy/vermin/command/ssh"
+	"github.com/mhewedy/vermin/cmd/scp"
+	"github.com/mhewedy/vermin/cmd/ssh"
 	"path/filepath"
 )
 

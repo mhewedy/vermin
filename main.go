@@ -1,7 +1,7 @@
 package main
 
-import "github.com/mhewedy/vermin/cmd"
+import "github.com/mhewedy/vermin/command"
 
 func main() {
-	cmd.Execute()
+	command.Execute()
 }

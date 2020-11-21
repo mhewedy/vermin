@@ -3,8 +3,8 @@ package vms
 import (
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/command/scp"
-	"github.com/mhewedy/vermin/command/ssh"
+	"github.com/mhewedy/vermin/cmd/scp"
+	"github.com/mhewedy/vermin/cmd/ssh"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/images"

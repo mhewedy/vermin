@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package command
 
 import (
 	"errors"
@@ -23,15 +23,18 @@ import (
 	"os"
 )
 
-// stopCmd represents the stop command
-var stopCmd = &cobra.Command{
-	Use:   "stop",
-	Short: "Stop one or more running VMs",
-	Long:  `Stop one or more running VMs`,
+// restartCmd represents the restart command
+var restartCmd = &cobra.Command{
+	Use:   "restart",
+	Short: "Restart one or more VMs",
+	Long:  `Restart one or more VMs`,
 	Run: func(cmd *cobra.Command, args []string) {
 		for _, vmName := range args {
-			err := vms.Stop(vmName)
-			if err != nil {
+			if err := vms.Stop(vmName); err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			if err := vms.Start(vmName); err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
@@ -43,19 +46,19 @@ var stopCmd = &cobra.Command{
 		}
 		return nil
 	},
-	ValidArgsFunction: listRunningVms,
+	ValidArgsFunction: listStoppedVms,
 }
 
 func init() {
-	rootCmd.AddCommand(stopCmd)
+	rootCmd.AddCommand(restartCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// stopCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// restartCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	//stopCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
+	//restartCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
 }

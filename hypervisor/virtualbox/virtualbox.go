@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/command"
-	"github.com/mhewedy/vermin/command/ssh"
+	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/cmd/ssh"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/hypervisor/base"
 	"runtime"
@@ -17,8 +17,8 @@ import (
 var Instance = &virtualbox{}
 
 // should be private by the end of the day
-func vboxManage(args ...string) *command.Cmd {
-	return &command.Cmd{
+func vboxManage(args ...string) *cmd.Cmd {
+	return &cmd.Cmd{
 		Command: "vboxmanage",
 		Args:    args,
 	}

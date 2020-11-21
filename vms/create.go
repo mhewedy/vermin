@@ -2,7 +2,7 @@ package vms
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/command/ssh"
+	"github.com/mhewedy/vermin/cmd/ssh"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/images"

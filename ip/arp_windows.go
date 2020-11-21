@@ -1,7 +1,6 @@
 package ip
 
 import (
-	"github.com/mhewedy/vermin/command"
 	"strings"
 )
 
@@ -9,7 +8,7 @@ func getArpTable() ([]addr, error) {
 
 	addrs := make([]addr, 0)
 
-	s, err := command.Arp("-a").Call()
+	s, err := cmd.Arp("-a").Call()
 	if err != nil {
 		return nil, err
 	}

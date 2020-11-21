@@ -13,54 +13,69 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package command
 
 import (
 	"errors"
+	"fmt"
 	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
+	"os"
 )
 
-// commitCmd represents the commit command
-var commitCmd = &cobra.Command{
-	Use:   "commit",
-	Short: "Commit a VM into a new Image",
-	Long:  `Commit a VM into a new Image to be used later as a template to create VMs from.`,
+// updateCmd represents the update command
+var updateCmd = &cobra.Command{
+	Use:     "update",
+	Aliases: []string{"modify"},
+	Short:   "Update configuration of a VM",
+	Long:    "Update configuration of a VM",
 	Example: `
-Commit vm_01 that have installed elastic inside as an image so to be used later to obtain a VM that contains elastic installed.
-$ vermin commit vm_01 elk/elastic
+
+To change the VM to use 2 cores and 512MB memory
+$ vermin update vm_01 --cpus 2 --mem 512
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-
 		vmName := args[0]
-		imageName := args[1]
-		override, _ := cmd.Flags().GetBool("override")
+		var script string
+		if len(args) > 1 {
+			script = args[1]
+			checkFilePath(script)
+		}
+		cpus, _ := cmd.Flags().GetInt("cpus")
+		mem, _ := cmd.Flags().GetInt("mem")
 
-		err := vms.Commit(vmName, imageName, override)
-		exitOnError(err)
+		if err := vms.Modify(vmName, cpus, mem); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
 			return errors.New("vm required")
 		}
-		if len(args) < 2 {
-			return errors.New("new image name required, and should be in format base/name, example k8s/worker")
+
+		cpus, _ := cmd.Flags().GetInt("cpus")
+		mem, _ := cmd.Flags().GetInt("mem")
+
+		if cpus == 0 && mem == 0 {
+			return errors.New("should specify cpus and/or mem specs")
 		}
 		return nil
 	},
-	ValidArgsFunction: listStoppedVms,
+	ValidArgsFunction: listImages,
 }
 
 func init() {
-	rootCmd.AddCommand(commitCmd)
+	rootCmd.AddCommand(updateCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// commitCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// updateCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	commitCmd.Flags().BoolP("override", "", false, "override any existing image")
+	updateCmd.Flags().IntP("cpus", "c", 0, "Number of cpu cores")
+	updateCmd.Flags().IntP("mem", "m", 0, "Memory size in mega bytes")
 }

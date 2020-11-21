@@ -13,51 +13,54 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package command
 
 import (
 	"errors"
-	"fmt"
 	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
-	"os"
 )
 
-// sshCmd represents the ssh command
-var sshCmd = &cobra.Command{
-	Use:   "ssh",
-	Short: "ssh into a running VM",
-	Long:  `ssh into a running VM`,
+// commitCmd represents the commit command
+var commitCmd = &cobra.Command{
+	Use:   "commit",
+	Short: "Commit a VM into a new Image",
+	Long:  `Commit a VM into a new Image to be used later as a template to create VMs from.`,
 	Example: `
-
-$ vermin ssh vm_02
+Commit vm_01 that have installed elastic inside as an image so to be used later to obtain a VM that contains elastic installed.
+$ vermin commit vm_01 elk/elastic
 `,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		vmName := args[0]
-		if err := vms.SecureShell(vmName); err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
+		imageName := args[1]
+		override, _ := cmd.Flags().GetBool("override")
+
+		err := vms.Commit(vmName, imageName, override)
+		exitOnError(err)
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) != 1 {
+		if len(args) < 1 {
 			return errors.New("vm required")
+		}
+		if len(args) < 2 {
+			return errors.New("new image name required, and should be in format base/name, example k8s/worker")
 		}
 		return nil
 	},
-	ValidArgsFunction: listRunningVms,
+	ValidArgsFunction: listStoppedVms,
 }
 
 func init() {
-	rootCmd.AddCommand(sshCmd)
+	rootCmd.AddCommand(commitCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// sshCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// commitCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	//sshCmd.Flags().BoolP("purge", "p", false, "Purge the IP cache")
+	commitCmd.Flags().BoolP("override", "", false, "override any existing image")
 }
