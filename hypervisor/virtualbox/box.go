@@ -1,19 +1,14 @@
-package db
+package virtualbox
 
 import (
 	"encoding/xml"
 	"fmt"
+	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/hypervisor/base"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 )
-
-type Box struct {
-	CPU      string
-	Mem      string
-	DiskSize string
-	MACAddr  string
-}
 
 type vbox struct {
 	XMLName xml.Name `xml:"VirtualBox"`
@@ -41,9 +36,9 @@ type vbox struct {
 	} `xml:"Machine"`
 }
 
-func GetBoxInfo(vm string) (*Box, error) {
+func getBoxInfo(vm string) (*base.Box, error) {
 	var vb vbox
-	b, _ := ioutil.ReadFile(GetVMPath(vm) + "/" + vm + ".vbox")
+	b, _ := ioutil.ReadFile(db.GetVMPath(vm) + "/" + vm + ".vbox")
 	err := xml.Unmarshal(b, &vb)
 
 	if err != nil {
@@ -54,7 +49,7 @@ func GetBoxInfo(vm string) (*Box, error) {
 	if len(cpuCount) == 0 {
 		cpuCount = "1"
 	}
-	return &Box{
+	return &base.Box{
 		CPU:      cpuCount,
 		Mem:      vb.Machine.Hardware.Memory.RAMSize,
 		DiskSize: getDiskSizeInGB(vm, vb.Machine.MediaRegistry.HardDisks.HardDisk.Location),
@@ -63,7 +58,7 @@ func GetBoxInfo(vm string) (*Box, error) {
 }
 
 func getDiskSizeInGB(vm string, hdLocation string) string {
-	stat, err := os.Stat(filepath.Join(GetVMPath(vm), hdLocation))
+	stat, err := os.Stat(filepath.Join(db.GetVMPath(vm), hdLocation))
 	if err != nil {
 		return ""
 	}

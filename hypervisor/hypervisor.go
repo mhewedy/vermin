@@ -135,3 +135,12 @@ func SetNetworkAdapterAsBridge(vmName string) error {
 
 	return h.SetNetworkAdapterAsBridge(vmName)
 }
+
+func GetBoxInfo(vmName string) (*base.Box, error) {
+	h, err := detect()
+	if err != nil {
+		return nil, err
+	}
+
+	return h.GetBoxInfo(vmName)
+}

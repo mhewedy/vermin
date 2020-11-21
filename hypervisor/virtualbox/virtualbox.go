@@ -238,3 +238,7 @@ func (*virtualbox) SetNetworkAdapterAsBridge(vmName string) error {
 
 	return nil
 }
+
+func (*virtualbox) GetBoxInfo(vmName string) (*base.Box, error) {
+	return getBoxInfo(vmName)
+}

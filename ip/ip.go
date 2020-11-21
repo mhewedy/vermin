@@ -2,7 +2,7 @@ package ip
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/hypervisor"
 	"strings"
 )
 
@@ -55,7 +55,7 @@ func Find(vmName string, purge bool) (string, error) {
 }
 
 func getMACAddr(vmName string) (string, error) {
-	box, err := db.GetBoxInfo(vmName)
+	box, err := hypervisor.GetBoxInfo(vmName)
 	if err != nil {
 		return "", err
 	}

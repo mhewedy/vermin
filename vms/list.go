@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/hypervisor"
+	"github.com/mhewedy/vermin/hypervisor/base"
 	"os"
 	"reflect"
 	"sort"
@@ -21,7 +22,7 @@ var (
 type vmInfo struct {
 	name  string
 	image string
-	box   db.Box
+	box   base.Box
 	tags  string
 }
 
@@ -141,7 +142,7 @@ func getVMInfo(vm string) vmInfo {
 		return vmInfo{}
 	}
 
-	box, _ := db.GetBoxInfo(vm)
+	box, _ := hypervisor.GetBoxInfo(vm)
 	vmdb, _ := db.Load(vm)
 
 	return vmInfo{

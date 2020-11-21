@@ -26,9 +26,18 @@ type Hypervisor interface {
 	ListMounts(vmName string) ([]MountPath, error)
 
 	SetNetworkAdapterAsBridge(vmName string) error
+
+	GetBoxInfo(vmName string) (*Box, error)
 }
 
 type MountPath struct {
 	HostPath  string
 	GuestPath string
+}
+
+type Box struct {
+	CPU      string
+	Mem      string
+	DiskSize string
+	MACAddr  string
 }
