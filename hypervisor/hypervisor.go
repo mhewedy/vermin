@@ -95,7 +95,7 @@ func ShowGUI(vmName string) error {
 	return h.ShowGUI(vmName)
 }
 
-func AddMount(vmName, hostPath, guestPath string) error {
+func AddMount(vmName, ipAddr, hostPath, guestPath string) error {
 	absHostPath, err := filepath.Abs(hostPath)
 	if err != nil {
 		return err
@@ -106,25 +106,25 @@ func AddMount(vmName, hostPath, guestPath string) error {
 		return err
 	}
 
-	return h.AddMount(vmName, absHostPath, guestPath)
+	return h.AddMount(vmName, ipAddr, absHostPath, guestPath)
 }
 
-func ListMounts(vmName string) ([]base.MountPath, error) {
+func ListMounts(vmName, ipAddr string) ([]base.MountPath, error) {
 	h, err := detect()
 	if err != nil {
 		return nil, err
 	}
 
-	return h.ListMounts(vmName)
+	return h.ListMounts(vmName, ipAddr)
 }
 
-func RemoveMounts(vmName string) error {
+func RemoveMounts(vmName, ipAddr string) error {
 	h, err := detect()
 	if err != nil {
 		return err
 	}
 
-	return h.RemoveMounts(vmName)
+	return h.RemoveMounts(vmName, ipAddr)
 }
 
 func SetNetworkAdapterAsBridge(vmName string) error {

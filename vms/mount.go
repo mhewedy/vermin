@@ -5,6 +5,7 @@ import (
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/images"
+	"github.com/mhewedy/vermin/ip"
 )
 
 var (
@@ -13,6 +14,11 @@ var (
 )
 
 func Mount(vmName, hostPath, guestPath string, remove bool) error {
+	ipAddr, err := ip.Find(vmName, false)
+	if err != nil {
+		return err
+	}
+
 	if err := checkRunningVM(vmName); err != nil {
 		return err
 	}
@@ -27,19 +33,23 @@ func Mount(vmName, hostPath, guestPath string, remove bool) error {
 	}
 
 	if remove {
-		if err = hypervisor.RemoveMounts(vmName); err != nil {
+		if err = hypervisor.RemoveMounts(vmName, ipAddr); err != nil {
 			return err
 		}
 	}
 
-	return hypervisor.AddMount(vmName, hostPath, guestPath)
+	return hypervisor.AddMount(vmName, ipAddr, hostPath, guestPath)
 }
 
 func ListMounts(vmName string) (string, error) {
+	ipAddr, err := ip.Find(vmName, false)
+	if err != nil {
+		return "", err
+	}
 
 	out := mountHeader
 
-	paths, err := hypervisor.ListMounts(vmName)
+	paths, err := hypervisor.ListMounts(vmName, ipAddr)
 	if err != nil {
 		return "", err
 	}

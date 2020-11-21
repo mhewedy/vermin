@@ -9,7 +9,7 @@ type Hypervisor interface {
 
 	Create(imageName, vmName string, cpus int, mem int) error
 
-	List(all bool, exploder func(vmName string) bool) ([]string, error)
+	List(all bool, excludeFunc func(vmName string) bool) ([]string, error)
 
 	Stop(vmName string) error
 
@@ -19,11 +19,11 @@ type Hypervisor interface {
 
 	ShowGUI(vmName string) error
 
-	AddMount(vmName, hostPath, guestPath string) error
+	AddMount(vmName, ipAddr, hostPath, guestPath string) error
 
-	RemoveMounts(vmName string) error
+	RemoveMounts(vmName, ipAddr string) error
 
-	ListMounts(vmName string) ([]MountPath, error)
+	ListMounts(vmName, ipAddr string) ([]MountPath, error)
 
 	SetNetworkAdapterAsBridge(vmName string) error
 

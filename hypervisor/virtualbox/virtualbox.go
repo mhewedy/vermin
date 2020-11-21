@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/mhewedy/vermin/cmd"
-	"github.com/mhewedy/vermin/cmd/ssh"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/hypervisor/base"
 	"runtime"
@@ -61,7 +60,7 @@ func (*virtualbox) Create(imageName, vmName string, cpus int, mem int) error {
 	return nil
 }
 
-func (*virtualbox) List(all bool, exploder func(string) bool) ([]string, error) {
+func (*virtualbox) List(all bool, excludeFunc func(string) bool) ([]string, error) {
 	var args = [2]string{"list"}
 	if all {
 		args[1] = "vms"
@@ -80,7 +79,7 @@ func (*virtualbox) List(all bool, exploder func(string) bool) ([]string, error) 
 	for i := range fields {
 		if i%2 == 0 {
 			vmName := strings.ReplaceAll(fields[i], `"`, "")
-			if !exploder(vmName) {
+			if !excludeFunc(vmName) {
 				vms = append(vms, vmName)
 			}
 		}
@@ -126,7 +125,7 @@ func (*virtualbox) ShowGUI(vmName string) error {
 	return vboxManage("startvm", "--type", "separate", vmName).Run()
 }
 
-func (*virtualbox) AddMount(vmName, hostPath, guestPath string) error {
+func (*virtualbox) AddMount(vmName, ipAddr, hostPath, guestPath string) error {
 
 	shareName := strconv.FormatInt(time.Now().Unix(), 10)
 
@@ -145,14 +144,14 @@ func (*virtualbox) AddMount(vmName, hostPath, guestPath string) error {
 	mountCmd := fmt.Sprintf("sudo mkdir -p %s; ", guestPath) +
 		fmt.Sprintf("sudo mount -t vboxsf -o uid=1000,gid=1000 %s %s", shareName, guestPath)
 
-	if _, err := ssh.Execute(vmName, mountCmd); err != nil {
+	if err := cmd.Ssh(vmName, ipAddr, "--", mountCmd).Run(); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (*virtualbox) RemoveMounts(vmName string) error {
+func (*virtualbox) RemoveMounts(vmName, ipAddr string) error {
 	transientMounts, err := findByPrefix(vmName, "SharedFolderNameTransientMapping")
 	if err != nil {
 		return err
@@ -163,15 +162,15 @@ func (*virtualbox) RemoveMounts(vmName string) error {
 		if _, err = vboxManage("sharedfolder", "remove", vmName, "--name", mountName, "--transient").Call(); err != nil {
 			return err
 		}
-		if guestPath, err := getMountGuestPath(vmName, mountName); err == nil {
-			_, _ = ssh.Execute(vmName, "sudo umount "+guestPath)
+		if guestPath, err := getMountGuestPath(vmName, ipAddr, mountName); err == nil {
+			_ = cmd.Ssh(vmName, ipAddr, "--", "sudo umount "+guestPath).Run()
 		}
 	}
 
 	return nil
 }
 
-func (*virtualbox) ListMounts(vmName string) ([]base.MountPath, error) {
+func (*virtualbox) ListMounts(vmName, ipAddr string) ([]base.MountPath, error) {
 	result := make([]base.MountPath, 0)
 
 	hostPaths, err := findByPrefix(vmName, "SharedFolderPathTransientMapping")
@@ -185,7 +184,7 @@ func (*virtualbox) ListMounts(vmName string) ([]base.MountPath, error) {
 	}
 
 	for i := range transientMounts {
-		if guestPath, err := getMountGuestPath(vmName, transientMounts[i]); err == nil {
+		if guestPath, err := getMountGuestPath(vmName, ipAddr, transientMounts[i]); err == nil {
 			result = append(result, base.MountPath{
 				HostPath:  hostPaths[i],
 				GuestPath: guestPath,
@@ -197,8 +196,8 @@ func (*virtualbox) ListMounts(vmName string) ([]base.MountPath, error) {
 }
 
 // return guestPath of mount
-func getMountGuestPath(vmName, mountName string) (string, error) {
-	mountData, _ := ssh.Execute(vmName, "sudo mount")
+func getMountGuestPath(vmName, ipAddr, mountName string) (string, error) {
+	mountData, _ := cmd.Ssh(vmName, ipAddr, "--", "sudo mount").Call()
 	mounts := strings.Split(mountData, "\n")
 
 	for _, line := range mounts {
