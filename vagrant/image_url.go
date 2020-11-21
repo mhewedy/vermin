@@ -2,8 +2,8 @@ package vagrant
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
+	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/progress"
 	"io/ioutil"
 	"net/http"
@@ -71,11 +71,11 @@ func filterByVersion(resp vagrantResp, user, imageName, imageVersion string) (pr
 
 	if imageVersion == "" {
 		// get latest version
-		return getVirtualBoxProvider(resp.Versions[0].Providers)
+		return getCurrentProvider(resp.Versions[0].Providers)
 	} else {
 		for _, v := range resp.Versions {
 			if v.Version == imageVersion {
-				return getVirtualBoxProvider(v.Providers)
+				return getCurrentProvider(v.Providers)
 			}
 		}
 		return provider{}, fmt.Errorf("vagrant image version not found, "+
@@ -83,13 +83,19 @@ func filterByVersion(resp vagrantResp, user, imageName, imageVersion string) (pr
 	}
 }
 
-func getVirtualBoxProvider(providers []provider) (provider, error) {
+func getCurrentProvider(providers []provider) (provider, error) {
+
+	h, err := hypervisor.GetHypervisorName(true)
+	if err != nil {
+		return provider{}, err
+	}
+
 	for _, p := range providers {
-		if p.Name == "virtualbox" {
+		if p.Name == h {
 			return p, nil
 		}
 	}
-	return provider{}, errors.New("VirtualBox image not found for specified version")
+	return provider{}, fmt.Errorf("%s: image not found for specified version", h)
 }
 
 // getImageParts syntax vagrant/USER/BOX:VERSION e.g.: vagrant/ubuntu/trusty64:20190429.0.1

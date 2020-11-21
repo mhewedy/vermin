@@ -2,8 +2,9 @@ package vms
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/command"
 	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/hypervisor"
+	"github.com/mhewedy/vermin/hypervisor/base"
 	"os"
 	"reflect"
 	"sort"
@@ -21,7 +22,7 @@ var (
 type vmInfo struct {
 	name  string
 	image string
-	box   db.Box
+	box   base.Box
 	tags  string
 }
 
@@ -89,7 +90,7 @@ func Ps(all bool, f []string) (string, error) {
 		return "", err
 	}
 
-	vms, err := List(all)
+	vms, err := hypervisor.List(all)
 	if err != nil {
 		return "", err
 	}
@@ -111,35 +112,6 @@ func parseFilters(filters []string) ([]filter, error) {
 		out[i] = filter{name: strings.ToLower(parts[0]), value: strings.ToLower(parts[1])}
 	}
 	return out, nil
-}
-
-// List return all vms that start with db.VMNamePrefix
-func List(all bool) ([]string, error) {
-	var args = [2]string{"list"}
-	if all {
-		args[1] = "vms"
-	} else {
-		args[1] = "runningvms"
-	}
-
-	r, err := command.VBoxManage(args[:]...).Call()
-	if err != nil {
-		return nil, err
-	}
-
-	var vms []string
-	fields := strings.Fields(r)
-
-	for i := range fields {
-		if i%2 == 0 {
-			vmName := strings.ReplaceAll(fields[i], `"`, "")
-			if strings.HasPrefix(vmName, db.VMNamePrefix) {
-				vms = append(vms, vmName)
-			}
-		}
-	}
-
-	return vms, nil
 }
 
 func getVMInfoList(vms []string, filters filters) string {
@@ -170,7 +142,7 @@ func getVMInfo(vm string) vmInfo {
 		return vmInfo{}
 	}
 
-	box, _ := db.GetBoxInfo(vm)
+	box, _ := hypervisor.GetBoxInfo(vm)
 	vmdb, _ := db.Load(vm)
 
 	return vmInfo{

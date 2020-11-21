@@ -1,7 +1,7 @@
 package provisioners
 
 import (
-	"github.com/mhewedy/vermin/command"
+	"github.com/mhewedy/vermin/cmd"
 	"github.com/mhewedy/vermin/ip"
 )
 
@@ -18,5 +18,5 @@ func (Ansible) Exec(vmName string, script string) error {
 		return err
 	}
 
-	return command.AnsiblePlaybook(vmName, ipAddr, script).Interact()
+	return cmd.AnsiblePlaybook(vmName, ipAddr, script).Interact()
 }

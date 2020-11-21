@@ -3,10 +3,10 @@ package vms
 import (
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/command"
-	"github.com/mhewedy/vermin/command/scp"
-	"github.com/mhewedy/vermin/command/ssh"
+	"github.com/mhewedy/vermin/cmd/scp"
+	"github.com/mhewedy/vermin/cmd/ssh"
 	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/images"
 	"github.com/mhewedy/vermin/ip"
 	"github.com/mhewedy/vermin/progress"
@@ -50,7 +50,7 @@ func Stop(vmName string) error {
 	}
 
 	progress.Immediate("Stopping", vmName)
-	if _, err := command.VBoxManage("controlvm", vmName, "poweroff").Call(); err != nil {
+	if err := hypervisor.Stop(vmName); err != nil {
 		return err
 	}
 	return nil
@@ -90,8 +90,7 @@ func Remove(vmName string, force bool) error {
 	}
 	_ = Stop(vmName)
 
-	msg := fmt.Sprintf("Removing %s", vmName)
-	if _, err := command.VBoxManage("unregistervm", vmName, "--delete").CallWithProgress(msg); err != nil {
+	if err := hypervisor.Remove(vmName); err != nil {
 		return err
 	}
 	return os.RemoveAll(db.GetVMPath(vmName))
@@ -155,16 +154,7 @@ func Modify(vmName string, cpus int, mem int) error {
 		return fmt.Errorf(`Cannot Modify running VM, use "vermin stop %s" to stop the VM first.`, vmName)
 	}
 
-	var params = []string{"modifyvm", vmName}
-	if cpus > 0 {
-		params = append(params, "--cpus", fmt.Sprintf("%d", cpus))
-	}
-	if mem > 0 {
-		params = append(params, "--memory", fmt.Sprintf("%d", mem))
-	}
-
-	_, err := command.VBoxManage(params...).Call()
-	return err
+	return hypervisor.Modify(vmName, cpus, mem)
 }
 
 func GUI(vmName string, nocheck bool) error {
@@ -177,7 +167,7 @@ func GUI(vmName string, nocheck bool) error {
 			return err
 		}
 	}
-	return command.VBoxManage("startvm", "--type", "separate", vmName).Run()
+	return hypervisor.ShowGUI(vmName)
 }
 
 func Commit(vmName, imageName string, override bool) error {

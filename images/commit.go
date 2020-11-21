@@ -3,7 +3,7 @@ package images
 import (
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/command"
+	"github.com/mhewedy/vermin/hypervisor"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -30,9 +30,7 @@ func Commit(vmName, imageName string, override bool) error {
 
 	ovaFile := tmpDir + strings.ReplaceAll(imageName, "/", "_") + ova
 
-	export := command.VBoxManage("export", vmName, "--ovf20", "-o", ovaFile)
-	_, err = export.CallWithProgress(fmt.Sprintf("Committing %s into image %s", vmName, imageName))
-	if err != nil {
+	if err = hypervisor.Commit(vmName, ovaFile); err != nil {
 		return err
 	}
 

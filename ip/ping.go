@@ -1,7 +1,7 @@
 package ip
 
 import (
-	"github.com/mhewedy/vermin/command"
+	"github.com/mhewedy/vermin/cmd"
 	"sync"
 )
 
@@ -37,7 +37,7 @@ func pingCIDR(c cidr) {
 		c = c.next()
 
 		go func(cc cidr) {
-			_ = command.Ping(cc.IP()).Run()
+			_ = cmd.Ping(cc.IP()).Run()
 			wg.Done()
 		}(c)
 	}
