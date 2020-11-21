@@ -81,9 +81,3 @@ func copyBetweenVMs(srcVmPath vmPath, destVmPath vmPath) error {
 		db.GetUsername(destVmPath.name)+"@"+destIPAddr+":"+destVmPath.file).Call()
 	return err
 }
-
-// ----
-
-func CopyToVM(vmName string, localFile string, vmFile string) error {
-	return copyToVM(localFile, vmPath{vmName, vmFile})
-}

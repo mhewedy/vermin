@@ -1,6 +1,7 @@
 package provisioners
 
 import (
+	"fmt"
 	"github.com/mhewedy/vermin/command/scp"
 	"github.com/mhewedy/vermin/command/ssh"
 	"path/filepath"
@@ -15,7 +16,9 @@ func (Shell) Accept(ptype string) bool {
 func (Shell) Exec(vmName string, script string) error {
 
 	vmFile := "/tmp/" + filepath.Base(script)
-	if err := scp.CopyToVM(vmName, script, vmFile); err != nil {
+	toVM := fmt.Sprintf("%s%s%s", vmName, scp.CopySeparator, vmFile)
+
+	if err := scp.Copy(script, toVM); err != nil {
 		return err
 	}
 	if _, err := ssh.Execute(vmName, "chmod +x "+vmFile); err != nil {
