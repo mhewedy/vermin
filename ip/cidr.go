@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math"
 	"net"
-	"strings"
 )
 
 type cidr struct {
@@ -45,9 +44,6 @@ func getCIDRs() []cidr {
 	cidrs := make([]cidr, 0)
 
 	for _, iface := range ifaces {
-		if strings.Contains(iface.Name, "VirtualBox") {
-			continue
-		}
 
 		addrs, err := iface.Addrs()
 		if err != nil {

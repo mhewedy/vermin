@@ -2,12 +2,14 @@ package ip
 
 import (
 	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/debug"
 	"sync"
 )
 
 func ping() {
 
 	cidrs := getCIDRs()
+	debug.Log("ciders: %s", cidrs)
 
 	var wg sync.WaitGroup
 	wg.Add(len(cidrs))
@@ -19,6 +21,7 @@ func ping() {
 			continue
 		}
 
+		debug.Log("pining cider %s", c)
 		go func(c cidr) {
 			pingCIDR(c)
 			wg.Done()
