@@ -6,7 +6,7 @@ import (
 
 func findByPrefix(vmName string, prefix string) ([]string, error) {
 
-	entries, err := Instance.Info(vmName)
+	entries, err := info(vmName)
 	if err != nil {
 		return nil, err
 	}
@@ -36,4 +36,12 @@ func findFirstByPrefix(vmName string, prefix string) (string, bool, error) {
 	}
 
 	return byPrefix[0], true, nil
+}
+
+func info(vmName string) ([]string, error) {
+	out, err := vboxManage("showvminfo", vmName, "--machinereadable").Call()
+	if err != nil {
+		return nil, err
+	}
+	return strings.Fields(out), nil
 }

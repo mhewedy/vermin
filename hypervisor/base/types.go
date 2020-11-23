@@ -5,8 +5,6 @@ type Hypervisor interface {
 
 	Commit(vmName, imageName string) error
 
-	Info(vmName string) ([]string, error)
-
 	Create(imageName, vmName string, cpus int, mem int) error
 
 	List(all bool, excludeFunc func(vmName string) bool) ([]string, error)

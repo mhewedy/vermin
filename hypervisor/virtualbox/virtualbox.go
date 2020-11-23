@@ -36,14 +36,6 @@ func (*virtualbox) Commit(vmName, imageName string) error {
 	return err
 }
 
-func (*virtualbox) Info(vmName string) ([]string, error) {
-	out, err := vboxManage("showvminfo", vmName, "--machinereadable").Call()
-	if err != nil {
-		return nil, err
-	}
-	return strings.Fields(out), nil
-}
-
 func (*virtualbox) Create(imageName, vmName string, cpus int, mem int) error {
 	importCmd := vboxManage(
 		"import", db.GetImageFilePath(imageName),

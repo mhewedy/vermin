@@ -45,15 +45,6 @@ func Commit(vmName, imageName string) error {
 	return h.Commit(vmName, imageName)
 }
 
-func Info(vmName string) ([]string, error) {
-	h, err := detect()
-	if err != nil {
-		return nil, err
-	}
-
-	return h.Info(vmName)
-}
-
 func Create(imageName, vmName string, cpus int, mem int) error {
 	h, err := detect()
 	if err != nil {
