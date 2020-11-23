@@ -150,3 +150,12 @@ func GetBoxInfo(vmName string) (*base.Box, error) {
 
 	return h.GetBoxInfo(vmName)
 }
+
+func GetSubnet() (*base.Subnet, error) {
+	h, err := detect()
+	if err != nil {
+		return nil, err
+	}
+
+	return h.GetSubnet()
+}

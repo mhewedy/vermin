@@ -3,48 +3,32 @@ package ip
 import (
 	"github.com/mhewedy/vermin/cmd"
 	"github.com/mhewedy/vermin/debug"
+	"github.com/mhewedy/vermin/hypervisor"
+	"github.com/mhewedy/vermin/hypervisor/base"
 	"sync"
 )
 
-func ping() {
+func ping() error {
 
-	cidrs := getCIDRs()
-	debug.Log("ciders: %s", cidrs)
-
-	var wg sync.WaitGroup
-	wg.Add(len(cidrs))
-
-	for _, c := range cidrs {
-
-		if c.len > 65535 { // skipping cidrs with len > x.x.x.x/16 including 127.0.0.0/8
-			wg.Done()
-			continue
-		}
-
-		debug.Log("pining cider %s", c)
-		go func(c cidr) {
-			pingCIDR(c)
-			wg.Done()
-		}(c)
+	subnet, err := hypervisor.GetSubnet()
+	if err != nil {
+		return err
 	}
-
-	wg.Wait()
-}
-
-func pingCIDR(c cidr) {
+	debug.Log("subnet: %v", subnet)
 
 	var wg sync.WaitGroup
-	wg.Add(c.len)
+	wg.Add(subnet.Len)
 
-	for c.hasNext() {
-		c = c.next()
+	for subnet.HasNext() {
+		subnet = subnet.Next()
 
-		go func(cc cidr) {
-			_ = cmd.Ping(cc.IP()).Run()
+		go func(s *base.Subnet) {
+			_ = cmd.Ping(s.IP()).Run()
 			wg.Done()
-		}(c)
+		}(subnet)
 	}
 
 	wg.Wait()
 
+	return nil
 }

@@ -233,3 +233,13 @@ func (*virtualbox) SetNetworkAdapterAsBridge(vmName string) error {
 func (*virtualbox) GetBoxInfo(vmName string) (*base.Box, error) {
 	return getBoxInfo(vmName)
 }
+
+func (*virtualbox) GetSubnet() (*base.Subnet, error) {
+
+	bridgeInfo, err := findBridgeInfo("IPAddress", "NetworkMask")
+	if err != nil {
+		return nil, err
+	}
+
+	return base.NewSubnet(bridgeInfo[0], bridgeInfo[1])
+}

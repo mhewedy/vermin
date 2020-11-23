@@ -30,7 +30,9 @@ func Find(vmName string, purge bool) (string, error) {
 
 	if purge {
 		debug.Log("purge=1, purging...")
-		ping()
+		if err := ping(); err != nil {
+			return "", err
+		}
 		pong = true
 	}
 
@@ -54,7 +56,9 @@ func Find(vmName string, purge bool) (string, error) {
 			break
 		}
 
-		ping()
+		if err := ping(); err != nil {
+			return "", err
+		}
 		pong = true
 	}
 
