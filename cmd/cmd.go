@@ -97,7 +97,7 @@ func prepend(x []string, y string) []string {
 }
 
 func (c *Cmd) log() {
-	if _, ok := os.LookupEnv("VERMIN_DEBUG"); ok {
+	if _, ok := os.LookupEnv("VERMIN_DEBUG_CMD"); ok {
 		fmt.Print("$ ", c.Command, " ")
 		for _, arg := range c.Args {
 			fmt.Print(arg, " ")
