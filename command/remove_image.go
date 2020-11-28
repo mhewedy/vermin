@@ -16,51 +16,48 @@ limitations under the License.
 package command
 
 import (
+	"errors"
 	"fmt"
 	"github.com/mhewedy/vermin/images"
-	"os"
-
 	"github.com/spf13/cobra"
+	"os"
 )
 
-// imagesCmd represents the images command
-var imagesCmd = &cobra.Command{
-	Use:     "images",
-	Aliases: []string{"image"},
-	Short:   "List remote and cached images",
-	Long: `List remote and cached images
-	
-Images are cached after the first time it is downloaded. Cached images are marked as (cached).
-The image comes in the format <os>/<version>, for example: ubuntu/bionic and centos/8
-
-You can use images from Vagrant Boxes by prefixing the image name by vagrant/, e.g. vagrant/hashicorp/bionic64
-`,
-	Example: `
-Use the image in creating a VM:
-$ vermin create <image>
-`,
+// removeImageCmd represents the remove image command
+var removeImageCmd = &cobra.Command{
+	Use:   "rmi",
+	Short: "Remove one or more Image",
+	Long:  `Remove one or more Image`,
 	Run: func(cmd *cobra.Command, args []string) {
-		purge, _ := cmd.Flags().GetBool("purge")
-		i, err := images.Display(purge)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+		for _, vmName := range args {
+			//force, _ := cmd.Flags().GetBool("force")
+
+			err := images.Remove(vmName)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
 		}
-		i += "You can find more images at https://app.vagrantup.com/search\n"
-		fmt.Print(i)
 	},
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 1 {
+			return errors.New("image required")
+		}
+		return nil
+	},
+	ValidArgsFunction: listImages,
 }
 
 func init() {
-	rootCmd.AddCommand(imagesCmd)
+	rootCmd.AddCommand(removeImageCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// imagesCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// removeCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	imagesCmd.Flags().BoolP("purge", "p", false, "Purge images list cache")
+	//removeCmd.Flags().BoolP("force", "f", false, "force remove running VM")
 }
