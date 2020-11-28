@@ -1,7 +1,7 @@
 package ssh
 
 import (
-	"errors"
+	"fmt"
 	"github.com/mhewedy/vermin/progress"
 	"time"
 )
@@ -13,10 +13,10 @@ type delay struct {
 	max    time.Duration
 }
 
-func (b *delay) sleep() error {
+func (b *delay) sleep(cause error) error {
 	elapsed := time.Now().Sub(b.start).Milliseconds()
 	if !b.start.IsZero() && elapsed >= b.max.Milliseconds() {
-		return errors.New(b.errMsg)
+		return fmt.Errorf("%s: %v", b.errMsg, cause)
 	}
 	if b.iter == 0 {
 		b.start = time.Now()
@@ -32,7 +32,7 @@ func EstablishConn(vmName string) error {
 	defer stop()
 
 	d := &delay{
-		errMsg: "Cannot establish connection.",
+		errMsg: "Cannot establish connection",
 		max:    1 * time.Minute,
 	}
 	var err error
@@ -40,7 +40,7 @@ func EstablishConn(vmName string) error {
 		if _, err = Execute(vmName, "ls"); err == nil {
 			break
 		}
-		if err = d.sleep(); err != nil {
+		if err = d.sleep(err); err != nil {
 			break
 		}
 	}
