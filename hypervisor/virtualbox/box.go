@@ -15,7 +15,7 @@ type vbox struct {
 	Machine struct {
 		MediaRegistry struct {
 			HardDisks struct {
-				HardDisk struct {
+				HardDisk []struct {
 					Location string `xml:"location,attr"`
 				} `xml:"HardDisk"`
 			} `xml:"HardDisks"`
@@ -52,7 +52,7 @@ func getBoxInfo(vm string) (*base.Box, error) {
 	return &base.Box{
 		CPU:      cpuCount,
 		Mem:      vb.Machine.Hardware.Memory.RAMSize,
-		DiskSize: getDiskSizeInGB(vm, vb.Machine.MediaRegistry.HardDisks.HardDisk.Location),
+		DiskSize: getDiskSizeInGB(vm, vb.Machine.MediaRegistry.HardDisks.HardDisk[0].Location),
 		MACAddr:  vb.Machine.Hardware.Network.Adapter.MACAddress,
 	}, nil
 }
