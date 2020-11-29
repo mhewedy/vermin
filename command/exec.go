@@ -35,7 +35,7 @@ Execute remote command:
 $ vermin exec vm_09 cat /etc/passwd
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
+		vmName := normalizeVmName(args[0])
 		command := strings.Join(args[1:], " ")
 
 		err := vms.Exec(vmName, command)

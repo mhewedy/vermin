@@ -29,10 +29,10 @@ var removeImageCmd = &cobra.Command{
 	Short: "Remove one or more Image",
 	Long:  `Remove one or more Image`,
 	Run: func(cmd *cobra.Command, args []string) {
-		for _, vmName := range args {
+		for _, imageName := range args {
 			//force, _ := cmd.Flags().GetBool("force")
 
-			err := images.Remove(vmName)
+			err := images.Remove(imageName)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)

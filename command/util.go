@@ -5,7 +5,12 @@ import (
 	"github.com/mhewedy/vermin/config"
 	"github.com/spf13/cobra"
 	"os"
+	"regexp"
+	"strings"
 )
+
+var vmNameRegexDash = regexp.MustCompile("^vm-[0-9]+$")
+var vmNameRegexNoVM = regexp.MustCompile("^[0-9]+$")
 
 func checkFilePath(path string) {
 	if _, err := os.Stat(path); err != nil {
@@ -23,4 +28,17 @@ func exitOnError(err error) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func normalizeVmName(vmName string) string {
+
+	if vmNameRegexDash.MatchString(vmName) {
+		return strings.ReplaceAll(vmName, "-", "_")
+	}
+
+	if vmNameRegexNoVM.MatchString(vmName) {
+		return fmt.Sprintf("vm_%s", vmName)
+	}
+
+	return vmName
 }

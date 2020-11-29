@@ -30,7 +30,7 @@ var stopCmd = &cobra.Command{
 	Long:  `Stop one or more running VMs`,
 	Run: func(cmd *cobra.Command, args []string) {
 		for _, vmName := range args {
-			err := vms.Stop(vmName)
+			err := vms.Stop(normalizeVmName(vmName))
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)

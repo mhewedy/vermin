@@ -33,7 +33,7 @@ var guiCmd = &cobra.Command{
 $ vermin gui vm_02
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
+		vmName := normalizeVmName(args[0])
 		nocheck, _ := cmd.Flags().GetBool("nocheck")
 		if err := vms.GUI(vmName, nocheck); err != nil {
 			fmt.Println(err)

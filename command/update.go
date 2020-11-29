@@ -35,7 +35,7 @@ To change the VM to use 2 cores and 512MB memory
 $ vermin update vm_01 --cpus 2 --mem 512
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
+		vmName := normalizeVmName(args[0])
 		var script string
 		if len(args) > 1 {
 			script = args[1]

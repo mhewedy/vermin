@@ -52,7 +52,7 @@ Forward vm port 4040 to local port 40040 and ports in range (8080 to 8088) to ra
 $ vermin port vm_01 40040:4040 9080-9088:8080-8088
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
+		vmName := normalizeVmName(args[0])
 		command := strings.Join(args[1:], " ")
 
 		err := vms.PortForward(vmName, command)

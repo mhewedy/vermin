@@ -37,7 +37,7 @@ To purge the IP cache:
 $ vermin ip vm_05 -p
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
+		vmName := normalizeVmName(args[0])
 		purge, _ := cmd.Flags().GetBool("purge")
 		global, _ := cmd.Flags().GetBool("global")
 

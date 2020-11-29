@@ -31,7 +31,7 @@ var tagCmd = &cobra.Command{
 You can tag a VM as many times as you want
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
+		vmName := normalizeVmName(args[0])
 		tag := args[1]
 
 		remove, _ := cmd.Flags().GetBool("remove")

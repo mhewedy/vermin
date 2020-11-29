@@ -32,7 +32,7 @@ var removeCmd = &cobra.Command{
 		for _, vmName := range args {
 			force, _ := cmd.Flags().GetBool("force")
 
-			err := vms.Remove(vmName, force)
+			err := vms.Remove(normalizeVmName(vmName), force)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)

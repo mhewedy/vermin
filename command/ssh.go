@@ -33,7 +33,7 @@ var sshCmd = &cobra.Command{
 $ vermin ssh vm_02
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		vmName := args[0]
+		vmName := normalizeVmName(args[0])
 		if err := vms.SecureShell(vmName); err != nil {
 			fmt.Println(err)
 			os.Exit(1)

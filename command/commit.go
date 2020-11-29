@@ -32,7 +32,7 @@ $ vermin commit vm_01 elk/elastic
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		vmName := args[0]
+		vmName := normalizeVmName(args[0])
 		imageName := args[1]
 		override, _ := cmd.Flags().GetBool("override")
 
