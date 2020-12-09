@@ -27,7 +27,7 @@ import (
 // mountCmd represents the mount command
 var mountCmd = &cobra.Command{
 	Use:   "mount",
-	Short: "Mount local filesystem inside the VM",
+	Short: "Mount/Unmount local filesystem inside the VM",
 	Long: `Mount local filesystem to a directory inside the VM, 
 if the guest directory is not specified, then /vermin is used
 
@@ -45,23 +45,33 @@ $ vermin mount vm_01 ~/Downloads
 
 To mount the ~/MyHtmlProject directory to /var/www/html inside the VM:
 $ vermin mount vm_01 ~/MyHtmlProject:/var/www/html
+
+To unmount previous mounted directories:
+$ vermin mount -r vm_01
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		vmName := args[0]
-		path := args[1]
+		vmName := normalizeVmName(args[0])
 		remove, _ := cmd.Flags().GetBool("remove")
 
-		p := strings.Split(path, ":")
-		hostPath := p[0]
-		checkFilePath(hostPath)
+		var err error
+		if remove {
+			err = vms.Unmount(vmName)
+		} else {
+			path := args[1]
 
-		guestPath := "/vermin"
-		if len(p) > 1 {
-			guestPath = p[1]
+			p := strings.Split(path, ":")
+			hostPath := p[0]
+			checkFilePath(hostPath)
+
+			guestPath := "/vermin"
+			if len(p) > 1 {
+				guestPath = p[1]
+			}
+
+			err = vms.Mount(vmName, hostPath, guestPath)
 		}
 
-		err := vms.Mount(vmName, hostPath, guestPath, remove)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -71,7 +81,8 @@ $ vermin mount vm_01 ~/MyHtmlProject:/var/www/html
 		if len(args) < 1 {
 			return errors.New("vm required")
 		}
-		if len(args) < 2 {
+		remove, _ := cmd.Flags().GetBool("remove")
+		if !remove && len(args) < 2 {
 			return errors.New("path required")
 		}
 		return nil

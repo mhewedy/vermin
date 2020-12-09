@@ -151,6 +151,7 @@ func (*virtualbox) RemoveMounts(vmName, ipAddr string) error {
 
 	for i := range transientMounts {
 		mountName := transientMounts[i]
+		fmt.Println(mountName)
 		if _, err = vboxManage("sharedfolder", "remove", vmName, "--name", mountName, "--transient").Call(); err != nil {
 			return err
 		}

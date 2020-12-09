@@ -11,7 +11,7 @@ var (
 	mountHeader = fmt.Sprintf(mountFormat, "HOST DIR", "GUEST DIR")
 )
 
-func Mount(vmName, hostPath, guestPath string, remove bool) error {
+func Unmount(vmName string) error {
 	ipAddr, err := ip.Find(vmName, false)
 	if err != nil {
 		return err
@@ -21,10 +21,17 @@ func Mount(vmName, hostPath, guestPath string, remove bool) error {
 		return err
 	}
 
-	if remove {
-		if err = hypervisor.RemoveMounts(vmName, ipAddr); err != nil {
-			return err
-		}
+	return hypervisor.RemoveMounts(vmName, ipAddr)
+}
+
+func Mount(vmName, hostPath, guestPath string) error {
+	ipAddr, err := ip.Find(vmName, false)
+	if err != nil {
+		return err
+	}
+
+	if err := checkRunningVM(vmName); err != nil {
+		return err
 	}
 
 	return hypervisor.AddMount(vmName, ipAddr, hostPath, guestPath)
