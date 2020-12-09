@@ -2,6 +2,7 @@ package vagrant
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/progress"
@@ -23,6 +24,12 @@ type version struct {
 	Providers []provider `json:"providers"`
 }
 
+type suggestionResp struct {
+	Boxes []struct {
+		Tag string `json:"tag"`
+	} `json:"boxes"`
+}
+
 func GetImageURL(image string) (string, error) {
 
 	stop := progress.Show("Getting Image info from Vagrant Cloud", false)
@@ -30,32 +37,22 @@ func GetImageURL(image string) (string, error) {
 
 	user, imageName, imageVersion := getImageParts(image)
 
-	req, err := http.NewRequest("GET", fmt.Sprintf("https://app.vagrantup.com/%s/boxes/%s", user, imageName), nil)
+	bytes, err := sendAndReceive(fmt.Sprintf("https://app.vagrantup.com/%s/boxes/%s", user, imageName))
 	if err != nil {
-		return "", err
-	}
-
-	req.Header.Set("Accept", "application/json")
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	b, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
+		return "", nil
 	}
 
 	var obj vagrantResp
-	if err := json.Unmarshal(b, &obj); err != nil {
+	if err := json.Unmarshal(bytes, &obj); err != nil {
 		return "", err
 	}
 
 	p, err := filterByVersion(obj, user, imageName, imageVersion)
 	if err != nil {
+		suggest, _ := getSuggestion(imageName, "* ")
+		if suggest != nil && len(suggest) > 0 {
+			return "", errors.New(err.Error() + ", do you mean:\n" + strings.Join(suggest, "\n"))
+		}
 		return "", err
 	}
 
@@ -113,4 +110,56 @@ func getImageParts(image string) (user string, imageName string, imageVersion st
 		imageVersion = boxParts[1]
 	}
 	return user, imageName, imageVersion
+}
+
+func getSuggestion(imageName, prepend string) ([]string, error) {
+
+	h, err := hypervisor.GetHypervisorName(false)
+	if err != nil {
+		return nil, err
+	}
+
+	bytes, err := sendAndReceive(fmt.Sprintf("https://app.vagrantup.com/api/v1/search?sort=downloads&provider=%s&q=%s&limit=2",
+		h, imageName))
+	if err != nil {
+		return nil, nil
+	}
+
+	var obj suggestionResp
+	if err := json.Unmarshal(bytes, &obj); err != nil {
+		return nil, err
+	}
+
+	size := len(obj.Boxes)
+	if size == 0 {
+		return []string{}, nil
+	}
+
+	result := make([]string, size)
+	for i, b := range obj.Boxes {
+		result[i] = prepend + b.Tag
+	}
+	return result, nil
+}
+
+func sendAndReceive(url string) ([]byte, error) {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	return b, nil
 }

@@ -34,7 +34,7 @@ Images are cached after the first time it is downloaded.
 
 You can find images from Vagrant at: https://app.vagrantup.com/search
 example images:
-* ubuntu/trusty64
+* ubuntu/focal64
 * hashicorp/precise64
 * generic/centos8
 * generic/alpine38

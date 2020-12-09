@@ -24,7 +24,7 @@ func Display() (string, error) {
 	if len(list) == 0 {
 		return `You can find images from Vagrant at: https://app.vagrantup.com/search
 example images:
-* ubuntu/trusty64
+* ubuntu/focal64
 * hashicorp/precise64
 * generic/centos8
 * generic/alpine38
