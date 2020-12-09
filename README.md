@@ -7,8 +7,6 @@
 
 ## The smart virtual machines manager (Put ★ for the project if you find it useful)
 
-<img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/vermin2x.gif" width="100%"/>
-
 Table of Contents:
 
 - [What is Vermin](#what-is-vermin)
@@ -26,18 +24,6 @@ Vermin is a smart, simple and powerful command line tool for Linux, Windows and 
 You can look to Vermin as a modern CLI for Vagrant Boxes.
 
 Vermin can be used when you need an easy way to obtain a Linux environment up and running in minutes.
-
-For example:
-* If you want to have an environment to try .NET Core and you don't want to mess with your local own WSL installation.
-* If you want to try to install a Kafka cluster, and you need something more than just a docker container.
-
-Vermin in Action:
-* [Install CockroachDB cluster in a Virtual Machine](https://medium.com/swlh/install-cockroachdb-on-a-virtual-machine-2f25878fd70?source=friends_link&sk=52b4c1c16794f8d15943c8c48a7103b5)
-* [Install Redis inside Ubuntu VM](https://medium.com/swlh/install-redis-inside-a-ubuntu-vm-d5022d42d8cc?source=friends_link&sk=b7073861f8050c5318683d1ebfcd800a)
-* [Install Kubernetes cluster in Virtual Machines the easy way](https://medium.com/@mhewedy_46874/install-kubernetes-cluster-in-virtual-machines-the-easy-way-337ef0c4e37f?source=friends_link&sk=dbb40739c54c864d1bd2f779032b2de2)
-* [Install Desktop environment on Ubuntu Server](https://medium.com/@mhewedy_46874/ubuntu-20-04-desktop-vm-using-vermin-764d20f43c4d?source=friends_link&sk=d78dd1b863aaa0ea8bd05dc3e681c7ec)
-
-Also, you can check [Why not Vagrant](#Why-not-Vagrant) section.
 
 # Install Vermin
 
@@ -83,6 +69,7 @@ Available Commands:
   exec        Run a command in a running VM
   gui         open the GUI for the VM
   help        Help about any command
+  hypervisor  print the name of the detected hypervisor
   images      List remote and cached images
   ip          Show IP address for a running VM
   mount       Mount local filesystem inside the VM
@@ -90,6 +77,7 @@ Available Commands:
   ps          List VMs
   restart     Restart one or more VMs
   rm          Remove one or more VM
+  rmi         Remove one or more Image
   ssh         ssh into a running VM
   start       Start one or more stopped VMs
   stop        Stop one or more running VMs
@@ -106,13 +94,13 @@ Use "vermin [command] --help" for more information about a command.
 You can start using Vermin after installation using:
 
 ```shell script
-$ vermin create <image name> | vagrant/<vagrant image from here>
+$ vermin create <vagrant image here>
 
 # example using vagrant image
-$ vermin create vagrant/hashicorp/bionic64
+$ vermin create hashicorp/bionic64
 
 # also you can use rhel8 using:
-$ vermin create vagrant/generic/rhel8
+$ vermin create generic/rhel8
 ```
 You can use all [vagrant images](https://app.vagrantup.com/boxes/search) besides some images native to vermin. use `vermin images` to see list of vermin images and where to find vagrant images.
 

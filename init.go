@@ -19,19 +19,14 @@ func init() {
 	}
 
 	loadPrivateKey(
-		"https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa",
-		db.VerminPrivateKey,
-	)
-
-	loadPrivateKey(
 		"https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant",
 		db.VagrantPrivateKey,
 	)
 }
 
-func loadPrivateKey(url, name string) {
+func loadPrivateKey(url, targetFile string) {
 
-	keyPath := filepath.Join(db.BaseDir, name)
+	keyPath := filepath.Join(db.BaseDir, targetFile)
 
 	if _, err := os.Stat(keyPath); !os.IsNotExist(err) {
 		return

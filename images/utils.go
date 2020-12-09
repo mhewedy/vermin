@@ -16,7 +16,7 @@ func contains(a []string, s string) bool {
 
 func validateName(imageName string) error {
 	if len(strings.Split(imageName, "/")) != 2 {
-		return errors.New("Name doesn't follow pattern <distro>/<version>")
+		return errors.New("Name doesn't follow pattern <user>/<box>")
 	}
 	return nil
 }

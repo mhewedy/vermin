@@ -22,6 +22,7 @@ import (
 	"github.com/mhewedy/vermin/provisioners"
 	"github.com/mhewedy/vermin/vms"
 	"github.com/spf13/cobra"
+	"strings"
 )
 
 // createCmd represents the create command
@@ -68,6 +69,16 @@ $ vermin create <image> </path/to/shell/script.sh>
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
 			return errors.New("Image required\nUse the command 'vermin images' to list all images available")
+		}
+
+		parts := strings.Split(args[0], "/")
+		if len(parts) != 2 {
+			if len(parts) == 3 && parts[0] == "vagrant" {
+				return errors.New("starting from v0.118.0, vagrant is no longer required as part of the image name, hence it is the default" +
+					"\nPlease use the name: " + parts[1] + "/" + parts[2] + " instead")
+			} else {
+				return errors.New("image should be provided in format <user>/<box>")
+			}
 		}
 
 		return nil

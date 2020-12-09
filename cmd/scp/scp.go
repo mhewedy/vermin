@@ -50,7 +50,7 @@ func copyFromVM(vmPath vmPath, localFile string) error {
 		return err
 	}
 
-	_, err = cmd.Scp(vmPath.name, db.GetUsername(vmPath.name)+"@"+ipAddr+":"+vmPath.file, localFile).Call()
+	_, err = cmd.Scp(db.GetUsername()+"@"+ipAddr+":"+vmPath.file, localFile).Call()
 	return err
 }
 
@@ -60,7 +60,7 @@ func copyToVM(localFile string, vmPath vmPath) error {
 		return err
 	}
 
-	_, err = cmd.Scp(vmPath.name, localFile, db.GetUsername(vmPath.name)+"@"+ipAddr+":"+vmPath.file).Call()
+	_, err = cmd.Scp(localFile, db.GetUsername()+"@"+ipAddr+":"+vmPath.file).Call()
 	return err
 }
 
@@ -76,8 +76,8 @@ func copyBetweenVMs(srcVmPath vmPath, destVmPath vmPath) error {
 		return err
 	}
 
-	_, err = cmd.Scp(srcVmPath.name, "-3",
-		db.GetUsername(srcVmPath.name)+"@"+srcIPAddr+":"+srcVmPath.file,
-		db.GetUsername(destVmPath.name)+"@"+destIPAddr+":"+destVmPath.file).Call()
+	_, err = cmd.Scp("-3",
+		db.GetUsername()+"@"+srcIPAddr+":"+srcVmPath.file,
+		db.GetUsername()+"@"+destIPAddr+":"+destVmPath.file).Call()
 	return err
 }

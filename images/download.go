@@ -2,8 +2,7 @@ package images
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/db"
-	"github.com/mhewedy/vermin/vagrant"
+	"github.com/mhewedy/vermin/images/vagrant"
 	"github.com/schollz/progressbar/v3"
 	"io"
 	"io/ioutil"
@@ -12,52 +11,43 @@ import (
 	"strings"
 )
 
-func Download(image string) error {
+type image struct {
+	name string
+	url  string
+}
+
+func Download(imageName string) error {
 	// check image against cached
 	cached, err := listCachedImages()
 	if err != nil {
 		return err
 	}
 
-	if contains(cached, image) {
+	if contains(cached, imageName) {
 		return nil
 	}
 
-	fmt.Printf("Image '%s' could not be found. Attempting to find and install \n", image)
+	fmt.Printf("Image '%s' could not be found. Attempting to find and install \n", imageName)
 
-	var dbImg *dbImage
-
-	if db.IsVagrantImage(image) {
-		url, err := vagrant.GetImageURL(image)
-		if err != nil {
-			return err
-		}
-		dbImg = &dbImage{Name: image, URL: url}
-	} else { // Not vagrant image
-		remote, err := listRemoteImages(false)
-		if err != nil {
-			return err
-		}
-
-		dbImg, err = remote.findByName(image)
-		if err != nil {
-			return err
-		}
+	url, err := vagrant.GetImageURL("vagrant/" + imageName)
+	if err != nil {
+		return err
 	}
+	dbImg := &image{name: imageName, url: url}
 
 	return download(dbImg)
 }
 
-func download(r *dbImage) error {
+func download(r *image) error {
 
 	// download to a temp file
-	tmpFile, err := ioutil.TempFile("", strings.ReplaceAll(r.Name, "/", "_"))
+	tmpFile, err := ioutil.TempFile("", strings.ReplaceAll(r.name, "/", "_"))
 	if err != nil {
 		return err
 	}
 	defer os.Remove(tmpFile.Name())
 
-	resp, err := http.Get(r.URL)
+	resp, err := http.Get(r.url)
 	if err != nil {
 		return err
 	}
@@ -69,7 +59,7 @@ func download(r *dbImage) error {
 		return err
 	}
 
-	return writeNewImage(tmpFile, r.Name)
+	return writeNewImage(tmpFile, r.name)
 }
 
 func buildDownloadBar(resp *http.Response) *progressbar.ProgressBar {

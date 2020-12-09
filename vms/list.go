@@ -147,7 +147,7 @@ func getVMInfo(vm string) vmInfo {
 
 	return vmInfo{
 		name:  vm,
-		image: vmdb.Image,
+		image: strings.Replace(vmdb.Image, "vagrant/", "", 1),
 		box:   *box,
 		tags:  strings.Join(vmdb.Tags, ", "),
 	}

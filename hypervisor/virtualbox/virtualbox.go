@@ -136,7 +136,7 @@ func (*virtualbox) AddMount(vmName, ipAddr, hostPath, guestPath string) error {
 	mountCmd := fmt.Sprintf("sudo mkdir -p %s; ", guestPath) +
 		fmt.Sprintf("sudo mount -t vboxsf -o uid=1000,gid=1000 %s %s", shareName, guestPath)
 
-	if err := cmd.Ssh(vmName, ipAddr, "--", mountCmd).Run(); err != nil {
+	if err := cmd.Ssh(ipAddr, "--", mountCmd).Run(); err != nil {
 		return err
 	}
 
@@ -154,8 +154,8 @@ func (*virtualbox) RemoveMounts(vmName, ipAddr string) error {
 		if _, err = vboxManage("sharedfolder", "remove", vmName, "--name", mountName, "--transient").Call(); err != nil {
 			return err
 		}
-		if guestPath, err := getMountGuestPath(vmName, ipAddr, mountName); err == nil {
-			_ = cmd.Ssh(vmName, ipAddr, "--", "sudo umount "+guestPath).Run()
+		if guestPath, err := getMountGuestPath(ipAddr, mountName); err == nil {
+			_ = cmd.Ssh(ipAddr, "--", "sudo umount "+guestPath).Run()
 		}
 	}
 
@@ -176,7 +176,7 @@ func (*virtualbox) ListMounts(vmName, ipAddr string) ([]base.MountPath, error) {
 	}
 
 	for i := range transientMounts {
-		if guestPath, err := getMountGuestPath(vmName, ipAddr, transientMounts[i]); err == nil {
+		if guestPath, err := getMountGuestPath(ipAddr, transientMounts[i]); err == nil {
 			result = append(result, base.MountPath{
 				HostPath:  hostPaths[i],
 				GuestPath: guestPath,
@@ -188,8 +188,8 @@ func (*virtualbox) ListMounts(vmName, ipAddr string) ([]base.MountPath, error) {
 }
 
 // return guestPath of mount
-func getMountGuestPath(vmName, ipAddr, mountName string) (string, error) {
-	mountData, _ := cmd.Ssh(vmName, ipAddr, "--", "sudo mount").Call()
+func getMountGuestPath(ipAddr, mountName string) (string, error) {
+	mountData, _ := cmd.Ssh(ipAddr, "--", "sudo mount").Call()
 	mounts := strings.Split(mountData, "\n")
 
 	for _, line := range mounts {

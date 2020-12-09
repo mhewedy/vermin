@@ -2,13 +2,14 @@ package images
 
 import (
 	"github.com/mhewedy/vermin/db"
-	"github.com/mhewedy/vermin/vagrant"
+	"github.com/mhewedy/vermin/images/vagrant"
 	"io"
 	"os"
 	"strings"
 )
 
 func writeNewImage(tmpFile *os.File, imageName string) error {
+	imageName = strings.Replace(imageName, "vagrant/", "", 1)
 	// copy the downloaded file to images directory
 	parts := strings.Split(imageName, "/")
 	if err := os.MkdirAll(db.ImagesDir+"/"+strings.Join(parts[0:len(parts)-1], "/"), 0755); err != nil {
@@ -20,10 +21,8 @@ func writeNewImage(tmpFile *os.File, imageName string) error {
 		return err
 	}
 
-	if db.IsVagrantImage(imageName) {
-		if err := vagrant.ProcessImage(imagePath); err != nil {
-			return err
-		}
+	if err := vagrant.ProcessImage(imagePath); err != nil {
+		return err
 	}
 
 	return nil

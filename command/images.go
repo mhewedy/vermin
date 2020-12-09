@@ -30,23 +30,19 @@ var imagesCmd = &cobra.Command{
 	Short:   "List remote and cached images",
 	Long: `List remote and cached images
 	
-Images are cached after the first time it is downloaded. Cached images are marked as (cached).
-The image comes in the format <os>/<version>, for example: ubuntu/bionic and centos/8
-
-You can use images from Vagrant Boxes by prefixing the image name by vagrant/, e.g. vagrant/hashicorp/bionic64
+Images are cached after the first time it is downloaded.
+You can find images from Vagrant at: https://app.vagrantup.com/search
 `,
 	Example: `
 Use the image in creating a VM:
 $ vermin create <image>
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		purge, _ := cmd.Flags().GetBool("purge")
-		i, err := images.Display(purge)
+		i, err := images.Display()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		i += "You can find more images at https://app.vagrantup.com/search\n"
 		fmt.Print(i)
 	},
 }
@@ -62,5 +58,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	imagesCmd.Flags().BoolP("purge", "p", false, "Purge images list cache")
+	//imagesCmd.Flags().BoolP("purge", "p", false, "Purge images list cache")
 }

@@ -2,9 +2,7 @@ package vms
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/hypervisor"
-	"github.com/mhewedy/vermin/images"
 	"github.com/mhewedy/vermin/ip"
 )
 
@@ -20,15 +18,6 @@ func Mount(vmName, hostPath, guestPath string, remove bool) error {
 	}
 
 	if err := checkRunningVM(vmName); err != nil {
-		return err
-	}
-
-	vmdb, err := db.Load(vmName)
-	if err != nil {
-		return err
-	}
-
-	if err = images.CheckCanMount(vmdb.Image); err != nil {
 		return err
 	}
 

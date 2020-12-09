@@ -4,18 +4,15 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 const (
-	VMNamePrefix       = "vm_"
-	ImagesDBFilePrefix = "vermin_images.csv."
-	VagrantPrivateKey  = "vagrant_insecure_private_key"
-	VerminPrivateKey   = "vermin_rsa"
+	VMNamePrefix      = "vm_"
+	VagrantPrivateKey = "vagrant_insecure_private_key"
 )
 
 var (
-	ImagesDir  = filepath.Join(getVerminDir(), "images")
+	ImagesDir  = filepath.Join(getVerminDir(), "images/vagrant")
 	VMsBaseDir = filepath.Join(getVerminDir(), "vms")
 	BaseDir    = getVerminDir()
 )
@@ -36,27 +33,10 @@ func getVerminDir() string {
 	return filepath.Join(dir, ".vermin")
 }
 
-func GetUsername(vmName string) string {
-	vmdb, _ := Load(vmName)
-	if IsVagrantImage(vmdb.Image) {
-		return "vagrant"
-	} else {
-		return "vermin"
-	}
+func GetUsername() string {
+	return "vagrant"
 }
 
-func GetPrivateKeyPath(vmName string) string {
-	vmdb, _ := Load(vmName)
-	if IsVagrantImage(vmdb.Image) {
-		return filepath.Join(getVerminDir(), VagrantPrivateKey)
-	} else {
-		return filepath.Join(getVerminDir(), VerminPrivateKey)
-	}
-}
-
-// IsValidImage check the image name format to be "vagrant/<base>/<image>[:version]",
-// example vagrant/hashicorp/bionic64
-func IsVagrantImage(image string) bool {
-	s := strings.Split(image, "/")
-	return len(s) == 3 && s[0] == "vagrant"
+func GetPrivateKeyPath() string {
+	return filepath.Join(getVerminDir(), VagrantPrivateKey)
 }

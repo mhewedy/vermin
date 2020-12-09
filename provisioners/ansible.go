@@ -18,5 +18,5 @@ func (Ansible) Exec(vmName string, script string) error {
 		return err
 	}
 
-	return cmd.AnsiblePlaybook(vmName, ipAddr, script).Interact()
+	return cmd.AnsiblePlaybook(ipAddr, script).Interact()
 }

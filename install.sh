@@ -232,8 +232,6 @@ configure_vermin() {
       info "Configuring vermin"
       mkdir -pv "$HOME/.vermin/vms"
       mkdir -pv "$HOME/.vermin/images"
-      curl -s https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa > "$HOME/.vermin/vermin_rsa"
-      chmod 0600 "$HOME/.vermin/vermin_rsa"
       curl -s https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant > "$HOME/.vermin/vagrant_insecure_private_key"
       chmod 0600 "$HOME/.vermin/vagrant_insecure_private_key"
       ;;

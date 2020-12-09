@@ -5,9 +5,9 @@ import (
 	"runtime"
 )
 
-func Scp(vmName string, extraArgs ...string) *Cmd {
+func Scp(extraArgs ...string) *Cmd {
 	args := []string{"-q", "-r",
-		"-i", db.GetPrivateKeyPath(vmName),
+		"-i", db.GetPrivateKeyPath(),
 		"-o", "StrictHostKeyChecking=no",
 		"-o", "UserKnownHostsFile=/dev/null",
 	}
@@ -25,13 +25,13 @@ func Arp(args ...string) *Cmd {
 	}
 }
 
-func Ssh(vmName, ipAddr string, extraArgs ...string) *Cmd {
-	args := []string{"-i", db.GetPrivateKeyPath(vmName),
+func Ssh(ipAddr string, extraArgs ...string) *Cmd {
+	args := []string{"-i", db.GetPrivateKeyPath(),
 		"-o", "StrictHostKeyChecking=no",
 		"-o", "GlobalKnownHostsFile=/dev/null",
 		"-o", "UserKnownHostsFile=/dev/null",
 		"-o", "LogLevel=error",
-		db.GetUsername(vmName) + "@" + ipAddr}
+		db.GetUsername() + "@" + ipAddr}
 
 	return &Cmd{
 		Command: "ssh",
@@ -53,14 +53,14 @@ func Ping(ip string) *Cmd {
 	}
 }
 
-func AnsiblePlaybook(vmName, ip string, playbook string) *Cmd {
+func AnsiblePlaybook(ip string, playbook string) *Cmd {
 	return &Cmd{
 		Command: "ansible-playbook",
 		Args: []string{
 			"-i", ip + ",",
-			"-e", "ansible_user=" + db.GetUsername(vmName),
-			"-e", "ansible_private_key_file=" + db.GetPrivateKeyPath(vmName),
-			"--ssh-common-Args", "-o StrictHostKeyChecking=no -o GlobalKnownHostsFile=/dev/null -o UserKnownHostsFile=/dev/null",
+			"-e", "ansible_user=" + db.GetUsername(),
+			"-e", "ansible_private_key_file=" + db.GetPrivateKeyPath(),
+			"--ssh-common-args", "-o StrictHostKeyChecking=no -o GlobalKnownHostsFile=/dev/null -o UserKnownHostsFile=/dev/null",
 			playbook,
 		},
 	}
