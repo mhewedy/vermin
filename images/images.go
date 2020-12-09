@@ -21,6 +21,16 @@ func Display() (string, error) {
 		return "", err
 	}
 
+	if len(list) == 0 {
+		return `You can find images from Vagrant at: https://app.vagrantup.com/search
+example images:
+* ubuntu/trusty64
+* hashicorp/precise64
+* generic/centos8
+* generic/alpine38
+`, nil
+	}
+
 	result := header
 
 	for i := range list {

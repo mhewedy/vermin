@@ -49,10 +49,16 @@ func getBoxInfo(vm string) (*base.Box, error) {
 	if len(cpuCount) == 0 {
 		cpuCount = "1"
 	}
+
+	diskLocation := ""
+	if len(vb.Machine.MediaRegistry.HardDisks.HardDisk) > 0 {
+		diskLocation = vb.Machine.MediaRegistry.HardDisks.HardDisk[0].Location
+	}
+
 	return &base.Box{
 		CPU:      cpuCount,
 		Mem:      vb.Machine.Hardware.Memory.RAMSize,
-		DiskSize: getDiskSizeInGB(vm, vb.Machine.MediaRegistry.HardDisks.HardDisk[0].Location),
+		DiskSize: getDiskSizeInGB(vm, diskLocation),
 		MACAddr:  vb.Machine.Hardware.Network.Adapter.MACAddress,
 	}, nil
 }
