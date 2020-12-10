@@ -58,9 +58,8 @@ $ vermin create <image> </path/to/shell/script.sh>
 		cpus, _ := cmd.Flags().GetInt("cpus")
 		mem, _ := cmd.Flags().GetInt("mem")
 
-		trace.PreCreate(imageName)
 		vmName, err := vms.Create(imageName, ps, cpus, mem)
-		trace.PostCreate(imageName, err)
+		trace.PostCreate(imageName, version, err)
 
 		exitOnError(err)
 
