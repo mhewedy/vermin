@@ -27,7 +27,7 @@ import (
 // mountCmd represents the mount command
 var mountCmd = &cobra.Command{
 	Use:   "mount",
-	Short: "Mount/Unmount local filesystem inside the VM",
+	Short: "Mount local filesystem inside the VM",
 	Long: `Mount local filesystem to a directory inside the VM, 
 if the guest directory is not specified, then /vermin is used
 
