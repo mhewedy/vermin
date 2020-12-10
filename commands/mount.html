@@ -11,12 +11,8 @@
       directory not specified, then it defaults to <code>/vermin</code>.
     </p>
     <p>
-      It depends on <code>virtualbox-guest-utils</code> being install inside the VM to work.
-      currently Many
-      <link-create>Vagrant images</link-create>
-      and <code>ubuntu/focal</code>
-      <link-images>image</link-images>
-      are supported.
+      <code>mount</code> subcommand depends on special setup being done for the VM to work.
+      currently Many Vagrant boxes are supported by default.
     </p>
 
     <p>
@@ -25,9 +21,6 @@
       , mount will keep the files synchronized between the host and the VM.
     </p>
 
-    <div class="alert alert-light">
-      You can use the <code>mount</code> command against a single VM as many times as you want.
-    </div>
     <div class="alert alert-light">
       Mounts are transient, which means it will to not persist VM restarts.
     </div>
@@ -39,14 +32,8 @@
 $ vermin mount vm_01 ~/Downloads
     </pre>
 
-    <p>
-      To mount the <code>~/MyHTMLApp</code> directory to <code>/var/www/html</code> inside the VM, and remove all
-      previous mounted folders:
-    </p>
-    <pre>
-$ vermin mount vm_01 -r ~/MyHTMLApp:/var/www/html
-    </pre>
-
+    <hr />
+    <h4>List Mount</h4>
     <p>
       To List all mounts on a VM use:
     </p>
@@ -58,10 +45,16 @@ HOST DIR                                             GUEST DIR
 /Users/mhewedy                                       /path/to/home</graycode>
     </pre>
 
-    <div class="alert alert-light">
-      <code>mount</code> can command remove all previous mounts on the same VM before do a new mount if you pass the
-      <code>--remove|-r</code> flag.
-    </div>
+
+    <hr />
+    <h4>Unmount</h4>
+
+    <p>
+      To remove all previous mounted folders:
+    </p>
+    <pre>
+$ vermin mount vm_01 -r
+    </pre>
 
   </div>
 </div>

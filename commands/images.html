@@ -12,23 +12,16 @@
 
     <div>
       <p>
-        To list all the available images, use the command without any parameters:
+        Once you create a VM from an image for the first time, it is then cached locally for next uses.
+        To list all the cached images, use the command without any parameters:
       </p>
 
       <pre>
 $ vermin images
-<graycode>IMAGE NAME               CACHED              DISK
-ubuntu/focal             true                1.1GB
-centos/8
-alpine/3.11</graycode>
+<graycode>IMAGE NAME                              DISK
+generic/centos8                         0.9GB
+ubuntu/focal64                          0.5GB</graycode>
       </pre>
-      <p>
-        the <code>images</code> subcommand <b>list</b> all the images you can use to create a new VM from.
-      </p>
-      <p>
-        It shows <b>three columns</b>; the image name, cached which means whether this image is saved on the local disk
-        or not. The last column is size on disk of the image.
-      </p>
 
       <p>
         The images are used in the
@@ -47,34 +40,6 @@ alpine/3.11</graycode>
       </p>
 
       <hr/>
-      <h4>Purging images cache</h4>
-      <p>Besides the actual image file being downloaded and cached, also the remote Database of the images is downloaded
-        as well.</p>
-      <p>
-        The images database is downloaded so vermin can work faster.
-        In case of the database changes on the server which is not reflected on the client, the URL of one of the images
-        might be obsolete.
-        In such case you can purge the database cache using the <code>-p|--purge</code> flag.
-      </p>
-
-      <pre>
-$ vermin images -p
-<graycode>IMAGE NAME               CACHED              DISK
-ubuntu/focal             true                1.1GB
-centos/8
-alpine/3.11</graycode>
-      </pre>
-      <p>
-        This command will purge the database and re-download it (it is usually in Kilobytes) and list the available
-        images in the new database.
-      </p>
-
-      <div class="alert alert-light">
-        Note: Most of the times you will not need the <code>-p</code> flag.
-        As the database is being purged automatically on host machine reboot.
-      </div>
-
-      <hr/>
       <h4>Removing an image</h4>
 
       <p>
@@ -88,23 +53,21 @@ alpine/3.11</graycode>
         recover.
       </div>
       <pre>
-$ vermin rmi ubuntu/focal
-<graycode>✔ Deleting image ubuntu/focal</graycode>
+$ vermin rmi ubuntu/focal64
+<graycode>✔ Deleting image ubuntu/focal64</graycode>
       </pre>
       <p>
-        In case you removed an image that is downloaded as part of vermin repository,
+        In case you removed an image that is downloaded from Vagrant Cloud,
         you can got it downloaded automatically again when you execute the
         <link-create></link-create>
         command. e.g.:
       </p>
       <pre>
-$ vermin create ubuntu/focal
-<graycode>Image 'ubuntu/focal' could not be found. Attempting to find and install
-Downloading   6% [######...............................................] (72/1.2 GB, 7.516 MB/s) [9s:2m18s]
-...
-...
-VM is ready, to connect to it use:
-$ vermin ssh vm_01</graycode>
+$ vermin create generic/centos8
+<graycode>Image 'generic/centos8' could not be found. Attempting to find and install
+✔ virtualbox hypervisor detected
+✔ Getting Image info from Vagrant Cloud
+Downloading   3% [###...............................................................] (35/926 MB, 5.096 MB/s) [8s:2m46s]</graycode>
       </pre>
 
     </div>

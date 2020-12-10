@@ -18,8 +18,8 @@
     </p>
 
     <p>
-      Let's take scenario where you already created a VM using one of the provided image by vermin (e.g. ubuntu/focal)
-      the normal way using <code>vermin create ubuntu/focal</code>, and installed <b>ELK stack</b> or did any other
+      Let's take scenario where you already created a VM using one of the provided image by vermin (e.g. ubuntu/focal64)
+      the normal way using <code>vermin create ubuntu/focal64</code>, and installed <b>ELK stack</b> or did any other
       configuration you
       need.
     </p>
@@ -44,11 +44,10 @@ $ vermin create elk/elastic</graycode>
 
     <pre>
 $ vermin images
-<graycode>IMAGE NAME               CACHED              DISK
-centos/8                 true                0.8GB
-elk/elastic              true                1.2GB
-ubuntu/focal             true                1.1GB
-alpine/3.11</graycode>
+<graycode>IMAGE NAME                              DISK
+ubuntu/focal64                          0.5GB
+elk/elastic                             1.2GB
+</graycode>
     </pre>
 
     <div class="alert alert-light">
@@ -87,33 +86,6 @@ vm_04          elk/elastic                1         1024      2.8GB</graycode>
       You can work with a VM created from an image, and remove the image itself. there's no strong relation between the
       images and the VMs created from.
     </div>
-
-    <hr/>
-    <h4>Build your image from scratch</h4>
-    <p>
-      You can build your own image without basing on an image from vermin, but this is more advanced topic that we will
-      scratch its surface here.
-    </p>
-    <p>
-      To do so, you will need to use VirtualBox to install your desired Linux distribution, and then do the following
-      steps:
-    </p>
-    <ol>
-      <li>You need to have a user with name <code>vermin</code></li>
-      <li>Install <code>openssh-server</code></li>
-      <li>Add the <code>vermin</code> user to <code>sudoers</code></li>
-      <li>Download vermin <a href="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/keys/vermin_rsa.pub">public
-        key</a> and add it to authorized_keys of vermin user and set the file permissions correctly
-      </li>
-      <li>(optional) You might need to install <code>virtualbox-guest-utils</code> package</li>
-      <li>Last step is to export the VM as <code>ova</code> file and save it under <code>~/.vermin/images/DISTRO_NAME/VERSION.ova</code>
-      </li>
-    </ol>
-    <p>
-      You can follow this <a
-        href="https://medium.com/@mhewedy_46874/using-vermin-to-manage-your-own-vms-8e74328d0ec0?sk=f3bfdbed09f6e962ba6804826f512bf4"
-        target="_blank">step by step tutorial </a> to build your own image.
-    </p>
 
 
   </div>

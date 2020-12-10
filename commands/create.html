@@ -7,13 +7,12 @@
 
   <div class="content">
     <p>
-      <code>create</code> subcommand used to create a new VM from an
-      <link-images>image</link-images>
-      or from <a href="https://app.vagrantup.com/boxes/search" target="_blank">Vagrant Boxes</a>
+      <code>create</code> subcommand used to create a new VM from
+      <a href="https://app.vagrantup.com/boxes/search" target="_blank">Vagrant Boxes</a>
       .
     </p>
     <p>
-      This is usually your start command to use in vermin. You need to have a VM up and running so you can use it.
+      This is usually your start command to use in vermin.
     </p>
 
     <p>
@@ -21,8 +20,8 @@
       <code>vermin create &lt;image name &gt;</code> e.g.:
     </p>
     <pre>
-$ vermin create ubuntu/focal
-<graycode>✔ Creating vm_01 from image ubuntu/focal
+$ vermin create ubuntu/focal64
+<graycode>✔ Creating vm_01 from image ubuntu/focal64
 ✔ Setting bridged network adapter
 ✔ Starting vm_01
 ✔ Establishing connection
@@ -32,8 +31,9 @@ $ vermin ssh vm_01</graycode>
     </pre>
 
     <div class="alert alert-light">
-      Starting from version v0.94.0, vermin supports Vagrant Boxes. you need to prepend the image name
-      with <code>vagrant/</code>, see the Vagrant section below for more info.
+      Vermin uses vagrant boxes to create a new VMs, so you need to provide a valid vagrant box name in the form of
+      <code>user/box</code>. for example: ubuntu/focal64.
+      <a href="https://app.vagrantup.com/boxes/search" target="_blank">Here</a> you can find a list of all vagrant boxes
     </div>
 
 
@@ -44,42 +44,6 @@ $ vermin ssh vm_01</graycode>
       <link-ssh></link-ssh>
       into it.
     </p>
-
-    <hr/>
-    <h4>Vagrant Boxes</h4>
-
-    <p>
-      Vermin working seamlessly with <a href="https://app.vagrantup.com/boxes/search" target="_blank">Vagrant Boxes</a>
-      with no need to do any extra configurations or setup.
-    </p>
-
-    <p>
-      To create a VM from a Vagrant Box, you need to prepend the Vagrant image name with <code>vagrant/</code> with
-      optional version at the end. The full syntax is: <code>vagrant/&lt;user&gt;/&lt;image&gt;[:version]</code>
-    </p>
-
-    <p>
-      For example, to create a VM from <a href="https://app.vagrantup.com/hashicorp/boxes/bionic64" target="_blank">
-      <code>hashicorp/bionic64</code> </a> image at the latest version:
-    </p>
-    <pre>
-$ vermin create vagrant/hashicorp/bionic64
-<graycode>Image 'vagrant/hashicorp/bionic64' could not be found. Attempting to find and install
-✔ Getting Image info from Vagrant Cloud
-Downloading 100% [#####################################################################] (518/518 MB, 5.253 MB/s) [1m33s:0s]
-✔ Convert Vagrant image into Vermin format
-✔ Creating vm_02 from image vagrant/hashicorp/bionic64
-✔ Setting bridged network adapter
-✔ Starting vm_02
-✔ Establishing connection
-
-VM is ready, to connect to it use:
-$ vermin ssh vm_02</graycode>
-    </pre>
-
-    <div class="alert alert-light">
-      Vagrant version support is not yet available on Windows.
-    </div>
 
     <hr/>
     <h4>Customizing Resources</h4>
@@ -137,8 +101,8 @@ sudo systemctl status redis
 
       <p>You need to save the provision script into a file and pass the file path to the create subcommand:</p>
       <pre>
-$ vermin create ubuntu/focal -m 2048 redis.sh
-<graycode>✔ Creating vm_01 from image ubuntu/focal
+$ vermin create ubuntu/focal64 -m 2048 redis.sh
+<graycode>✔ Creating vm_01 from image ubuntu/focal64
 ✔ Setting bridged network adapter
 ✔ Starting vm_01
 ✔ Establishing connection
@@ -155,7 +119,8 @@ VM is ready, to connect to it use:
   $ vermin ssh vm_01</graycode>
     </pre>
 
-      <p>We created a VM of image ubuntu/focal with 1 cpu (the default) and 2048 megabytes memory and installed redis on
+      <p>We created a VM of image ubuntu/focal64 with 1 cpu (the default) and 2048 megabytes memory and installed redis
+        on
         it</p>
 
     </div>
@@ -182,8 +147,8 @@ VM is ready, to connect to it use:
     </pre>
     <p>And here's an example:</p>
     <pre>
-$ vermin create ubuntu/focal -t ansible apache2.yaml
-<graycode>✔ Creating vm_01 from image ubuntu/focal
+$ vermin create ubuntu/focal64 -t ansible apache2.yaml
+<graycode>✔ Creating vm_01 from image ubuntu/focal64
 ✔ Setting bridged network adapter
 ✔ Starting vm_01
 ✔ Establishing connection
