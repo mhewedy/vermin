@@ -13,7 +13,6 @@ Table of Contents:
 - [Install Vermin](#install-vermin)
 - [Usage](#Usage)
 - [Contributors](#Contributors)
-- [Why not Vagrant](#Why-not-Vagrant)
 - [TODO](#TODO)
 
 ----
@@ -94,26 +93,19 @@ Use "vermin [command] --help" for more information about a command.
 You can start using Vermin after installation using:
 
 ```shell script
-$ vermin create <vagrant image here>
+$ vermin create <vagrant image name>
 
-# example using vagrant image
-$ vermin create hashicorp/bionic64
+# example using ubuntu focal image
+$ vermin create hashicorp/focal64
 
 # also you can use rhel8 using:
 $ vermin create generic/rhel8
 ```
-You can use all [vagrant images](https://app.vagrantup.com/boxes/search) besides some images native to vermin. use `vermin images` to see list of vermin images and where to find vagrant images.
+You can use all [vagrant images](https://app.vagrantup.com/boxes/search).
 
 Vermin collects very simple usage data anonymously.
 
 ### For more info on the usage options see [Vermin documentations website](https://mhewedy.github.io/vermin/).
-
-# Why not Vagrant:
-* **Vagrant** uses a `Vagrantfile` which I think is most suited to be source-controlled inside `git`, and for some use case it is an overhead to create and maintain such file. In such cases **Vermin** come to the rescue.
-* In **Vagrant**, any change you need to make to the VM you need to reload the VM (stop/start). In **Vermin** most of the changes on the VM is done while the VM is Running.
-* **Vermin** is a single binary file that can be easily installed and upgraded.
-* It is important to note that, starting from version `v0.94.0` **Vermin** can smoothly uses Vagrant Cloud images.
-* Myself, I look (and try to achieve) to **Vermin** as a modern CLI (like Docker/Podman) for Vagrant Boxes.
 
 # Contributors
 Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
