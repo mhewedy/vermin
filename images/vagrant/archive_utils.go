@@ -39,14 +39,19 @@ func tarFiles(w io.Writer, base string, files []os.FileInfo) error {
 	return nil
 }
 
-func gunzip(baseDir string, gzipStream io.Reader) error {
+func gunzip(gzipStream io.Reader, baseDir string, tarOnly bool) error {
 
-	uncompressedStream, err := gzip.NewReader(gzipStream)
-	if err != nil {
-		return errImageIsNotGzipped
+	var tarReader *tar.Reader
+
+	if tarOnly {
+		tarReader = tar.NewReader(gzipStream)
+	} else {
+		uncompressedStream, err := gzip.NewReader(gzipStream)
+		if err != nil {
+			return errImageIsNotGzipped
+		}
+		tarReader = tar.NewReader(uncompressedStream)
 	}
-
-	tarReader := tar.NewReader(uncompressedStream)
 
 	for true {
 		header, err := tarReader.Next()

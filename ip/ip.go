@@ -2,8 +2,8 @@ package ip
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/debug"
 	"github.com/mhewedy/vermin/hypervisor"
+	"github.com/mhewedy/vermin/log"
 	"strings"
 )
 
@@ -24,12 +24,11 @@ func Find(vmName string, purge bool) (string, error) {
 		return "", err
 	}
 
-	debug.Log("found mac: %s for vm: %s", mac, vmName)
-
+	log.Debug("found mac: %s for vm: %s", mac, vmName)
 	var pong bool
 
 	if purge {
-		debug.Log("purge=1, purging...")
+		log.Debug("purge=1, purging...")
 		if err := ping(); err != nil {
 			return "", err
 		}
@@ -38,8 +37,7 @@ func Find(vmName string, purge bool) (string, error) {
 
 	for {
 		arp, err := getArpTable()
-
-		debug.Log("here's the arp table: %s ", arp)
+		log.Debug("here's the arp table: %s ", arp)
 
 		if err != nil {
 			return "", err

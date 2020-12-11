@@ -2,9 +2,9 @@ package ip
 
 import (
 	"github.com/mhewedy/vermin/cmd"
-	"github.com/mhewedy/vermin/debug"
 	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/hypervisor/base"
+	"github.com/mhewedy/vermin/log"
 	"sync"
 )
 
@@ -14,7 +14,7 @@ func ping() error {
 	if err != nil {
 		return err
 	}
-	debug.Log("subnet: %v", subnet)
+	log.Debug("subnet: %v", subnet)
 
 	var wg sync.WaitGroup
 	wg.Add(subnet.Len)

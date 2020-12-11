@@ -2,6 +2,7 @@ package vagrant
 
 import (
 	"errors"
+	"github.com/mhewedy/vermin/log"
 	"github.com/mhewedy/vermin/progress"
 	"io/ioutil"
 	"os"
@@ -24,11 +25,15 @@ func ProcessImage(imagePath string) error {
 
 	imageDir := path.Dir(imagePath)
 
-	if err := gunzipVagrantBox(imagePath, imageDir); err != nil {
-		if err == errImageIsNotGzipped {
-			return nil
+	if err := gunzipVagrantBox(imagePath, imageDir, false); err != nil {
+		if err != errImageIsNotGzipped {
+			return err
 		}
-		return err
+
+		log.Info("cannot ungzip image %s, try untaring only...", imagePath)
+		if err = gunzipVagrantBox(imagePath, imageDir, true); err != nil {
+			return err
+		}
 	}
 
 	// remove the downloaded file
@@ -54,7 +59,7 @@ func ProcessImage(imagePath string) error {
 	})
 }
 
-func gunzipVagrantBox(imagePath, imageDir string) error {
+func gunzipVagrantBox(imagePath, imageDir string, tarOnly bool) error {
 
 	gzipFile, err := os.Open(imagePath)
 	if err != nil {
@@ -62,7 +67,7 @@ func gunzipVagrantBox(imagePath, imageDir string) error {
 	}
 	defer gzipFile.Close()
 
-	return gunzip(imageDir, gzipFile)
+	return gunzip(gzipFile, imageDir, tarOnly)
 }
 
 func createOVAFile(imagePath, imageDir string) error {
