@@ -56,6 +56,13 @@ func Stop(vmName string) error {
 	return nil
 }
 
+func Restart(vmName string) error {
+	if err := Stop(vmName); err != nil {
+		return nil
+	}
+	return start(vmName)
+}
+
 func SecureShell(vmName string) error {
 	if err := checkRunningVM(vmName); err != nil {
 		return err

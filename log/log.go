@@ -8,10 +8,19 @@ import (
 	"time"
 )
 
+func IsDebugEnabled() bool {
+	_, ok := os.LookupEnv("VERMIN_DEBUG")
+	return ok
+}
+
 func Debug(format string, a ...interface{}) {
-	if _, ok := os.LookupEnv("VERMIN_DEBUG"); ok {
-		Info(format, a)
+	if IsDebugEnabled() {
+		Info("DEBUG: "+format, a...)
 	}
+}
+
+func Error(format string, a ...interface{}) {
+	Info("ERROR: "+format, a...)
 }
 
 func Info(format string, a ...interface{}) {

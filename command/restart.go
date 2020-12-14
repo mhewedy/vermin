@@ -30,11 +30,7 @@ var restartCmd = &cobra.Command{
 	Long:  `Restart one or more VMs`,
 	Run: func(cmd *cobra.Command, args []string) {
 		for _, vmName := range args {
-			if err := vms.Stop(normalizeVmName(vmName)); err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
-			if err := vms.Start(normalizeVmName(vmName)); err != nil {
+			if err := vms.Restart(normalizeVmName(vmName)); err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}

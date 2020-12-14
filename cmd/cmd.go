@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/mhewedy/vermin/log"
 	"github.com/mhewedy/vermin/progress"
 	"os"
 	"os/exec"
@@ -97,11 +98,12 @@ func prepend(x []string, y string) []string {
 }
 
 func (c *Cmd) log() {
-	if _, ok := os.LookupEnv("VERMIN_DEBUG_CMD"); ok {
-		fmt.Print("$ ", c.Command, " ")
+	if log.IsDebugEnabled() {
+		buf := bytes.NewBufferString("")
+		_, _ = fmt.Fprint(buf, "$ ", c.Command, " ")
 		for _, arg := range c.Args {
-			fmt.Print(arg, " ")
+			_, _ = fmt.Fprint(buf, arg, " ")
 		}
-		fmt.Println()
+		log.Debug(buf.String())
 	}
 }

@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	format = "%-40s%-10s\n"
+	format = "%-30s%-10s\n"
 	header = fmt.Sprintf(format, "IMAGE NAME", "DISK")
 )
 
