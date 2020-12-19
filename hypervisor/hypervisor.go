@@ -159,3 +159,13 @@ func GetSubnet() (*base.Subnet, error) {
 
 	return h.GetSubnet()
 }
+
+func ShrinkDisk(vmName string) error {
+
+	h, err := detect()
+	if err != nil {
+		return err
+	}
+
+	return h.ShrinkDisk(vmName)
+}

@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type vbox struct {
@@ -16,6 +17,7 @@ type vbox struct {
 		MediaRegistry struct {
 			HardDisks struct {
 				HardDisk []struct {
+					UUID     string `xml:"uuid,attr"`
 					Location string `xml:"location,attr"`
 				} `xml:"HardDisk"`
 			} `xml:"HardDisks"`
@@ -55,11 +57,22 @@ func getBoxInfo(vm string) (*base.Box, error) {
 		diskLocation = vb.Machine.MediaRegistry.HardDisks.HardDisk[0].Location
 	}
 
+	diskUUID := ""
+	if len(vb.Machine.MediaRegistry.HardDisks.HardDisk) > 0 {
+		diskUUID = strings.TrimFunc(vb.Machine.MediaRegistry.HardDisks.HardDisk[0].UUID, func(r rune) bool {
+			return r == '{' || r == '}'
+		})
+	}
+
 	return &base.Box{
-		CPU:      cpuCount,
-		Mem:      vb.Machine.Hardware.Memory.RAMSize,
-		DiskSize: getDiskSizeInGB(vm, diskLocation),
-		MACAddr:  vb.Machine.Hardware.Network.Adapter.MACAddress,
+		CPU: cpuCount,
+		Mem: vb.Machine.Hardware.Memory.RAMSize,
+		Disk: &base.Disk{
+			Size:     getDiskSizeInGB(vm, diskLocation),
+			Location: diskLocation,
+			UUID:     diskUUID,
+		},
+		MACAddr: vb.Machine.Hardware.Network.Adapter.MACAddress,
 	}, nil
 }
 

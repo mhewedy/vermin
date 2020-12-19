@@ -35,6 +35,8 @@ type Hypervisor interface {
 	GetBoxInfo(vmName string) (*Box, error)
 
 	GetSubnet() (*Subnet, error)
+
+	ShrinkDisk(vmName string) error
 }
 
 type MountPath struct {
@@ -43,10 +45,16 @@ type MountPath struct {
 }
 
 type Box struct {
-	CPU      string
-	Mem      string
-	DiskSize string
-	MACAddr  string
+	CPU     string
+	Mem     string
+	Disk    *Disk
+	MACAddr string
+}
+
+type Disk struct {
+	Size     string
+	UUID     string
+	Location string
 }
 
 type Subnet struct {

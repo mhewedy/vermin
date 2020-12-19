@@ -27,7 +27,7 @@ type vmInfo struct {
 }
 
 func (v vmInfo) String() string {
-	return fmt.Sprintf(format, v.name, v.image, v.box.CPU, v.box.Mem, v.box.DiskSize, v.tags)
+	return fmt.Sprintf(format, v.name, v.image, v.box.CPU, v.box.Mem, v.box.Disk.Size, v.tags)
 }
 
 type vmInfoList []vmInfo

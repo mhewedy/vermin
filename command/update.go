@@ -31,22 +31,32 @@ var updateCmd = &cobra.Command{
 	Long:    "Update configuration of a VM",
 	Example: `
 
+You can either change the cpu and/or mem or you can use the update command to shrink the disk.
+
 To change the VM to use 2 cores and 512MB memory
 $ vermin update vm_01 --cpus 2 --mem 512
+
+To shrink the disk size on the host machine
+$ vermin update vm_01 --shrink-disk
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		vmName := normalizeVmName(args[0])
-		var script string
-		if len(args) > 1 {
-			script = args[1]
-			checkFilePath(script)
-		}
-		cpus, _ := cmd.Flags().GetInt("cpus")
-		mem, _ := cmd.Flags().GetInt("mem")
 
-		if err := vms.Modify(vmName, cpus, mem); err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+		shrink, _ := cmd.Flags().GetBool("shrink-disk")
+
+		if shrink {
+			if err := vms.Shrink(vmName); err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+		} else {
+			cpus, _ := cmd.Flags().GetInt("cpus")
+			mem, _ := cmd.Flags().GetInt("mem")
+
+			if err := vms.Modify(vmName, cpus, mem); err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
 		}
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
@@ -54,11 +64,14 @@ $ vermin update vm_01 --cpus 2 --mem 512
 			return errors.New("vm required")
 		}
 
-		cpus, _ := cmd.Flags().GetInt("cpus")
-		mem, _ := cmd.Flags().GetInt("mem")
+		shrink, _ := cmd.Flags().GetBool("shrink-disk")
+		if !shrink {
+			cpus, _ := cmd.Flags().GetInt("cpus")
+			mem, _ := cmd.Flags().GetInt("mem")
 
-		if cpus == 0 && mem == 0 {
-			return errors.New("should specify cpus and/or mem specs")
+			if cpus == 0 && mem == 0 {
+				return errors.New("should specify cpus and/or mem specs")
+			}
 		}
 		return nil
 	},
@@ -78,4 +91,5 @@ func init() {
 	// is called directly, e.g.:
 	updateCmd.Flags().IntP("cpus", "c", 0, "Number of cpu cores")
 	updateCmd.Flags().IntP("mem", "m", 0, "Memory size in mega bytes")
+	updateCmd.Flags().BoolP("shrink-disk", "", false, "Shrink the disk to reduce the size on the host machine")
 }
