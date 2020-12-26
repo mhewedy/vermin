@@ -54,6 +54,10 @@ func Create(imageName string, ps ProvisionScript, cpus int, mem int) (string, er
 		return "", err
 	}
 
+	if err := changeHostname(vmName); err != nil {
+		return "", err
+	}
+
 	if len(ps.Script) > 0 {
 		fmt.Println("Provisioning", vmName)
 		if err := ps.Func(vmName, ps.Script); err != nil {
@@ -62,6 +66,36 @@ func Create(imageName string, ps ProvisionScript, cpus int, mem int) (string, er
 	}
 
 	return vmName, nil
+}
+
+func changeHostname(vmName string) error {
+
+	stop := progress.Show("Setting hostname", false)
+	defer stop()
+
+	oldHostname, err := ssh.Execute(vmName, "hostname")
+	if err != nil {
+		return err
+	}
+
+	oldHostname = strings.TrimSuffix(oldHostname, "\n")
+	oldHostname = strings.ReplaceAll(oldHostname, ".localdomain", "")
+
+	newHostname := strings.Split(vmName, "_")[1]
+
+	cmds := []string{
+		fmt.Sprintf("sudo hostname %s", newHostname),
+		fmt.Sprintf("sudo sh -c 'echo %s > /etc/hostname'", newHostname),
+		fmt.Sprintf("sudo sed -i 's/%s/%s/g' /etc/hosts", oldHostname, newHostname),
+	}
+
+	for _, cmd := range cmds {
+		if _, err := ssh.Execute(vmName, cmd); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func start(vmName string) error {
