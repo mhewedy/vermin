@@ -1,2 +1,2 @@
 install:
-	sudo go build -o /usr/local/bin/vermin
+	go build -o /tmp/vermin && mv /tmp/vermin /usr/local/bin/vermin

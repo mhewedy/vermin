@@ -35,6 +35,16 @@ type vbox struct {
 				} `xml:"Adapter"`
 			} `xml:"Network"`
 		} `xml:"Hardware"`
+		StorageControllers struct {
+			StorageController []struct {
+				AttachedDevice []struct {
+					Port  string `xml:"port,attr"`
+					Image struct {
+						Uuid string `xml:"uuid,attr"`
+					} `xml:"Image"`
+				} `xml:"AttachedDevice"`
+			} `xml:"StorageController"`
+		} `xml:"StorageControllers"`
 	} `xml:"Machine"`
 }
 
@@ -52,17 +62,7 @@ func getBoxInfo(vm string) (*base.Box, error) {
 		cpuCount = "1"
 	}
 
-	diskLocation := ""
-	if len(vb.Machine.MediaRegistry.HardDisks.HardDisk) > 0 {
-		diskLocation = vb.Machine.MediaRegistry.HardDisks.HardDisk[0].Location
-	}
-
-	diskUUID := ""
-	if len(vb.Machine.MediaRegistry.HardDisks.HardDisk) > 0 {
-		diskUUID = strings.TrimFunc(vb.Machine.MediaRegistry.HardDisks.HardDisk[0].UUID, func(r rune) bool {
-			return r == '{' || r == '}'
-		})
-	}
+	diskUUID, diskLocation, err := findDiskUUIDAndLocation(vb)
 
 	return &base.Box{
 		CPU: cpuCount,
@@ -74,6 +74,39 @@ func getBoxInfo(vm string) (*base.Box, error) {
 		},
 		MACAddr: vb.Machine.Hardware.Network.Adapter.MACAddress,
 	}, nil
+}
+
+func findDiskUUIDAndLocation(vb vbox) (string, string, error) {
+
+	var uuid, location string
+
+outer:
+	for _, sc := range vb.Machine.StorageControllers.StorageController {
+		if len(sc.AttachedDevice) > 0 {
+
+			for _, ad := range sc.AttachedDevice {
+				if ad.Port == "0" {
+
+					uuid = ad.Image.Uuid
+					break outer
+				}
+			}
+		}
+	}
+
+	for _, hd := range vb.Machine.MediaRegistry.HardDisks.HardDisk {
+		if hd.UUID == uuid {
+			location = hd.Location
+			break
+		}
+	}
+
+	// clean uuid
+	uuid = strings.TrimFunc(uuid, func(r rune) bool {
+		return r == '{' || r == '}'
+	})
+
+	return uuid, location, nil
 }
 
 func getDiskSizeInGB(vm string, hdLocation string) string {
