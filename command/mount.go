@@ -96,7 +96,7 @@ var mountLsCmd = &cobra.Command{
 	Long:  "list mounted directories",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		vmName := args[0]
+		vmName := normalizeVmName(args[0])
 
 		ps, err := vms.ListMounts(vmName)
 		if err != nil {

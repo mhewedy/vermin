@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	mountFormat = "%-79s%-70s\n"
+	mountFormat = "%-40s%s\n"
 	mountHeader = fmt.Sprintf(mountFormat, "HOST DIR", "GUEST DIR")
 )
 

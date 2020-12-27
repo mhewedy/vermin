@@ -11,6 +11,7 @@ import (
 
 var vmNameRegexDash = regexp.MustCompile("^vm-[0-9]+$")
 var vmNameRegexNoVM = regexp.MustCompile("^[0-9]+$")
+var vmNameRegexNoSpace = regexp.MustCompile("^vm[0-9]+$")
 
 func checkFilePath(path string) {
 	if _, err := os.Stat(path); err != nil {
@@ -37,7 +38,11 @@ func normalizeVmName(vmName string) string {
 	}
 
 	if vmNameRegexNoVM.MatchString(vmName) {
-		return fmt.Sprintf("vm_%s", vmName)
+		return fmt.Sprintf("vm_%02s", vmName)
+	}
+
+	if vmNameRegexNoSpace.MatchString(vmName) {
+		return strings.ReplaceAll(vmName, "vm", "vm_")
 	}
 
 	return vmName
