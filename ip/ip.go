@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/log"
+	"sort"
 	"strings"
 )
 
@@ -37,7 +38,18 @@ func Find(vmName string, purge bool) (string, error) {
 
 	for {
 		arp, err := getArpTable()
-		log.Debug("here's the arp table: %s ", arp)
+
+		if log.IsDebugEnabled() {
+			log.Debug("here's the arp table:")
+
+			sort.Slice(arp, func(i, j int) bool {
+				return arp[i].mac > arp[j].mac
+			})
+
+			for _, e := range arp {
+				log.Debug("IP: %s, MAC: %s", e.ip, e.mac)
+			}
+		}
 
 		if err != nil {
 			return "", err
