@@ -5,8 +5,7 @@
 
 <img src="https://raw.githubusercontent.com/mhewedy/vermin/master/etc/logo.png"  alt="logo" width="20%"/>
 
-## The smart virtual machines manager (Put ★ for the project if you find it useful)
-
+## The smart virtual machines manager
 Table of Contents:
 
 - [What is Vermin](#what-is-vermin)
