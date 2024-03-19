@@ -72,6 +72,9 @@ jobs:
         name: my-artifacts
         path: bin
 
+    - uses: actions/download-artifact@v1
+    - run: ls -lR
+
   release:
     name: Release
     if: startsWith(github.ref, 'refs/tags/')
