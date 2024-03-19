@@ -3,7 +3,6 @@ module github.com/mhewedy/vermin
 go 1.13
 
 require (
-	github.com/artonge/go-csv-tag/v2 v2.0.7
 	github.com/matishsiao/goInfo v0.0.0-20200404012835-b5f882ee2288
 	github.com/mhewedy/go-gistlog v0.0.5
 	github.com/schollz/progressbar/v3 v3.3.3

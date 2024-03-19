@@ -4,13 +4,14 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/cmd"
-	"github.com/mhewedy/vermin/db"
-	"github.com/mhewedy/vermin/hypervisor/base"
 	"runtime"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/mhewedy/vermin/cmd"
+	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/hypervisor/base"
 )
 
 var Instance = &virtualbox{}
@@ -37,14 +38,25 @@ func (*virtualbox) Commit(vmName, imageName string) error {
 }
 
 func (*virtualbox) Create(imageName, vmName string, cpus int, mem int) error {
-	importCmd := vboxManage(
-		"import", db.GetImageFilePath(imageName),
+
+	imagePath := db.GetImageFilePath(imageName)
+
+	importArgs := []string{
+		"import",
+		imagePath,
 		"--vsys", "0",
 		"--vmname", vmName,
 		"--basefolder", db.VMsBaseDir,
-		"--cpus", fmt.Sprintf("%d", cpus),
-		"--memory", fmt.Sprintf("%d", mem),
-	)
+		"--cpus", strconv.Itoa(cpus),
+		"--memory", strconv.Itoa(mem),
+	}
+
+	for i, arg := range importArgs {
+		importArgs[i] = `"` + arg + `"`
+	}
+
+	importCmd := vboxManage(importArgs...)
+
 	if _, err := importCmd.CallWithProgress(fmt.Sprintf("Creating %s from image %s", vmName, imageName)); err != nil {
 		return err
 	}
