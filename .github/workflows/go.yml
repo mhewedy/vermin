@@ -77,6 +77,7 @@ jobs:
     - uses: actions/download-artifact@v1
       with:
         name: my-artifacts
+        path: bin
     - run: ls -lR
 
   release:
