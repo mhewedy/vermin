@@ -19,6 +19,10 @@ func findBridgeInfo(keys ...string) ([]string, error) {
 	for _, line := range lines {
 		s := strings.SplitN(line, ":", 2)
 
+		if len(s) < 2 {
+			continue // Skip the line in case of carriage return
+		}
+
 		key := strings.TrimSpace(s[0])
 		value := strings.TrimSpace(s[1])
 		elements[key] = value
