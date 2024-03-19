@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -19,8 +18,7 @@ var (
 )
 
 func GetImageFilePath(imageName string) string {
-	imagePath := fmt.Sprintf("`%s`", filepath.Join(ImagesDir, imageName+".ova"))
-	return imagePath
+	return filepath.Join(ImagesDir, imageName+".ova")
 }
 
 func GetVMPath(vm string) string {
