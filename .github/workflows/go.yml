@@ -74,10 +74,8 @@ jobs:
 
     - run: rm -rf *
 
-    - uses: actions/download-artifact@v1
-      with:
-        name: my-artifacts
-        path: bin
+    - uses: actions/download-artifact@v4
+
     - run: ls -lR
 
   release:
