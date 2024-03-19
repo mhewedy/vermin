@@ -72,11 +72,7 @@ jobs:
         name: my-artifacts
         path: bin
 
-    - run: rm -rf *
-
     - uses: actions/download-artifact@v1
-      with:
-        name: my-artifacts
     - run: ls -lR
 
   release:
