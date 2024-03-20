@@ -38,27 +38,14 @@ func (*virtualbox) Commit(vmName, imageName string) error {
 }
 
 func (*virtualbox) Create(imageName, vmName string, cpus int, mem int) error {
-
-	imagePath := db.GetImageFilePath(imageName)
-	importArgs := []string{
-		"import",
-		imagePath,
+	importCmd := vboxManage(
+		"import", `"`+db.GetImageFilePath(imageName)+`"`,
 		"--vsys", "0",
 		"--vmname", vmName,
-		"--basefolder", db.VMsBaseDir,
-		"--cpus", strconv.Itoa(cpus),
-		"--memory", strconv.Itoa(mem),
-	}
-
-	// Wrap each argument in quotes if it contains spaces
-	for i, arg := range importArgs {
-		if strings.Contains(arg, " ") {
-			importArgs[i] = `"` + arg + `"`
-		}
-	}
-
-	importCmd := vboxManage(importArgs...)
-
+		"--basefolder", `"`+db.VMsBaseDir+`"`,
+		"--cpus", fmt.Sprintf("%d", cpus),
+		"--memory", fmt.Sprintf("%d", mem),
+	)
 	if _, err := importCmd.CallWithProgress(fmt.Sprintf("Creating %s from image %s", vmName, imageName)); err != nil {
 		return err
 	}
