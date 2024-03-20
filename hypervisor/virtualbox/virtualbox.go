@@ -40,7 +40,6 @@ func (*virtualbox) Commit(vmName, imageName string) error {
 func (*virtualbox) Create(imageName, vmName string, cpus int, mem int) error {
 
 	imagePath := db.GetImageFilePath(imageName)
-
 	importArgs := []string{
 		"import",
 		imagePath,
@@ -51,8 +50,11 @@ func (*virtualbox) Create(imageName, vmName string, cpus int, mem int) error {
 		"--memory", strconv.Itoa(mem),
 	}
 
+	// Wrap each argument in quotes if it contains spaces
 	for i, arg := range importArgs {
-		importArgs[i] = `"` + arg + `"`
+		if strings.Contains(arg, " ") {
+			importArgs[i] = `"` + arg + `"`
+		}
 	}
 
 	importCmd := vboxManage(importArgs...)
