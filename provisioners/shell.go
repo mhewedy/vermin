@@ -2,9 +2,10 @@ package provisioners
 
 import (
 	"fmt"
+	"path/filepath"
+
 	"github.com/mhewedy/vermin/cmd/scp"
 	"github.com/mhewedy/vermin/cmd/ssh"
-	"path/filepath"
 )
 
 type Shell struct{}

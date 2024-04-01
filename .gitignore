@@ -3,3 +3,4 @@
 .vscode/
 vermin.exe
 vermin
+local_kube_vm_cluster/

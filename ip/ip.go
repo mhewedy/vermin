@@ -2,10 +2,11 @@ package ip
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/hypervisor"
-	"github.com/mhewedy/vermin/log"
 	"sort"
 	"strings"
+
+	"github.com/mhewedy/vermin/hypervisor"
+	"github.com/mhewedy/vermin/log"
 )
 
 type addr struct {
@@ -13,7 +14,15 @@ type addr struct {
 	mac string
 }
 
-//Find will try to find IP for the VM.
+func GetIpAddress(vmName string) (string, error) {
+	ipAddr, err := hypervisor.GetVMProperty(vmName, "ip")
+	if err != nil {
+		return "", err
+	}
+	return *ipAddr, nil
+}
+
+// Find will try to find IP for the VM.
 //
 // If the purge flag if true, it will invalidate the cache first then start the search process.
 // Otherwise the search will start without clearing the cache, but if no result found, the cache will be cleared and the search
@@ -72,7 +81,7 @@ func Find(vmName string, purge bool) (string, error) {
 		pong = true
 	}
 
-	return "", fmt.Errorf("Cannot find ip for %s\nUse the command 'vermin ip -p %s' to purge cache", vmName, vmName)
+	return "", fmt.Errorf("cannot find ip for %s\nuse the command 'vermin ip -p %s' to purge cache", vmName, vmName)
 }
 
 func getMACAddr(vmName string) (string, error) {

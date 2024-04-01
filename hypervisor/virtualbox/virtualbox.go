@@ -14,6 +14,14 @@ import (
 	"github.com/mhewedy/vermin/hypervisor/base"
 )
 
+const (
+	ipProperty = "/VirtualBox/GuestInfo/Net/0/V4/IP"
+)
+
+var propertyMap = map[string]string{
+	"ip": ipProperty,
+}
+
 var Instance = &virtualbox{}
 
 // should be private by the end of the day
@@ -39,13 +47,20 @@ func (*virtualbox) Commit(vmName, imageName string) error {
 
 func (*virtualbox) Create(imageName, vmName string, cpus int, mem int) error {
 	importCmd := vboxManage(
-		"import", `"`+db.GetImageFilePath(imageName)+`"`,
+		"import", db.GetImageFilePath(imageName),
 		"--vsys", "0",
 		"--vmname", vmName,
-		"--basefolder", `"`+db.VMsBaseDir+`"`,
+		"--basefolder", db.VMsBaseDir,
 		"--cpus", fmt.Sprintf("%d", cpus),
 		"--memory", fmt.Sprintf("%d", mem),
 	)
+
+	if runtime.GOOS == "windows" {
+		// Wrap image file path and VMs base directory in double quotes
+		importCmd.Args[1] = `"` + importCmd.Args[1] + `"`
+		importCmd.Args[7] = `"` + importCmd.Args[7] + `"`
+	}
+
 	if _, err := importCmd.CallWithProgress(fmt.Sprintf("Creating %s from image %s", vmName, imageName)); err != nil {
 		return err
 	}
@@ -112,6 +127,29 @@ func (*virtualbox) Modify(vmName string, cpus int, mem int) error {
 	}
 
 	return nil
+}
+
+func (*virtualbox) GetVMProperty(vmName, property string) (*string, error) {
+	prop, ok := propertyMap[property]
+	if !ok {
+		return nil, fmt.Errorf("property %s not found", property)
+	}
+
+	guestProperty, err := vboxManage("guestproperty",
+		"get",
+		vmName,
+		prop).Call()
+
+	if err != nil {
+		return nil, err
+	}
+
+	fields := strings.Fields(guestProperty)
+	ipAddress := ""
+	if len(fields) >= 2 {
+		ipAddress = fields[1]
+	}
+	return &ipAddress, nil
 }
 
 func (*virtualbox) ShowGUI(vmName string) error {

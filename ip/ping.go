@@ -1,11 +1,12 @@
 package ip
 
 import (
+	"sync"
+
 	"github.com/mhewedy/vermin/cmd"
 	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/hypervisor/base"
 	"github.com/mhewedy/vermin/log"
-	"sync"
 )
 
 func ping() error {
