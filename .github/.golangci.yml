@@ -1,0 +1,24 @@
+run:
+  concurrency: 2
+  timeout: 5m
+
+linters-settings:
+  staticcheck:
+    checks: ["all", "-SA1029"]
+  misspell:
+    locale: US
+
+
+linters:
+  disable-all: true
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - typecheck
+    - unused
+    - gosec
+    - gocritic
+    - misspell

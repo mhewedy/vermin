@@ -1,0 +1,39 @@
+name: build
+
+on: 
+  pull_request:
+
+jobs:
+  codereview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: reviewdog/action-golangci-lint@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          go_version: "1.19"
+          golangci_lint_flags: "--config=.github/.golangci.yml"
+          reporter: github-pr-review
+
+  format:
+    needs: codereview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Format and test
+        run: |
+          go fmt ./...
+          go vet ./...
+          # go test -race ./... -v
+  
+  compile:
+    needs: format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        run: |
+          mkdir -p mybinaries
+          go build -o mybinaries ./...
