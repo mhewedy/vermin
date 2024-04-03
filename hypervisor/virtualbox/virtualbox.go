@@ -136,19 +136,28 @@ func (*virtualbox) GetVMProperty(vmName, property string) (*string, error) {
 	}
 
 	guestProperty, err := vboxManage("guestproperty",
-		"get",
-		vmName,
-		prop).Call()
+		"enumerate",
+		vmName).Call()
 
 	if err != nil {
 		return nil, err
 	}
 
-	fields := strings.Fields(guestProperty)
-	ipAddress := ""
-	if len(fields) >= 2 {
-		ipAddress = fields[1]
+	time.Sleep(30 * time.Second)
+
+	index := strings.Index(guestProperty, prop)
+	if index == -1 {
+		return nil, fmt.Errorf("IP address property not found")
 	}
+
+	quoteIndex := strings.Index(guestProperty[index:], "'")
+	if quoteIndex == -1 {
+		return nil, fmt.Errorf("unexpected format")
+	}
+
+	// Extract the IP address between single quotes
+	ipAddress := guestProperty[index+quoteIndex+1 : index+quoteIndex+1+strings.Index(guestProperty[index+quoteIndex+1:], "'")]
+
 	return &ipAddress, nil
 }
 
