@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 )
 
 const (
@@ -38,5 +39,8 @@ func GetUsername() string {
 }
 
 func GetPrivateKeyPath() string {
+	if runtime.GOOS == "windows" {
+		return `"` + filepath.Join(getVerminDir(), VagrantPrivateKey) + `"`
+	}
 	return filepath.Join(getVerminDir(), VagrantPrivateKey)
 }

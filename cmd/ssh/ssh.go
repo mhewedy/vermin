@@ -6,7 +6,7 @@ import (
 )
 
 func OpenTerminal(vmName string) error {
-	ipAddr, err := ip.Find(vmName, false)
+	ipAddr, err := ip.GetIpAddress(vmName)
 	if err != nil {
 		return err
 	}
@@ -15,7 +15,7 @@ func OpenTerminal(vmName string) error {
 }
 
 func Execute(vmName string, command string) (string, error) {
-	ipAddr, err := ip.Find(vmName, false)
+	ipAddr, err := ip.GetIpAddress(vmName)
 	if err != nil {
 		return "", err
 	}
@@ -23,9 +23,9 @@ func Execute(vmName string, command string) (string, error) {
 	return cmd.Ssh(ipAddr, "--", command).Call()
 }
 
-//ExecInteract execute ssh in interactive mode
+// ExecInteract execute ssh in interactive mode
 func ExecInteract(vmName string, command string) error {
-	ipAddr, err := ip.Find(vmName, false)
+	ipAddr, err := ip.GetIpAddress(vmName)
 	if err != nil {
 		return err
 	}
@@ -35,7 +35,7 @@ func ExecInteract(vmName string, command string) error {
 
 // WithArgs run ssh command with args passed
 func WithArgs(vmName string, args []string) error {
-	ipAddr, err := ip.Find(vmName, false)
+	ipAddr, err := ip.GetIpAddress(vmName)
 	if err != nil {
 		return err
 	}

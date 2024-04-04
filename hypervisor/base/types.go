@@ -22,6 +22,8 @@ type Hypervisor interface {
 
 	Modify(vmName string, cpus int, mem int) error
 
+	GetVMProperty(vmName, property string) (*string, error)
+
 	ShowGUI(vmName string) error
 
 	AddMount(vmName, ipAddr, hostPath, guestPath string) error
