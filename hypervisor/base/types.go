@@ -22,6 +22,8 @@ type Hypervisor interface {
 
 	Modify(vmName string, cpus int, mem int) error
 
+	HealthCheck(vmName, property string) (*string, error)
+
 	GetVMProperty(vmName, property string) (*string, error)
 
 	ShowGUI(vmName string) error
@@ -85,10 +87,7 @@ func NewSubnet(anIp, netmask string) (*Subnet, error) {
 
 func (c *Subnet) HasNext() bool {
 	max := c.start + uint32(c.Len)
-	if c.current < max {
-		return true
-	}
-	return false
+	return c.current < max
 }
 
 func (c *Subnet) Next() *Subnet {
