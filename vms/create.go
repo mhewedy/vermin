@@ -2,16 +2,18 @@ package vms
 
 import (
 	"fmt"
+	"os"
+	"runtime"
+	"sort"
+	"strconv"
+	"strings"
+
 	"github.com/mhewedy/vermin/cmd/ssh"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/images"
 	"github.com/mhewedy/vermin/progress"
 	"github.com/mhewedy/vermin/provisioners"
-	"os"
-	"sort"
-	"strconv"
-	"strings"
 )
 
 type ProvisionScript struct {
@@ -83,11 +85,22 @@ func changeHostname(vmName string) error {
 
 	newHostname := strings.Split(vmName, "_")[1]
 
-	cmds := []string{
-		fmt.Sprintf("sudo hostname %s", newHostname),
-		fmt.Sprintf("sudo sh -c 'echo %s > /etc/hostname'", newHostname),
-		fmt.Sprintf("sudo sed -i 's/%s/%s/g' /etc/hosts", oldHostname, newHostname),
+	var cmds []string
+
+	cmds = append(cmds, fmt.Sprintf("sudo hostname %s", newHostname))
+
+	if runtime.GOOS == "windows" {
+		cmds = append(cmds,
+			"'echo "+newHostname+" | sudo tee /tmp/new_hostname > /dev/null'",
+			"sudo mv /tmp/new_hostname /etc/hostname",
+		)
+	} else {
+		cmds = append(cmds,
+			fmt.Sprintf("sudo sh -c 'echo %s > /etc/hostname'", newHostname),
+		)
 	}
+
+	cmds = append(cmds, fmt.Sprintf("sudo sed -i 's/%s/%s/g' /etc/hosts", oldHostname, newHostname))
 
 	for _, cmd := range cmds {
 		if _, err := ssh.Execute(vmName, cmd); err != nil {
