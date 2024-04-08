@@ -1,9 +1,11 @@
 package hypervisor
 
 import (
+	"fmt"
 	"path/filepath"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/hypervisor/base"
@@ -102,13 +104,32 @@ func GetVMProperty(vmName, property string) (*string, error) {
 	return h.GetVMProperty(vmName, property)
 }
 
-func HealthCheck(vmName string) (*string, error) {
+// HealthCheck will block up to 5 minutes until the VM is healthy or will return an error otherwise
+func HealthCheck(vmName string) error {
 	h, err := detect()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return h.HealthCheck(vmName)
+	ok, err := h.HealthCheck(vmName)
+	if err != nil {
+		return err
+	}
+	// Wait for health status to ok for up to 5 minutes
+	timeout := time.After(5 * time.Minute)
+	for !ok {
+		select {
+		case <-timeout:
+			return fmt.Errorf("timeout waiting for %s to be healthy", vmName)
+		default:
+			time.Sleep(10 * time.Second) // Check every 10 seconds
+			ok, err = h.HealthCheck(vmName)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func ShowGUI(vmName string) error {
