@@ -16,10 +16,12 @@ import (
 
 const (
 	ipProperty = "/VirtualBox/GuestInfo/Net/0/V4/IP"
+	vmStatus   = "/VirtualBox/GuestInfo/Net/0/Status"
 )
 
 var propertyMap = map[string]string{
-	"ip": ipProperty,
+	"ip":     ipProperty,
+	"status": vmStatus,
 }
 
 var Instance = &virtualbox{}
@@ -129,36 +131,37 @@ func (*virtualbox) Modify(vmName string, cpus int, mem int) error {
 	return nil
 }
 
+func (*virtualbox) HealthCheck(vmName string) (*string, error) {
+	healthCheck, err := Instance.GetVMProperty(vmName, "status")
+	if err != nil {
+		return nil, err
+	}
+
+	return healthCheck, nil
+}
+
 func (*virtualbox) GetVMProperty(vmName, property string) (*string, error) {
 	prop, ok := propertyMap[property]
 	if !ok {
 		return nil, fmt.Errorf("property %s not found", property)
 	}
 
-	guestProperty, err := vboxManage("guestproperty",
-		"enumerate",
-		vmName).Call()
-
+	guestProperty, err := vboxManage("guestproperty", "enumerate", vmName).Call()
 	if err != nil {
 		return nil, err
 	}
 
-	time.Sleep(30 * time.Second)
-
 	index := strings.Index(guestProperty, prop)
 	if index == -1 {
-		return nil, fmt.Errorf("IP address property not found")
+		return nil, fmt.Errorf(property + " property not found")
 	}
 
-	quoteIndex := strings.Index(guestProperty[index:], "'")
-	if quoteIndex == -1 {
-		return nil, fmt.Errorf("unexpected format")
+	propertyValue, err := getValueFromProperty(guestProperty, index)
+	if err != nil {
+		return nil, err
 	}
 
-	// Extract the IP address between single quotes
-	ipAddress := guestProperty[index+quoteIndex+1 : index+quoteIndex+1+strings.Index(guestProperty[index+quoteIndex+1:], "'")]
-
-	return &ipAddress, nil
+	return propertyValue, nil
 }
 
 func (*virtualbox) ShowGUI(vmName string) error {
@@ -290,4 +293,16 @@ func (*virtualbox) GetSubnet() (*base.Subnet, error) {
 	}
 
 	return base.NewSubnet(bridgeInfo[0], bridgeInfo[1])
+}
+
+func getValueFromProperty(guestProperty string, index int) (*string, error) {
+	quoteIndex := strings.Index(guestProperty[index:], "'")
+	if quoteIndex == -1 {
+		return nil, fmt.Errorf("unexpected format")
+	}
+
+	// Extract the IP address between single quotes
+	value := guestProperty[index+quoteIndex+1 : index+quoteIndex+1+strings.Index(guestProperty[index+quoteIndex+1:], "'")]
+
+	return &value, nil
 }

@@ -2,13 +2,14 @@ package images
 
 import (
 	"fmt"
-	"github.com/mhewedy/vermin/images/vagrant"
-	"github.com/schollz/progressbar/v3"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/mhewedy/vermin/images/vagrant"
+	"github.com/schollz/progressbar/v3"
 )
 
 type image struct {

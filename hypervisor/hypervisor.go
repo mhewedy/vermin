@@ -102,6 +102,15 @@ func GetVMProperty(vmName, property string) (*string, error) {
 	return h.GetVMProperty(vmName, property)
 }
 
+func HealthCheck(vmName string) (*string, error) {
+	h, err := detect()
+	if err != nil {
+		return nil, err
+	}
+
+	return h.HealthCheck(vmName)
+}
+
 func ShowGUI(vmName string) error {
 	h, err := detect()
 	if err != nil {
