@@ -3,6 +3,9 @@ package vms
 import (
 	"errors"
 	"fmt"
+	"os"
+	"strings"
+
 	"github.com/mhewedy/vermin/cmd/scp"
 	"github.com/mhewedy/vermin/cmd/ssh"
 	"github.com/mhewedy/vermin/db"
@@ -10,8 +13,6 @@ import (
 	"github.com/mhewedy/vermin/images"
 	"github.com/mhewedy/vermin/ip"
 	"github.com/mhewedy/vermin/progress"
-	"os"
-	"strings"
 )
 
 func Tag(vmName string, tag string, remove bool) error {
@@ -31,7 +32,7 @@ func Start(vmName string) error {
 	}
 
 	if isRunningVM(vmName) {
-		return fmt.Errorf(`VM already running, use "vermin ssh %s" to ssh into the VM.`, vmName)
+		return fmt.Errorf(`vm already running, use "vermin ssh %s" to ssh into the VM`, vmName)
 	}
 
 	if err := start(vmName); err != nil {
@@ -46,7 +47,7 @@ func Stop(vmName string) error {
 	}
 
 	if !isRunningVM(vmName) {
-		return fmt.Errorf(`VM already stopped, use "vermin start %s" to start the VM.`, vmName)
+		return fmt.Errorf(`vm already stopped, use "vermin start %s" to start the VM`, vmName)
 	}
 
 	progress.Immediate("Stopping", vmName)
@@ -89,7 +90,7 @@ func Exec(vmName string, cmd string) error {
 
 func Remove(vmName string, force bool) error {
 	if !force && isRunningVM(vmName) {
-		return errors.New("Cannot stop running VM, use -f flag to force remove")
+		return errors.New("cannot stop running VM, use -f flag to force remove")
 	}
 
 	if err := checkVM(vmName); err != nil {
@@ -153,12 +154,12 @@ func IP(vmName string, purge bool, global bool) (string, error) {
 			return "", err
 		}
 	}
-	return ip.Find(vmName, purge)
+	return ip.GetIpAddress(vmName)
 }
 
 func Modify(vmName string, cpus int, mem int) error {
 	if isRunningVM(vmName) {
-		return fmt.Errorf(`Cannot Modify running VM, use "vermin stop %s" to stop the VM first.`, vmName)
+		return fmt.Errorf(`cannot modify running VM, use "vermin stop %s" to stop the VM first`, vmName)
 	}
 
 	return hypervisor.Modify(vmName, cpus, mem)
@@ -183,7 +184,7 @@ func Commit(vmName, imageName string, override bool) error {
 	}
 
 	if isRunningVM(vmName) {
-		return fmt.Errorf(`VM is running, use "vermin stop %s" to stop the VM before commiting image from it.`, vmName)
+		return fmt.Errorf(`vm is running, use "vermin stop %s" to stop the VM before commiting image from it`, vmName)
 	}
 
 	return images.Commit(vmName, imageName, override)

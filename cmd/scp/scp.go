@@ -2,10 +2,11 @@ package scp
 
 import (
 	"errors"
+	"strings"
+
 	"github.com/mhewedy/vermin/cmd"
 	"github.com/mhewedy/vermin/db"
 	"github.com/mhewedy/vermin/ip"
-	"strings"
 )
 
 const (
@@ -45,7 +46,7 @@ func toVmPath(srcDest string) (vmPath, bool) {
 }
 
 func copyFromVM(vmPath vmPath, localFile string) error {
-	ipAddr, err := ip.Find(vmPath.name, false)
+	ipAddr, err := ip.GetIpAddress(vmPath.name)
 	if err != nil {
 		return err
 	}
@@ -55,7 +56,7 @@ func copyFromVM(vmPath vmPath, localFile string) error {
 }
 
 func copyToVM(localFile string, vmPath vmPath) error {
-	ipAddr, err := ip.Find(vmPath.name, false)
+	ipAddr, err := ip.GetIpAddress(vmPath.name)
 	if err != nil {
 		return err
 	}
@@ -66,12 +67,12 @@ func copyToVM(localFile string, vmPath vmPath) error {
 
 func copyBetweenVMs(srcVmPath vmPath, destVmPath vmPath) error {
 
-	srcIPAddr, err := ip.Find(srcVmPath.name, false)
+	srcIPAddr, err := ip.GetIpAddress(srcVmPath.name)
 	if err != nil {
 		return err
 	}
 
-	destIPAddr, err := ip.Find(destVmPath.name, false)
+	destIPAddr, err := ip.GetIpAddress(destVmPath.name)
 	if err != nil {
 		return err
 	}
