@@ -131,13 +131,13 @@ func (*virtualbox) Modify(vmName string, cpus int, mem int) error {
 	return nil
 }
 
-func (*virtualbox) HealthCheck(vmName string) (*string, error) {
+func (*virtualbox) HealthCheck(vmName string) (bool, error) {
 	healthCheck, err := Instance.GetVMProperty(vmName, "status")
 	if err != nil {
-		return nil, err
+		return false, err
 	}
 
-	return healthCheck, nil
+	return *healthCheck == "Up", nil
 }
 
 func (*virtualbox) GetVMProperty(vmName, property string) (*string, error) {

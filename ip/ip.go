@@ -2,12 +2,10 @@ package ip
 
 import (
 	"fmt"
-	"sort"
-	"strings"
-	"time"
-
 	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/log"
+	"sort"
+	"strings"
 )
 
 type addr struct {
@@ -17,24 +15,9 @@ type addr struct {
 
 func GetIpAddress(vmName string) (string, error) {
 
-	health, err := hypervisor.HealthCheck(vmName)
+	err := hypervisor.HealthCheck(vmName)
 	if err != nil {
 		return "", err
-	}
-
-	// Wait for health status to be "Up" for up to 5 minutes
-	timeout := time.After(5 * time.Minute)
-	for *health != "Up" {
-		select {
-		case <-timeout:
-			return "", fmt.Errorf("timeout waiting for VM health status to be 'Up'")
-		default:
-			time.Sleep(10 * time.Second) // Check every 10 seconds
-			health, err = hypervisor.HealthCheck(vmName)
-			if err != nil {
-				return "", err
-			}
-		}
 	}
 
 	ipAddr, err := hypervisor.GetVMProperty(vmName, "ip")

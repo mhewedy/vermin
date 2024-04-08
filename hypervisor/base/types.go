@@ -22,7 +22,7 @@ type Hypervisor interface {
 
 	Modify(vmName string, cpus int, mem int) error
 
-	HealthCheck(vmName string) (*string, error)
+	HealthCheck(vmName string) (bool, error)
 
 	GetVMProperty(vmName, property string) (*string, error)
 
