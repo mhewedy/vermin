@@ -131,23 +131,8 @@ func (*virtualbox) Modify(vmName string, cpus int, mem int) error {
 	return nil
 }
 
-func (*virtualbox) HealthCheck(vmName, healthProperty string) (*string, error) {
-	healthProp, ok := propertyMap[healthProperty]
-	if !ok {
-		return nil, fmt.Errorf("property %s not found", healthProperty)
-	}
-
-	guestProperty, err := vboxManage("guestproperty", "enumerate", vmName).Call()
-	if err != nil {
-		return nil, err
-	}
-
-	index := strings.Index(guestProperty, healthProp)
-	if index == -1 {
-		return nil, fmt.Errorf("IPV4 address property not found")
-	}
-
-	healthCheck, err := getValueFromProperty(guestProperty, index)
+func (*virtualbox) HealthCheck(vmName string) (*string, error) {
+	healthCheck, err := Instance.GetVMProperty(vmName, "status")
 	if err != nil {
 		return nil, err
 	}
@@ -155,10 +140,10 @@ func (*virtualbox) HealthCheck(vmName, healthProperty string) (*string, error) {
 	return healthCheck, nil
 }
 
-func (*virtualbox) GetVMProperty(vmName, ipProperty string) (*string, error) {
-	ipProp, ok := propertyMap[ipProperty]
+func (*virtualbox) GetVMProperty(vmName, property string) (*string, error) {
+	prop, ok := propertyMap[property]
 	if !ok {
-		return nil, fmt.Errorf("property %s not found", ipProperty)
+		return nil, fmt.Errorf("property %s not found", property)
 	}
 
 	guestProperty, err := vboxManage("guestproperty", "enumerate", vmName).Call()
@@ -166,17 +151,17 @@ func (*virtualbox) GetVMProperty(vmName, ipProperty string) (*string, error) {
 		return nil, err
 	}
 
-	index := strings.Index(guestProperty, ipProp)
+	index := strings.Index(guestProperty, prop)
 	if index == -1 {
-		return nil, fmt.Errorf("IPV4 address property not found")
+		return nil, fmt.Errorf(property + " property not found")
 	}
 
-	ipAddress, err := getValueFromProperty(guestProperty, index)
+	propertyValue, err := getValueFromProperty(guestProperty, index)
 	if err != nil {
 		return nil, err
 	}
 
-	return ipAddress, nil
+	return propertyValue, nil
 }
 
 func (*virtualbox) ShowGUI(vmName string) error {
