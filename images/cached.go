@@ -2,11 +2,12 @@ package images
 
 import (
 	"errors"
-	"github.com/mhewedy/vermin/db"
-	"github.com/mhewedy/vermin/progress"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/mhewedy/vermin/db"
+	"github.com/mhewedy/vermin/progress"
 )
 
 const ova = ".ova"
@@ -14,7 +15,7 @@ const ova = ".ova"
 func Remove(imageName string) error {
 	existingImgs, _ := List()
 	if !contains(existingImgs, imageName) {
-		return errors.New("Image not found")
+		return errors.New("image not found")
 	}
 
 	if err := os.RemoveAll(db.GetImageFilePath(imageName)); err != nil {

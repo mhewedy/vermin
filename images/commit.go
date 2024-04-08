@@ -3,10 +3,11 @@ package images
 import (
 	"errors"
 	"fmt"
-	"github.com/mhewedy/vermin/hypervisor"
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/mhewedy/vermin/hypervisor"
 )
 
 func Commit(vmName, imageName string, override bool) error {
@@ -18,7 +19,7 @@ func Commit(vmName, imageName string, override bool) error {
 	if !override {
 		existingImgs, _ := List()
 		if contains(existingImgs, imageName) {
-			return errors.New("Image with same name already exists, either choose a new name or use the --override flag")
+			return errors.New("image with same name already exists, either choose a new name or use the --override flag")
 		}
 	}
 
