@@ -2,6 +2,7 @@ package vms
 
 import (
 	"fmt"
+
 	"github.com/mhewedy/vermin/hypervisor"
 	"github.com/mhewedy/vermin/ip"
 )
@@ -12,7 +13,7 @@ var (
 )
 
 func Unmount(vmName string) error {
-	ipAddr, err := ip.Find(vmName, false)
+	ipAddr, err := ip.GetIpAddress(vmName)
 	if err != nil {
 		return err
 	}
@@ -25,7 +26,7 @@ func Unmount(vmName string) error {
 }
 
 func Mount(vmName, hostPath, guestPath string) error {
-	ipAddr, err := ip.Find(vmName, false)
+	ipAddr, err := ip.GetIpAddress(vmName)
 	if err != nil {
 		return err
 	}
@@ -38,7 +39,7 @@ func Mount(vmName, hostPath, guestPath string) error {
 }
 
 func ListMounts(vmName string) (string, error) {
-	ipAddr, err := ip.Find(vmName, false)
+	ipAddr, err := ip.GetIpAddress(vmName)
 	if err != nil {
 		return "", err
 	}

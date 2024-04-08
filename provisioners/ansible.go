@@ -13,7 +13,7 @@ func (Ansible) Accept(ptype string) bool {
 
 func (Ansible) Exec(vmName string, script string) error {
 
-	ipAddr, err := ip.Find(vmName, false)
+	ipAddr, err := ip.GetIpAddress(vmName)
 	if err != nil {
 		return err
 	}
