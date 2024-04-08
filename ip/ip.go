@@ -17,7 +17,7 @@ type addr struct {
 
 func GetIpAddress(vmName string) (string, error) {
 
-	health, err := hypervisor.HealthCheck(vmName, "status")
+	health, err := hypervisor.HealthCheck(vmName)
 	if err != nil {
 		return "", err
 	}
@@ -30,7 +30,7 @@ func GetIpAddress(vmName string) (string, error) {
 			return "", fmt.Errorf("timeout waiting for VM health status to be 'Up'")
 		default:
 			time.Sleep(10 * time.Second) // Check every 10 seconds
-			health, err = hypervisor.HealthCheck(vmName, "status")
+			health, err = hypervisor.HealthCheck(vmName)
 			if err != nil {
 				return "", err
 			}
