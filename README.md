@@ -104,15 +104,11 @@ You can use all [vagrant images](https://app.vagrantup.com/boxes/search).
 
 _Vermin collects very simple usage data anonymously._
 
-## Collaborators
-
-<!-- readme: collaborators -start -->
-<!-- readme: collaborators -end -->
-
 ## Contributors
 
-<!-- readme: contributors -start -->
-<!-- readme: contributors -end -->
+<!-- readme: collaborators,contributors -start -->
+<!-- readme: collaborators,contributors -end -->
+
 
 Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
 
