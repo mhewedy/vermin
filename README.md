@@ -106,15 +106,15 @@ Vermin collects very simple usage data anonymously.
 
 ### For more info on the usage options see [Vermin documentations website](https://mhewedy.github.io/vermin/).
 
+## Collaborators
+
+<!-- readme: collaborators -start -->
+<!-- readme: collaborators -end -->
+
 ## Contributors
 
-<!-- readme: collaborators,contributors -start -->
-<!-- readme: collaborators,contributors -end -->
+<!-- readme: contributors -start -->
+<!-- readme: contributors -end -->
 
 Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
 
-### Stars Overtime
-[![Stargazers over time](https://starchart.cc/mhewedy/vermin.svg)](https://starchart.cc/mhewedy/vermin)
-
-# TODO
-See [TODO.md](https://github.com/mhewedy/vermin/blob/master/TODO.md)
