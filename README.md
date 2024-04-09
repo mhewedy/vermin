@@ -107,6 +107,10 @@ Vermin collects very simple usage data anonymously.
 ### For more info on the usage options see [Vermin documentations website](https://mhewedy.github.io/vermin/).
 
 # Contributors
+
+<!-- readme: collaborators,contributors -start -->
+<!-- readme: collaborators,contributors -end -->
+
 Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
 
 ### Stars Overtime
