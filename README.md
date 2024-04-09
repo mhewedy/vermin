@@ -109,6 +109,44 @@ Vermin collects very simple usage data anonymously.
 # Contributors
 
 <!-- readme: collaborators,contributors -start -->
+<table>
+<tr>
+    <td align="center">
+        <a href="https://github.com/mhewedy">
+            <img src="https://avatars.githubusercontent.com/u/1086049?v=4" width="100;" alt="mhewedy"/>
+            <br />
+            <sub><b>Mohammad Hewedy</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/akhiljns">
+            <img src="https://avatars.githubusercontent.com/u/22194681?v=4" width="100;" alt="akhiljns"/>
+            <br />
+            <sub><b>Akhil</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/dawidd6">
+            <img src="https://avatars.githubusercontent.com/u/9713907?v=4" width="100;" alt="dawidd6"/>
+            <br />
+            <sub><b>Dawid Dziurla</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/gruz0">
+            <img src="https://avatars.githubusercontent.com/u/335095?v=4" width="100;" alt="gruz0"/>
+            <br />
+            <sub><b>Alexander Kadyrov</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/aldarisbm">
+            <img src="https://avatars.githubusercontent.com/u/32185409?v=4" width="100;" alt="aldarisbm"/>
+            <br />
+            <sub><b>Jose Berrio</b></sub>
+        </a>
+    </td></tr>
+</table>
 <!-- readme: collaborators,contributors -end -->
 
 Special thanks to [Ahmed Samir](https://github.com/aseldesouky) for contributing the logo.
