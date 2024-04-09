@@ -102,9 +102,7 @@ $ vermin create generic/rhel8
 ```
 You can use all [vagrant images](https://app.vagrantup.com/boxes/search).
 
-Vermin collects very simple usage data anonymously.
-
-### For more info on the usage options see [Vermin documentations website](https://mhewedy.github.io/vermin/).
+_Vermin collects very simple usage data anonymously._
 
 ## Collaborators
 
