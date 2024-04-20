@@ -1,10 +1,6 @@
-# HW requirements: 2 CPUS 2 RAM
+# HW requirements: 2 CPUS 2G RAM
 # OS: Ubuntu focal
 set -ex
-
-#should be $(lsb_release -cs) but it appears it is not working on focal yet
-docker_ubuntu_release=bionic
-k8s_version=1.18.0
 
 # Set hostname and disable swap
 sudo hostnamectl set-hostname "$(hostname -I | awk '{print $1}')"
@@ -13,37 +9,43 @@ echo "export PS1=\"\[\e[1;35m\]\u\[\033[m\]@\[\e[1;92m\]$(hostname -I | awk '{pr
 sudo swapoff -a && sudo sed -i 's/\/swap/#\/swap/g' /etc/fstab
 
 ## Fix IP Addr
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
 sudo add-apt-repository ppa:rmescandon/yq -y
 sudo apt-get update -y
 sudo apt-get install yq -y
-sudo yq w -i /etc/netplan/00-installer-config.yaml network.ethernets.enp0s3.dhcp4 false
-sudo yq w -i /etc/netplan/00-installer-config.yaml network.ethernets.enp0s3.addresses[+] "$(hostname -I | awk '{print $1}')/24"
-sudo yq w -i /etc/netplan/00-installer-config.yaml network.ethernets.enp0s3.gateway4 "$(hostname -I | cut -d "." -f 1-3).1"
-sudo yq w -i /etc/netplan/00-installer-config.yaml network.ethernets.enp0s3.nameservers.addresses[+] 8.8.8.8
-sudo yq w -i /etc/netplan/00-installer-config.yaml network.ethernets.enp0s3.nameservers.addresses[+] 8.8.4.4
+
+# Create a new empty file (assuming the desired filename is 00-installer-config.yaml)
+sudo touch /etc/netplan/00-installer-config.yaml
+
+sudo yq eval '.network.ethernets.enp0s3.dhcp4 = false' -i /etc/netplan/00-installer-config.yaml
+sudo yq eval ".network.ethernets.enp0s3.addresses += [\"$(hostname -I | awk '{print $1}')/24\"]" -i /etc/netplan/00-installer-config.yaml
+sudo yq eval ".network.ethernets.enp0s3.gateway4 = \"$(hostname -I | cut -d '.' -f 1-3).1\"" -i /etc/netplan/00-installer-config.yaml
+sudo yq eval '.network.ethernets.enp0s3.nameservers.addresses += ["8.8.8.8"]' -i /etc/netplan/00-installer-config.yaml
+sudo yq eval '.network.ethernets.enp0s3.nameservers.addresses += ["8.8.4.4"]' -i /etc/netplan/00-installer-config.yaml
+
 sudo netplan apply
 sleep 1
+
 ############# install docker & k8s
 
-## install docker, kubelet, kubeadm and kubectl
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
-  "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-  $docker_ubuntu_release \
-  stable"
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-xenial main
-EOF
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
 
+sudo mkdir -p -m 755 /etc/apt/keyrings
+
+
+# Add Kubernetes APT repository
+
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+## install docker, kubelet, kubeadm and kubectl
+
+# Update to the latest Docker version
 sudo apt-get update
-sudo apt-get install -y \
-  containerd.io=1.2.13-1 \
-  docker-ce=5:19.03.8~3-0~ubuntu-$docker_ubuntu_release \
-  docker-ce-cli=5:19.03.8~3-0~ubuntu-$docker_ubuntu_release
-sudo apt-get install -y kubelet=$k8s_version-00 kubeadm=$k8s_version-00 kubectl=$k8s_version-00
-sudo apt-mark hold docker-ce kubelet kubeadm kubectl
+sudo apt-get install -y docker.io
+
+# Update to the latest Kubernetes version
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
 
 echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
@@ -75,4 +77,4 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown "$(id -u):$(id -g)" $HOME/.kube/config
 
 ## install flannel network
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/485649719be5a21b0fe7e44f699f7acbb66137fa/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
